@@ -11,17 +11,7 @@ To pull dependencies run:
 ```shell
 npm ci
 ```
-To start the ui run:
+To start the ui and serve at http://localhost:3000 run:
 ```shell
 npm run start
-```
-The ui will be served at http://localhost:3000.
-
-To run the tests run:
-```shell
-npm run test
-```
-To build a static bundle:
-```shell
-npm run build
 ```
