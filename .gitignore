@@ -1,1 +1,6 @@
+# Intellij
 .idea
+
+# node
+client/node_modules
+client/build
