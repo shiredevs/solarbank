@@ -12,19 +12,30 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1",
     "@babel/plugin-transform-private-property-in-object": "^7.24.5",
+    "@eslint/js": "^9.3.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2"
+    "@types/jest": "^27.5.2",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.3.0",
+    "prettier": "^3.2.5",
+    "react-scripts": "^5.0.1",
+    "typescript-eslint": "^7.10.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "audit": "npm audit --production",
-    "dependencies": "npm ls --all"
+    "dependencies": "npm ls --all",
+    "lint": "eslint .",
+    "format": "prettier --ignore-path ../.gitignore --write \"**/*.+(js|ts|tsx)\""
   },
   "eslintConfig": {
     "extends": [
