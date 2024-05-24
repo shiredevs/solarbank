@@ -13,11 +13,11 @@ Then pull dependencies by running:
 npm ci
 ```
 
-The client runs locally with `https` enabled, to use a self-signed certificate you need to copy this
-[template](./client/environment/template.env.local) and rename as `.env.local` and update `SSL_CERT_PATH` to
-point at your self-signed certificate and `SSL_KEY_FILE` to point at your private key file.
+The client runs locally with `https` enabled, to provide certificates you need to copy this
+[template](./client/environment/template.env.local) and rename as `.env.local`. Then update `SSL_CERT_PATH` to
+point at your certificate and `SSL_KEY_FILE` to point at your private key. 
 
-To serve the client at https://localhost:3030 run:
+If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). To serve the client at https://localhost:3030 run:
 ```shell
 npm run:local
 ```
