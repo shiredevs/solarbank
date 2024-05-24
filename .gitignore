@@ -1,5 +1,7 @@
 # Intellij
 .idea
+.run
+target
 
 # node
 client/node_modules
