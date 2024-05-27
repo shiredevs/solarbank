@@ -1,13 +1,11 @@
-package org.solarbank.server;
+package org.solarbank.server.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerApplicationTests {
+class ServerApplicationIT {
 
 	@Test
-	void contextLoads() {
-	}
-
+	void contextLoads() {}
 }
