@@ -1,0 +1,5 @@
+server:
+  address: localhost
+  ssl:
+    key-store:
+    key-store-password:
