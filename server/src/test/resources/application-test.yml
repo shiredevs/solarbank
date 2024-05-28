@@ -1,0 +1,4 @@
+server:
+  ssl:
+    key-store: classpath:test-keystore.p12
+    key-store-password: changeit
