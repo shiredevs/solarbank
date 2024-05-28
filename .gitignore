@@ -2,6 +2,7 @@
 .idea
 .run
 target
+*.iml
 
 # node
 node_modules
