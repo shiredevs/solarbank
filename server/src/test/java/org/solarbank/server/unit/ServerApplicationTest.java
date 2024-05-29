@@ -7,6 +7,8 @@ class ServerApplicationTest {
 
     @Test
     public void executeApplication() {
+        System.setProperty("spring.profiles.active", "test");
+
         ServerApplication.main(new String[] {});
     }
 }

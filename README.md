@@ -35,9 +35,16 @@ npm run test
 - Java 21
 - Maven
 
+The server runs locally with `https` enabled and requires valid PKCS12 certificates. To provide certificates you need to copy this
+[template](./server/src/main/resources/template-application-local-yml) and rename it to `application-local.yml`. 
+Then update `key-store` to point at your certificate file and `key-store-password` with your store password.
+
+If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). 
+The certificates need to be generated in `.p12` format using the `--pkcs12` flag.
+
 To start the Springboot server `cd` into the [server](./server) folder and run:
 ```shell
-mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 To run the tests:
 ```shell

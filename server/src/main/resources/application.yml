@@ -1,0 +1,7 @@
+server:
+  port: 8080
+  ssl:
+    enabled: true
+    protocol: TLS
+    enabled-protocols: TLSv1.2
+    key-store-type: PKCS12

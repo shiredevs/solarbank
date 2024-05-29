@@ -3,6 +3,7 @@
 .run
 target
 *.iml
+application-local.yml
 
 # node
 node_modules
