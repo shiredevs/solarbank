@@ -1,4 +1,4 @@
-name: run client tests
+name: run client checks
 on:
   push:
     branches:
@@ -24,3 +24,5 @@ jobs:
         run: cd client && npm run test
       - name: run eslint
         run: cd client && npm run lint
+      - name: run vulnerability scan
+        run: cd client && npm run audit
