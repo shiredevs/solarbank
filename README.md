@@ -23,7 +23,7 @@ If you want to generate trusted local certificates then follow this [guide](docs
 
 To serve the client at https://localhost:3030 run:
 ```shell
-npm run:local
+npm run start:local
 ```
 To run the tests:
 ```shell
