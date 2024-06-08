@@ -1,0 +1,28 @@
+name: run client checks
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.13.1'
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+      - name: initialise client
+        run: cd client && npm ci
+      - name: run tests
+        run: cd client && npm run test
+      - name: run eslint
+        run: cd client && npm run lint
+      - name: run vulnerability scan
+        run: cd client && npm run audit

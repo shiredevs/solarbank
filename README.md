@@ -23,7 +23,7 @@ If you want to generate trusted local certificates then follow this [guide](docs
 
 To serve the client at https://localhost:3030 run:
 ```shell
-npm run:local
+npm run start:local
 ```
 To run the tests:
 ```shell
@@ -35,14 +35,15 @@ npm run test
 - Java 21
 - Maven
 
-The server runs locally with `https` enabled and requires valid PKCS12 certificates. To provide certificates you need to copy this
-[template](./server/src/main/resources/template-application-local-yml) and rename it to `application-local.yml`. 
-Then update `key-store` to point at your certificate file and `key-store-password` with your store password.
+The server runs locally with `https` enabled and requires trusted or self-signed PKCS12 certificates. 
+
+To provide certificates you need to copy this [template](./server/src/main/resources/template-application-local-yml) and rename it to `application-local.yml`. 
+Then update `key-store` to point at your `.p12` keystore file and `key-store-password` with your store password.
 
 If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). 
-The certificates need to be generated in `.p12` format using the `--pkcs12` flag.
+The certificates need to be generated and stored in `.p12` format using the `--pkcs12` flag.
 
-To start the Springboot server `cd` into the [server](./server) folder and run:
+To start the springboot server at https://localhost:8080 `cd` into the [server](./server) folder and run:
 ```shell
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
