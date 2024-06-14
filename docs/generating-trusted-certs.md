@@ -17,7 +17,7 @@ To generate SSL certs signed by your local CA:
 mkcert <hostname> # for example localhost
 ```
 This will generate a certificate and key `.pem` in the current directory, signed by your local CA.
-If you want to generate a `.p12` file then you can run with `--pkcs12` flag. The password will default to `changeit`.
+If you want to generate a `.p12` file then you can run with `mkcert --pkcs12 <hostname>`. The password will default to `changeit`.
 
 ## Troubleshooting
 You may need to manually add the local CA to your browser of choice. For example in Firefox
