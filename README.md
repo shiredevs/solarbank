@@ -6,7 +6,7 @@
 
 If your using [node version manager](https://github.com/nvm-sh/nvm) simply install and use required node version with:
 ```shell
-nvm install && use
+nvm install && nvm use
 ```
 
 #### Starting the client 

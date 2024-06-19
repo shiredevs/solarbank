@@ -12,5 +12,5 @@ And add:
 ```
 
 Now instead of using `localhost` for the client and server you can instead:
-- specify `host=solarbank.local` in your `.env.local` [here](../client/environment) for the client
+- specify `HOST=solarbank.local` in your `.env.local` [here](../client/environment) for the client
 - specify `server.address: solarbank.local` in your `application-local.yml` [here](../server/src/main/resources) for the server
