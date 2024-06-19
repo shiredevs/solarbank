@@ -1,4 +1,4 @@
-.App-header {
+.landing-page {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -7,4 +7,12 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.button {
+  @apply bg-yellow-600 text-white font-bold py-2 px-4 rounded;
+}
+
+.icon {
+  @apply size-40;
 }

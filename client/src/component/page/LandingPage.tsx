@@ -1,19 +1,23 @@
 import React, { JSX } from 'react';
-import '../styles/SplashScreen.css';
+import './LandingPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const LandingPage = (): JSX.Element => {
+  const navigate: NavigateFunction = useNavigate();
+
   return (
-    <div className="App-header">
+    <div className="landing-page">
         <FontAwesomeIcon
-          className="size-40"
+          className='icon'
           icon={['fas', 'cloud-sun']}
-          data-testid="landing-page-icon"
+          data-testid='landing-page-icon'
         />
         <p>Welcome to Solarbank</p>
       <button
-        className="bg-orange-800 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-        data-testid="landing-page-button"
+        className='button'
+        data-testid='landing-page-button'
+        onClick={() => navigate('/form')}
       >
         begin
       </button>
