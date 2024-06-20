@@ -13,4 +13,19 @@ describe('app router tests', () => {
       expect(expectedPaths).toContain(mappedPath);
     });
   });
+
+  it('Should include error boundary for root route only', () => {
+     const mappedRoutes: AgnosticDataRouteObject[] = router.routes;
+
+     mappedRoutes.forEach(route => {
+       const mappedPath: string = route.path as string;
+       const errorBoundary: boolean = route.hasErrorBoundary as boolean;
+
+       if (mappedPath === ROUTE_PATHS.ROOT) {
+         expect(errorBoundary).toBe(true);
+       } else {
+         expect(errorBoundary).toBe(false);
+       }
+     })
+  });
 });

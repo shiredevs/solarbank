@@ -1,10 +1,16 @@
 import React from 'react';
 import './App.css';
 import '../icon/IconLibrary';
-import router from '../router/AppRouter';
 import { RouterProvider } from 'react-router-dom';
+import { Router } from '@remix-run/router';
 
-const App = () => {
+type AppProps = {
+  router: Router
+}
+
+const App = (props: AppProps) => {
+  const { router } = props;
+
   return(
     <div>
      <RouterProvider router={router} />

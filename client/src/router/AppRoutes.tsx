@@ -4,10 +4,12 @@ import FormPage from '../component/page/FormPage';
 import ErrorPage from '../component/page/ErrorPage';
 import { ERROR_MESSAGES } from '../component/error/ErrorMessages';
 import { Navigate } from 'react-router-dom';
+import ErrorHandler from '../component/error/ErrorHandler';
 
 type RouteType = {
   path: string,
   element: JSX.Element
+  errorElement?: JSX.Element
 }
 
 type RoutePaths = {
@@ -24,7 +26,8 @@ const ROUTE_PATHS: RoutePaths = {
 const ROUTES: RouteType[] = [
   {
     path: ROUTE_PATHS.ROOT,
-    element: <LandingPage />
+    element: <LandingPage />,
+    errorElement: <ErrorHandler />
   },
   {
     path: ROUTE_PATHS.FORM,

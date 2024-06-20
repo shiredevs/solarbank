@@ -7,7 +7,7 @@ const LandingPage = (): JSX.Element => {
   const navigate: NavigateFunction = useNavigate();
 
   return (
-    <div className="landing-page">
+    <div className='landing-page' data-testid='landing-page'>
         <FontAwesomeIcon
           className='icon'
           icon={['fas', 'cloud-sun']}
