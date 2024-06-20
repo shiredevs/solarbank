@@ -8,4 +8,5 @@ application-local.yml
 # node
 node_modules
 build
+coverage
 .env.local

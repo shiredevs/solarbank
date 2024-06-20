@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/index.css';
-import './icons/IconLibrary';
-import LandingPage from './components/LandingPage';
+import App from './component/App';
 
-const root = ReactDOM.createRoot(
+const root : ReactDOM.Root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
-  <React.StrictMode>
-    <LandingPage />
-  </React.StrictMode>
+  <StrictMode>
+    <App />
+  </StrictMode>
 );
