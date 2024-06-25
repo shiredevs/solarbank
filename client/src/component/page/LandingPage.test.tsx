@@ -4,7 +4,7 @@ import LandingPage from './LandingPage';
 import '../../icon/IconLibrary';
 import * as router from 'react-router';
 import { NavigateFunction, To } from 'react-router-dom';
-import {ROUTE_PATHS}  from '../../router/AppRoutes';
+import { ROUTE_PATHS } from '../../router/AppRoutes';
 
 describe('landing page tests', () => {
   let capturedRedirectPath: string;
@@ -13,8 +13,7 @@ describe('landing page tests', () => {
   };
 
   beforeEach(() => {
-    jest.spyOn(router, 'useNavigate')
-      .mockImplementationOnce(() => mockNavigate);
+    jest.spyOn(router, 'useNavigate').mockImplementationOnce(() => mockNavigate);
 
     render(<LandingPage />);
   });
@@ -50,4 +49,4 @@ describe('landing page tests', () => {
     expect(button).toBeInTheDocument();
     expect(capturedRedirectPath).toBe(ROUTE_PATHS.FORM);
   });
-})
+});

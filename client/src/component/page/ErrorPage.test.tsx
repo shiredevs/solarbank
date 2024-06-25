@@ -12,16 +12,14 @@ describe('error page tests', () => {
 
     const renderedErrorPage: HTMLElement = screen.getByRole('paragraph');
     expect(renderedErrorPage).toBeInTheDocument();
-    expect(renderedErrorPage)
-      .toHaveTextContent(expectedInternalErrorMessage);
+    expect(renderedErrorPage).toHaveTextContent(expectedInternalErrorMessage);
   });
 
   it('should render the page with custom error message when an error message is passed in location state', () => {
-    render(<ErrorPage message={expectedPageNotFoundMessage}/>);
+    render(<ErrorPage message={expectedPageNotFoundMessage} />);
 
     const renderedErrorPage: HTMLElement = screen.getByRole('paragraph');
     expect(renderedErrorPage).toBeInTheDocument();
-    expect(renderedErrorPage)
-      .toHaveTextContent(expectedPageNotFoundMessage);
+    expect(renderedErrorPage).toHaveTextContent(expectedPageNotFoundMessage);
   });
 });

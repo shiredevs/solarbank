@@ -12,10 +12,7 @@ describe('app integration tests', (): void => {
   let inMemoryRouter: Router;
 
   beforeEach((): void => {
-    inMemoryRouter = createMemoryRouter(
-      router.routes,
-      {initialEntries: [ROUTE_PATHS.ROOT]}
-    );
+    inMemoryRouter = createMemoryRouter(router.routes, { initialEntries: [ROUTE_PATHS.ROOT] });
 
     render(<App router={inMemoryRouter} />);
 

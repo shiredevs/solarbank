@@ -12,9 +12,8 @@ describe('error handler tests', () => {
   const INTERNAL_SERVER_ERROR_MESSAGE: string = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
-    jest.spyOn(logger, 'logError')
-      .mockImplementationOnce((error)=> {
-       loggedError = error;
+    jest.spyOn(logger, 'logError').mockImplementationOnce(error => {
+      loggedError = error;
     });
   });
 
@@ -32,8 +31,7 @@ describe('error handler tests', () => {
 
   it('renders expected error page when the application crashes', () => {
     const childError: TypeError = new TypeError('application crash error');
-    jest.spyOn(router, 'useRouteError')
-      .mockReturnValue(childError);
+    jest.spyOn(router, 'useRouteError').mockReturnValue(childError);
     const parentError: InternalServerError = new InternalServerError();
 
     render(<ErrorHandler error={parentError} />);
@@ -57,8 +55,7 @@ describe('error handler tests', () => {
   });
 
   it('renders expected error page when the child error is undefined', () => {
-    jest.spyOn(router, 'useRouteError')
-      .mockReturnValue(undefined);
+    jest.spyOn(router, 'useRouteError').mockReturnValue(undefined);
 
     const parentError: InternalServerError = new InternalServerError();
 

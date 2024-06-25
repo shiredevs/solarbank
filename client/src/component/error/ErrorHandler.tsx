@@ -5,8 +5,8 @@ import InternalServerError from './types/InternalServerError';
 import { logError } from '../../logger/Logger';
 
 type ErrorHandlerProps = {
-  error: Error
-}
+  error: Error;
+};
 
 const ErrorHandler = (props: ErrorHandlerProps): JSX.Element => {
   const error: Error = props.error;
@@ -21,9 +21,7 @@ const ErrorHandler = (props: ErrorHandlerProps): JSX.Element => {
 
   logError(childError);
 
-  return (
-    <ErrorPage message={message}/>
-  );
+  return <ErrorPage message={message} />;
 };
 
 export default ErrorHandler;
