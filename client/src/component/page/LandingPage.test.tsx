@@ -20,13 +20,14 @@ describe('landing page tests', () => {
   });
 
   it('renders header', () => {
-    const heading: HTMLElement = screen.getByText(/Welcome to Solarbank/i);
+    const heading: HTMLElement = screen.getByRole('paragraph');
 
     expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent('Welcome to Solarbank');
   });
 
   it('renders landing page icon', () => {
-    const icon: HTMLElement = screen.getByTestId('landing-page-icon');
+    const icon: HTMLElement = screen.getByRole('img');
 
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass('icon');
@@ -34,7 +35,7 @@ describe('landing page tests', () => {
   });
 
   it('renders button', () => {
-    const button: HTMLElement = screen.getByTestId('landing-page-button');
+    const button: HTMLElement = screen.getByRole('button');
 
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('button');
@@ -42,7 +43,7 @@ describe('landing page tests', () => {
   });
 
   it('button redirects user to form page when clicked', () => {
-    const button: HTMLElement = screen.getByTestId('landing-page-button');
+    const button: HTMLElement = screen.getByRole('button');
 
     fireEvent.click(button);
 

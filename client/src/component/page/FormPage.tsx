@@ -2,7 +2,7 @@ import React , { JSX } from 'react';
 
 const FormPage = (): JSX.Element => {
   return (
-    <div data-testid='form-page'>
+    <div>
       <p>form...</p>
     </div>
   )

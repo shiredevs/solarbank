@@ -10,7 +10,7 @@ describe('error page tests', () => {
   it('should render the page with default error message when no error message is passed in location state', () => {
     render(<ErrorPage message={''} />);
 
-    const renderedErrorPage: HTMLElement = screen.getByTestId('error-page');
+    const renderedErrorPage: HTMLElement = screen.getByRole('paragraph');
     expect(renderedErrorPage).toBeInTheDocument();
     expect(renderedErrorPage)
       .toHaveTextContent(expectedInternalErrorMessage);
@@ -19,7 +19,7 @@ describe('error page tests', () => {
   it('should render the page with custom error message when an error message is passed in location state', () => {
     render(<ErrorPage message={expectedPageNotFoundMessage}/>);
 
-    const renderedErrorPage: HTMLElement = screen.getByTestId('error-page');
+    const renderedErrorPage: HTMLElement = screen.getByRole('paragraph');
     expect(renderedErrorPage).toBeInTheDocument();
     expect(renderedErrorPage)
       .toHaveTextContent(expectedPageNotFoundMessage);

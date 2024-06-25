@@ -9,6 +9,7 @@ import InternalServerError from './types/InternalServerError';
 
 describe('error handler tests', () => {
   let loggedError: Error;
+  const INTERNAL_SERVER_ERROR_MESSAGE: string = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
     jest.spyOn(logger, 'logError')
@@ -22,11 +23,11 @@ describe('error handler tests', () => {
 
     render(<ErrorHandler error={pageError} />);
 
-    const errorPage: HTMLElement = screen.getByTestId( 'error-page');
     expect(loggedError).toBeDefined();
     expect(loggedError).toBe(pageError);
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
     expect(errorPage).toBeInTheDocument();
-    expect(errorPage.textContent).toBe(ERROR_MESSAGES.PAGE_NOT_FOUND);
+    expect(errorPage).toHaveTextContent(ERROR_MESSAGES.PAGE_NOT_FOUND);
   });
 
   it('renders expected error page when the application crashes', () => {
@@ -37,22 +38,22 @@ describe('error handler tests', () => {
 
     render(<ErrorHandler error={parentError} />);
 
-    const errorPage: HTMLElement = screen.getByTestId( 'error-page');
     expect(loggedError).toBeDefined();
     expect(loggedError).toBe(childError);
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
     expect(errorPage).toBeInTheDocument();
-    expect(errorPage.textContent).toBe(ERROR_MESSAGES.INTERNAL_SERVER_ERROR);
+    expect(errorPage).toHaveTextContent(INTERNAL_SERVER_ERROR_MESSAGE);
   });
 
   it('renders expected error page even if the error message is undefined', () => {
     const error: Error = new Error(undefined);
     render(<ErrorHandler error={error} />);
 
-    const errorPage: HTMLElement = screen.getByTestId( 'error-page');
     expect(loggedError).toBeDefined();
     expect(loggedError).toBe(error);
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
     expect(errorPage).toBeInTheDocument();
-    expect(errorPage.textContent).toBe(ERROR_MESSAGES.INTERNAL_SERVER_ERROR);
+    expect(errorPage).toHaveTextContent(INTERNAL_SERVER_ERROR_MESSAGE);
   });
 
   it('renders expected error page when the child error is undefined', () => {
@@ -63,9 +64,9 @@ describe('error handler tests', () => {
 
     render(<ErrorHandler error={parentError} />);
 
-    const errorPage: HTMLElement = screen.getByTestId( 'error-page');
     expect(loggedError).toBeUndefined();
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
     expect(errorPage).toBeInTheDocument();
-    expect(errorPage.textContent).toBe(ERROR_MESSAGES.INTERNAL_SERVER_ERROR);
+    expect(errorPage).toHaveTextContent(INTERNAL_SERVER_ERROR_MESSAGE);
   });
 });

@@ -8,8 +8,8 @@ type ErrorProps = {
 const ErrorPage = (props: ErrorProps): JSX.Element => {
 
   return (
-    <div data-testid="error-page">
-      {props?.message || ERROR_MESSAGES.INTERNAL_SERVER_ERROR}
+    <div>
+      <p>{props?.message || ERROR_MESSAGES.INTERNAL_SERVER_ERROR}</p>
     </div>
   )
 }

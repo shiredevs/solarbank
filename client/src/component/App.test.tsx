@@ -19,20 +19,22 @@ describe('app integration tests', (): void => {
 
     render(<App router={inMemoryRouter} />);
 
-    expect(screen.getByTestId('landing-page')).toBeInTheDocument();
+    expect(screen.getByRole('landing-page-container')).toBeInTheDocument();
   });
 
   it('should navigate to form page when user clicks begin', (): void => {
-    const button: HTMLElement = screen.getByText('begin');
+    const button: HTMLElement = screen.getByRole('button');
     fireEvent.click(button);
 
-    expect(screen.getByTestId('form-page')).toBeInTheDocument();
+    const formPage: HTMLElement = screen.getByRole('paragraph');
+    expect(formPage).toBeInTheDocument();
+    expect(formPage).toHaveTextContent('form...');
   });
 
   it('should navigate to error page when user navigates to unknown path', async (): Promise<void> => {
     await waitFor(() => inMemoryRouter.navigate('/invalid'));
 
-    const errorPage: HTMLElement = screen.getByTestId('error-page');
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
     expect(errorPage).toBeInTheDocument();
     expect(errorPage).toHaveTextContent(ERROR_MESSAGES.PAGE_NOT_FOUND);
   });
