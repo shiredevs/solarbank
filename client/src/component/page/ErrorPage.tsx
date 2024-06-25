@@ -1,16 +1,15 @@
 import React, { JSX } from 'react';
-import { useLocation } from 'react-router-dom';
 import { ERROR_MESSAGES } from '../error/ErrorMessages';
-import { Location } from '@remix-run/router';
 
-const ErrorPage = (): JSX.Element => {
-  const location: Location = useLocation();
+type ErrorProps = {
+  message: string
+}
+
+const ErrorPage = (props: ErrorProps): JSX.Element => {
 
   return (
-    <div
-      data-testid="error-page"
-    >
-      {location?.state?.errorMessage || ERROR_MESSAGES.INTERNAL_SERVER_ERROR}
+    <div data-testid="error-page">
+      {props?.message || ERROR_MESSAGES.INTERNAL_SERVER_ERROR}
     </div>
   )
 }
