@@ -14,13 +14,6 @@
   font-size: var(--solar-bank-default-text-size);
 }
 
-.button {
-  @apply font-bold py-2 px-4 m-2 w-40 hover:bg-amber-700;
-  background: var(--solar-bank-primary-colour);
-  color: var(--solar-bank-dark-font-colour);
-  border-radius: 0.5rem;
-}
-
 .icon {
   @apply size-24 m-0;
   color: var(--solar-bank-primary-colour);

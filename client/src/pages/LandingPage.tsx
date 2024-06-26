@@ -2,6 +2,8 @@ import React, { JSX } from 'react';
 import style from './LandingPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
+import { ROUTE_PATHS } from '../components/router/AppRoutes';
 
 const LandingPage = (): JSX.Element => {
   const navigate: NavigateFunction = useNavigate();
@@ -11,9 +13,7 @@ const LandingPage = (): JSX.Element => {
       <FontAwesomeIcon className={style.icon} icon={['fas', 'cloud-sun']} aria-hidden={false} />
       <h1 className={style.heading}>Solarbank</h1>
       <p className={style.paragraph} aria-label='description'>estimate your solar energy savings</p>
-      <button className={style.button} onClick={() => navigate('/form')}>
-        begin
-      </button>
+      <Button handleClick={() => navigate(ROUTE_PATHS.FORM)} label={'begin'} />
     </div>
   );
 };
