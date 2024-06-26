@@ -12,7 +12,7 @@ const LandingPage = (): JSX.Element => {
     <div className={style.landingPage} role="landing-page-container">
       <FontAwesomeIcon className={style.icon} icon={['fas', 'cloud-sun']} aria-hidden={false} />
       <h1 className={style.heading}>Solarbank</h1>
-      <p className={style.paragraph} aria-label='description'>estimate your solar energy savings</p>
+      <p className={style.paragraph}>estimate your solar energy savings</p>
       <Button handleClick={() => navigate(ROUTE_PATHS.FORM)} label={'begin'} />
     </div>
   );
