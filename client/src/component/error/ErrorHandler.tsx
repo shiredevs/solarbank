@@ -2,7 +2,7 @@ import React, { JSX } from 'react';
 import ErrorPage from '../page/ErrorPage';
 import { useRouteError } from 'react-router-dom';
 import InternalServerError from './types/InternalServerError';
-import { logError } from '../../logger/Logger';
+import logError from '../../logger/Logger';
 
 type ErrorHandlerProps = {
   error: Error;

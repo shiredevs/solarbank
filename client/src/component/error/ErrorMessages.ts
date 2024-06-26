@@ -1,4 +1,4 @@
-type ErrorMessages = {
+export type ErrorMessages = {
   [key: string]: string;
 };
 
@@ -7,5 +7,4 @@ const ERROR_MESSAGES: ErrorMessages = {
   INTERNAL_SERVER_ERROR: 'Something went wrong please try again later.'
 };
 
-export { ERROR_MESSAGES };
-export type { ErrorMessages };
+export default ERROR_MESSAGES;

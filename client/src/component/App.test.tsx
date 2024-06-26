@@ -5,7 +5,7 @@ import router from '../router/AppRouter';
 import '../icon/IconLibrary';
 import { ROUTE_PATHS } from '../router/AppRoutes';
 import { Router } from '@remix-run/router';
-import { ERROR_MESSAGES } from './error/ErrorMessages';
+import ERROR_MESSAGES from './error/ErrorMessages';
 import App from './App';
 
 describe('app integration tests', (): void => {

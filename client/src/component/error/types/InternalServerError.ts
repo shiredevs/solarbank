@@ -1,7 +1,12 @@
-import { ERROR_MESSAGES } from '../ErrorMessages';
+import ERROR_MESSAGES from '../ErrorMessages';
 
 export default class InternalServerError extends Error {
-  constructor() {
-    super(ERROR_MESSAGES.INTERNAL_SERVER_ERROR);
+  public name: string;
+  public message: string;
+
+  public constructor() {
+    super();
+    this.name = InternalServerError.name;
+    this.message = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
   }
 }

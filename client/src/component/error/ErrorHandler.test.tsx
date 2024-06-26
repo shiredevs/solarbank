@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PageNotFoundError from './types/PageNotFoundError';
 import ErrorHandler from './ErrorHandler';
-import { ERROR_MESSAGES } from './ErrorMessages';
+import ERROR_MESSAGES from './ErrorMessages';
 import * as logger from '../../logger/Logger';
 import * as router from 'react-router';
 import InternalServerError from './types/InternalServerError';
@@ -12,7 +12,7 @@ describe('error handler tests', () => {
   const INTERNAL_SERVER_ERROR_MESSAGE: string = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
-    jest.spyOn(logger, 'logError').mockImplementationOnce(error => {
+    jest.spyOn(logger, 'default').mockImplementationOnce(error => {
       loggedError = error;
     });
   });

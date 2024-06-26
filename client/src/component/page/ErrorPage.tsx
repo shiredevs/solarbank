@@ -1,5 +1,5 @@
 import React, { JSX } from 'react';
-import { ERROR_MESSAGES } from '../error/ErrorMessages';
+import ERROR_MESSAGES from '../error/ErrorMessages';
 
 type ErrorProps = {
   message: string;

@@ -1,6 +1,6 @@
 const logError = (error: Error): void => {
   //TODO: replace with logging implementation
-  console.log(`${error.name}: ${error.message}\nTrace: ${error.stack}`);
+  console.log(`${error.stack ? error.stack : error.message}`);
 };
 
-export { logError };
+export default logError;
