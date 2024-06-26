@@ -9,8 +9,8 @@ const LandingPage = (): JSX.Element => {
   return (
     <div className={style.landingPage} role="landing-page-container">
       <FontAwesomeIcon className={style.icon} icon={['fas', 'cloud-sun']} aria-hidden={false} />
-      <p className={style.heading}>Solarbank</p>
-      <p className={style.paragraph}>estimate your solar energy savings</p>
+      <h1 className={style.heading}>Solarbank</h1>
+      <p className={style.paragraph} aria-label='description'>estimate your solar energy savings</p>
       <button className={style.button} onClick={() => navigate('/form')}>
         begin
       </button>
