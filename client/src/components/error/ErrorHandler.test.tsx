@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import PageNotFoundError from './types/PageNotFoundError';
 import ErrorHandler from './ErrorHandler';
 import ERROR_MESSAGES from './ErrorMessages';
-import * as logger from '../../logger/Logger';
+import * as logger from '../../utils/Logger';
 import * as router from 'react-router';
 import InternalServerError from './types/InternalServerError';
 

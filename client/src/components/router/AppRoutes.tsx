@@ -1,9 +1,9 @@
 import React, { JSX } from 'react';
-import LandingPage from '../component/page/LandingPage';
-import FormPage from '../component/page/FormPage';
-import ErrorHandler from '../component/error/ErrorHandler';
-import PageNotFoundError from '../component/error/types/PageNotFoundError';
-import InternalServerError from '../component/error/types/InternalServerError';
+import LandingPage from '../../pages/LandingPage';
+import FormPage from '../../pages/FormPage';
+import ErrorHandler from '../error/ErrorHandler';
+import PageNotFoundError from '../error/types/PageNotFoundError';
+import InternalServerError from '../error/types/InternalServerError';
 
 type RouteType = {
   path: string;

@@ -1,11 +1,11 @@
 import { createMemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import router from '../router/AppRouter';
-import '../icon/IconLibrary';
-import { ROUTE_PATHS } from '../router/AppRoutes';
+import router from './components/router/AppRouter';
+import './utils/IconLibrary';
+import { ROUTE_PATHS } from './components/router/AppRoutes';
 import { Router } from '@remix-run/router';
-import ERROR_MESSAGES from './error/ErrorMessages';
+import ERROR_MESSAGES from './components/error/ErrorMessages';
 import App from './App';
 
 describe('app integration tests', (): void => {

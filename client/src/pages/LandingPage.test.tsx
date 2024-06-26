@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import LandingPage from './LandingPage';
-import '../../icon/IconLibrary';
+import '../utils/IconLibrary';
 import * as router from 'react-router';
 import { NavigateFunction, To } from 'react-router-dom';
-import { ROUTE_PATHS } from '../../router/AppRoutes';
+import { ROUTE_PATHS } from '../components/router/AppRoutes';
 
 describe('landing page tests', () => {
   let capturedRedirectPath: string;
