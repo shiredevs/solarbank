@@ -4,7 +4,7 @@
 target
 *.iml
 application-local.yml
-
+localhost.p12
 # node
 node_modules
 build
