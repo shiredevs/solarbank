@@ -1,15 +1,15 @@
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import Icon from './Icon';
 import applicationIcons from '../utils/IconLibrary';
-import { IconDefinition, IconName } from '@fortawesome/free-solid-svg-icons';
+import { faSadCry, faXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 describe('icon tests', () => {
-  it('renders every app icon when valid reference provided', () => {
-    const iconRefs: IconDefinition[] = applicationIcons;
+  const fallbackIcon: IconDefinition = faXmark;
 
-    iconRefs.forEach((iconRef: IconDefinition) => {
-      render(<Icon iconRef={[iconRef.prefix, iconRef.iconName]} />);
+  it('renders every app icon when valid reference provided', () => {
+    Object.values(applicationIcons).forEach((iconRef: IconDefinition) => {
+      render(<Icon iconRef={iconRef} />);
 
       const icon: HTMLElement = screen.getByRole('img');
       expect(icon).toHaveClass('icon');
@@ -19,14 +19,19 @@ describe('icon tests', () => {
     });
   });
 
-  it('renders fallback icon when invalid reference provided', () => {
-    const invalidIconRef: IconName = 'invalid-icon-name' as IconName;
-    const fallbackIconRef: IconDefinition = applicationIcons[0];
-
-    render(<Icon iconRef={['fas', invalidIconRef]} />);
+  it('renders fallback icon when icon definition is undefined', () => {
+    render(<Icon iconRef={applicationIcons.invalidIconRef} />);
 
     const icon: HTMLElement = screen.getByRole('img');
     expect(icon).toHaveClass('icon');
-    expect(icon.getAttribute('data-icon')).toBe(fallbackIconRef.iconName);
+    expect(icon.getAttribute('data-icon')).toBe(fallbackIcon.iconName);
+  });
+
+  it('renders fallback icon when icon definition is not in valid application icons map', () => {
+    render(<Icon iconRef={faSadCry} />);
+
+    const icon: HTMLElement = screen.getByRole('img');
+    expect(icon).toHaveClass('icon');
+    expect(icon.getAttribute('data-icon')).toBe(fallbackIcon.iconName);
   });
 });

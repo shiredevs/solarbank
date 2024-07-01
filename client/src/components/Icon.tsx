@@ -1,25 +1,24 @@
 import React, { JSX } from 'react';
 import style from './Icon.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconPrefix } from '@fortawesome/fontawesome-svg-core';
 import applicationIcons from '../utils/IconLibrary';
-import { IconDefinition, IconName } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 type IconProps = {
-  iconRef: [IconPrefix, IconName];
+  iconRef: IconDefinition;
 };
 
-const isValid = (name: string): boolean => {
-  return applicationIcons.filter((validIcon): boolean => validIcon.iconName === name).length > 0;
+const isValid = (icon: IconDefinition): boolean => {
+  return Object.values(applicationIcons).includes(icon);
 };
 
 const Icon = (props: IconProps): JSX.Element => {
   const { iconRef } = props;
-  const fallbackIcon: IconDefinition = applicationIcons[0];
+  const fallbackIcon: IconDefinition = applicationIcons.FALLBACK;
 
   return (
     <FontAwesomeIcon
-      icon={isValid(iconRef[1]) ? iconRef : fallbackIcon}
+      icon={isValid(iconRef) ? iconRef : fallbackIcon}
       className={style.icon}
       aria-hidden={false}
     />
