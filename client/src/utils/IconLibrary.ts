@@ -12,5 +12,4 @@ const applicationIcons: ApplicationIcons = {
 
 Object.values(applicationIcons).forEach(icon => library.add(icon));
 
-
 export default applicationIcons;
