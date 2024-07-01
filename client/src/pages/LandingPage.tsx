@@ -7,22 +7,14 @@ const LandingPage = (): JSX.Element => {
   const navigate: NavigateFunction = useNavigate();
 
   return (
-    <div className="landing-page">
-        <FontAwesomeIcon
-          className='icon'
-          icon={['fas', 'cloud-sun']}
-          data-testid='landing-page-icon'
-        />
-        <p>Welcome to Solarbank</p>
-      <button
-        className='button'
-        data-testid='landing-page-button'
-        onClick={() => navigate('/form')}
-      >
+    <div className="landing-page" role="landing-page-container">
+      <FontAwesomeIcon className="icon" icon={['fas', 'cloud-sun']} aria-hidden={false} />
+      <p>Welcome to Solarbank</p>
+      <button className="button" onClick={() => navigate('/form')}>
         begin
       </button>
     </div>
   );
-}
+};
 
 export default LandingPage;
