@@ -18,11 +18,20 @@ describe('landing page tests', () => {
     render(<LandingPage />);
   });
 
-  it('renders header', () => {
-    const heading: HTMLElement = screen.getByRole('paragraph');
+  it('renders heading', () => {
+    const heading: HTMLElement = screen.getByRole('heading');
 
     expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('Welcome to Solarbank');
+    expect(heading).toHaveClass('heading');
+    expect(heading).toHaveTextContent('Solarbank');
+  });
+
+  it('renders description', () => {
+    const description: HTMLElement = screen.getByRole('paragraph');
+
+    expect(description).toBeInTheDocument();
+    expect(description).toHaveClass('paragraph');
+    expect(description).toHaveTextContent('estimate your solar energy savings');
   });
 
   it('renders landing page icon', () => {
