@@ -1,4 +1,15 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCloudSun } from '@fortawesome/free-solid-svg-icons';
+import { faCloudSun, faXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCloudSun);
+export type ApplicationIcons = {
+  [key: string]: IconDefinition;
+};
+
+const applicationIcons: ApplicationIcons = {
+  LANDING_PAGE: faCloudSun,
+  FALLBACK: faXmark
+};
+
+Object.values(applicationIcons).forEach(icon => library.add(icon));
+
+export default applicationIcons;
