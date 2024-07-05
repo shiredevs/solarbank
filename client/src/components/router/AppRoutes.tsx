@@ -1,24 +1,15 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import LandingPage from '../../pages/LandingPage';
 import FormPage from '../../pages/FormPage';
 import ErrorHandler from '../error/ErrorHandler';
 import PageNotFoundError from '../error/types/PageNotFoundError';
 import InternalServerError from '../error/types/InternalServerError';
+import ROUTE_PATHS from './RoutePaths';
 
-type RouteType = {
+export type RouteType = {
   path: string;
   element: JSX.Element;
   errorElement?: JSX.Element;
-};
-
-type RoutePaths = {
-  [key: string]: string;
-};
-
-const ROUTE_PATHS: RoutePaths = {
-  ROOT: '/',
-  FORM: '/form',
-  OTHER: '*'
 };
 
 const ROUTES: RouteType[] = [
@@ -37,5 +28,4 @@ const ROUTES: RouteType[] = [
   }
 ];
 
-export { ROUTE_PATHS, ROUTES };
-export type { RouteType, RoutePaths };
+export default ROUTES;

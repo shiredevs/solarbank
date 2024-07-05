@@ -1,1 +1,1 @@
-import '@testing-library/jest-dom'; // allows customer jest matches like expect to work in test files
+import '@testing-library/jest-dom'; // provides expect() and other matchers in test

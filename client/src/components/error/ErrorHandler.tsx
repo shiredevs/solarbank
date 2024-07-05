@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import ErrorPage from '../../pages/ErrorPage';
 import { useRouteError } from 'react-router-dom';
 import InternalServerError from './types/InternalServerError';

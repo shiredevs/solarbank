@@ -1,17 +1,18 @@
 import { createMemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
 import router from './components/router/AppRouter';
 import './utils/IconLibrary';
-import { ROUTE_PATHS } from './components/router/AppRoutes';
+import ROUTE_PATHS from './components/router/RoutePaths';
 import { Router } from '@remix-run/router';
 import ERROR_MESSAGES from './components/error/ErrorMessages';
 import App from './App';
+import fetchMock from 'jest-fetch-mock';
 
 describe('app integration tests', (): void => {
   let inMemoryRouter: Router;
 
   beforeEach((): void => {
+    fetchMock.mockOnce(); // mock global.fetch, used by Router
     inMemoryRouter = createMemoryRouter(router.routes, { initialEntries: [ROUTE_PATHS.ROOT] });
 
     render(<App router={inMemoryRouter} />);

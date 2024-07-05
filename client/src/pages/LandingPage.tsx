@@ -1,8 +1,8 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import style from './LandingPage.module.css';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import { ROUTE_PATHS } from '../components/router/AppRoutes';
+import ROUTE_PATHS from '../components/router/RoutePaths';
 import Icon from '../components/Icon';
 import applicationIcons from '../utils/IconLibrary';
 

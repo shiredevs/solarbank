@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import ERROR_MESSAGES from '../components/error/ErrorMessages';
 
 type ErrorProps = {
