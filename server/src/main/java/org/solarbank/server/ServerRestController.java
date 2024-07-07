@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
-
+import java.util.HashMap;
+import java.util.Map;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,10 +25,11 @@ public class ServerRestController {
     private CalculateService calculateService;
 
     @PostMapping("/calculate")
-    public ResponseEntity<String> userInput(@Valid @RequestBody UserInputDto userInputDto) {
+    public ResponseEntity<Map<String, Object>> userInput(@Valid @RequestBody UserInputDto userInputDto) {
 
-        String serviceResponse = calculateService.processUserInput(userInputDto);
-        return ResponseEntity.ok(serviceResponse);
+        // Status 200 response, returns data from calculate service layer
+        Map<String, Object> result = calculateService.processUserInput(userInputDto);
+        return ResponseEntity.ok(result);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
