@@ -1,34 +1,36 @@
 package org.solarbank.server;
 
-import org.solarbank.server.UserInputDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
+import jakarta.validation.Valid;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 
 @RestController
 @RequestMapping("/api")
 public class ServerRestController {
 
-//    @GetMapping("/")
-//    public String index() {
-//        return "Greetings from Spring Boot!";
-//    }
+    @PostMapping("/calculate")
+    public ResponseEntity<String> userInput(@Valid @RequestBody UserInputDto userInputDto) {
 
-    @PostMapping("/user-input")
-    public String receiveUserInput(@RequestBody UserInputDto userInputDto) {
-        // Process the user input as needed
-        double longitude = userInputDto.getLocation().getLongitude();
-        double latitude = userInputDto.getLocation().getLatitude();
-        double height = userInputDto.getPanelSize().getHeight();
-        double width = userInputDto.getPanelSize().getWidth();
-        double panelEfficiency = userInputDto.getPanelEfficiency();
-        String currencyCode = userInputDto.getEnergyTariff().getCurrencyCode();
-        double amount = userInputDto.getEnergyTariff().getAmount();
-
-        return String.format("Received user input: Location = (%f, %f), Panel Size = (%f, %f), Panel Efficiency = %f, Energy Tariff = (%s, %f)",
-                longitude, latitude, height, width, panelEfficiency, currencyCode, amount);
+        return ResponseEntity.ok("User input valid");
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+
+        StringBuilder errorMessage = new StringBuilder();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errorMessage.append(error.getDefaultMessage()).append("; ");
+        });
+        return ResponseEntity.badRequest().body(errorMessage.toString());
+    }
 }
