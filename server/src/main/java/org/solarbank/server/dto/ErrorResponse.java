@@ -1,4 +1,4 @@
-package org.solarbank.server;
+package org.solarbank.server.dto;
 
 import lombok.Data;
 
@@ -16,6 +16,13 @@ public class ErrorResponse {
         private String status;
         private String message;
 
+        /**
+         * error details.
+         *
+         * @param code      the error code
+         * @param status    the error status
+         * @param message   the error message
+         */
         public ErrorDetails(int code, String status, String message) {
             this.code = code;
             this.status = status;

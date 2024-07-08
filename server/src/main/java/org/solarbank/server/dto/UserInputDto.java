@@ -1,10 +1,10 @@
-package org.solarbank.server;
+package org.solarbank.server.dto;
 
-import lombok.Data;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 @Data
 public class UserInputDto {
