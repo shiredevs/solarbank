@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import LandingPage from './LandingPage';
-import '../../icon/IconLibrary';
+import '../utils/IconLibrary';
 import * as router from 'react-router';
 import { NavigateFunction, To } from 'react-router-dom';
-import {ROUTE_PATHS}  from '../../router/AppRoutes';
+import { ROUTE_PATHS } from '../components/router/AppRoutes';
 
 describe('landing page tests', () => {
   let capturedRedirectPath: string;
@@ -13,20 +13,29 @@ describe('landing page tests', () => {
   };
 
   beforeEach(() => {
-    jest.spyOn(router, 'useNavigate')
-      .mockImplementationOnce(() => mockNavigate);
+    jest.spyOn(router, 'useNavigate').mockImplementationOnce(() => mockNavigate);
 
     render(<LandingPage />);
   });
 
-  it('renders header', () => {
-    const heading: HTMLElement = screen.getByText(/Welcome to Solarbank/i);
+  it('renders heading', () => {
+    const heading: HTMLElement = screen.getByRole('heading');
 
     expect(heading).toBeInTheDocument();
+    expect(heading).toHaveClass('heading');
+    expect(heading).toHaveTextContent('Solarbank');
+  });
+
+  it('renders description', () => {
+    const description: HTMLElement = screen.getByRole('paragraph');
+
+    expect(description).toBeInTheDocument();
+    expect(description).toHaveClass('paragraph');
+    expect(description).toHaveTextContent('estimate your solar energy savings');
   });
 
   it('renders landing page icon', () => {
-    const icon: HTMLElement = screen.getByTestId('landing-page-icon');
+    const icon: HTMLElement = screen.getByRole('img');
 
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass('icon');
@@ -34,7 +43,7 @@ describe('landing page tests', () => {
   });
 
   it('renders button', () => {
-    const button: HTMLElement = screen.getByTestId('landing-page-button');
+    const button: HTMLElement = screen.getByRole('button');
 
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('button');
@@ -42,11 +51,11 @@ describe('landing page tests', () => {
   });
 
   it('button redirects user to form page when clicked', () => {
-    const button: HTMLElement = screen.getByTestId('landing-page-button');
+    const button: HTMLElement = screen.getByRole('button');
 
     fireEvent.click(button);
 
     expect(button).toBeInTheDocument();
     expect(capturedRedirectPath).toBe(ROUTE_PATHS.FORM);
   });
-})
+});
