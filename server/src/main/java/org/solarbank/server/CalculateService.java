@@ -10,15 +10,15 @@ import java.util.Map;
 public class CalculateService {
 
     public Map<String, Object> processUserInput(UserInputDto userInputDto) {
-        // Mock data for energy generation per year
+        // Mock data for energyGenPerYear
         double energyGenPerYear = 1.0;
 
-        // Mock data for energy generation per month
+        // Mock data for energyGenPerMonth
         Map<String, Double> energyGenPerMonth = new HashMap<>();
         energyGenPerMonth.put("January", 0.1);
         energyGenPerMonth.put("February", 0.2);
 
-        // Mock data for savings per year
+        // Mock data for savingsPerYear
         Map<String, Object> savingsPerYear = new HashMap<>();
         savingsPerYear.put("currencyCode", "USD");
         savingsPerYear.put("amount", 1000.0);

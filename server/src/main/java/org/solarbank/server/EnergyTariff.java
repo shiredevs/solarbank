@@ -9,10 +9,9 @@ import jakarta.validation.constraints.DecimalMin;
 @Data
 public class EnergyTariff {
     @NotBlank
-    @Size(max = 1)
     private String currencyCode;
 
     @NotNull
-    @DecimalMin("0.01")
+    @DecimalMin(value = "0.01", message = "amount must be at least 0.01")
     private double amount;
 }

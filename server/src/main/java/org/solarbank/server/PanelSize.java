@@ -7,10 +7,10 @@ import jakarta.validation.constraints.NotNull;
 @Data
 public class PanelSize {
     @NotNull
-    @Positive
+    @Positive(message = "Panel height must be a positive number")
     private double height;
 
     @NotNull
-    @Positive
+    @Positive(message = "Panel width must be a positive number")
     private double width;
 }
