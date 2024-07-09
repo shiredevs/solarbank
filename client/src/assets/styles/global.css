@@ -1,0 +1,13 @@
+@import 'theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: var(--solarbank-font-family), serif;
+  background-color: var(--solar-bank-background-colour);
+  color: var(--solar-bank-light-font-colour);
+  font-size: var(--solar-bank-default-text-size);
+}
+
