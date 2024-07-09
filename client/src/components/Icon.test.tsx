@@ -1,4 +1,3 @@
-import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import Icon from './Icon';
 import applicationIcons from '../utils/IconLibrary';

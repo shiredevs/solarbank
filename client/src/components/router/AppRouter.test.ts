@@ -1,5 +1,6 @@
 import router from './AppRouter';
-import { ROUTES, ROUTE_PATHS } from './AppRoutes';
+import ROUTES from './AppRoutes';
+import ROUTE_PATHS from './RoutePaths';
 import { AgnosticDataRouteObject } from '@remix-run/router';
 
 describe('app router tests', () => {

@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import style from './Icon.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import applicationIcons from '../utils/IconLibrary';

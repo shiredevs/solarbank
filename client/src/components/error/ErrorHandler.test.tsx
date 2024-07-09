@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PageNotFoundError from './types/PageNotFoundError';
 import ErrorHandler from './ErrorHandler';
