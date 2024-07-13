@@ -2,7 +2,7 @@ package org.solarbank.server;
 
 import jakarta.validation.Valid;
 import java.util.Map;
-import org.solarbank.server.dto.UserInputDto;
+import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.service.CalculateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +12,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
-public class ServerRestController {
+@RequestMapping("/v1.0/api")
+public class EnergySavingController {
+
+    private final CalculateService calculateService;
 
     @Autowired
-    private CalculateService calculateService;
+    public EnergySavingController(CalculateService calculateService) {
+        this.calculateService = calculateService;
+    }
 
-    /**
-     * runs calculate service layer, parsing user input data.
-     *
-     * @param userInputDto  the user input data from the front end
-     * @return              returns the ResponseEntity object
-     */
     @PostMapping("/calculate")
     public ResponseEntity<Map<String, Object>> userInput(
-            @Valid @RequestBody UserInputDto userInputDto) {
+            @Valid @RequestBody CalculateRequest calculateRequest) {
+        return ResponseEntity.ok(calculateService.processCalculateRequest(calculateRequest));
+    }
 
-        Map<String, Object> result = calculateService.processUserInput(userInputDto);
-        return ResponseEntity.ok(result);
+    @PostMapping("/force-error")
+    public ResponseEntity<String> forceError() {
+        throw new RuntimeException();
     }
 }

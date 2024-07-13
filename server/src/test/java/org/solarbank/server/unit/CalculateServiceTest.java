@@ -2,7 +2,7 @@ package org.solarbank.server.unit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.solarbank.server.dto.UserInputDto;
+import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.service.CalculateService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,9 +18,9 @@ public class CalculateServiceTest {
     }
 
     @Test
-    public void testProcessUserInput() {
-        UserInputDto userInputDto = new UserInputDto();
-        Map<String, Object> result = calculateService.processUserInput(userInputDto);
+    public void testProcessCalculateRequest() {
+        CalculateRequest calculateRequest = new CalculateRequest();
+        Map<String, Object> result = calculateService.processCalculateRequest(calculateRequest);
 
         assertEquals(1.0, result.get("energyGenPerYear"));
 

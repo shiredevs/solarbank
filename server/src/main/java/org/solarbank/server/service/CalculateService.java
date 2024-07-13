@@ -2,18 +2,12 @@ package org.solarbank.server.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.solarbank.server.dto.UserInputDto;
+import org.solarbank.server.dto.CalculateRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculateService {
-    /**
-     * temporary method to return static mock data.
-     *
-     * @param userInputDto data from user input
-     * @return response returns calculated data
-     */
-    public Map<String, Object> processUserInput(UserInputDto userInputDto) {
+    public Map<String, Object> processCalculateRequest(CalculateRequest calculateRequest) {
 
         Map<String, Double> energyGenPerMonth = new HashMap<>();
         energyGenPerMonth.put("January", 0.1);

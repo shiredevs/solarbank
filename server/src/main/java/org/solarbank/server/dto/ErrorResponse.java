@@ -1,8 +1,11 @@
 package org.solarbank.server.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 @Data
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class ErrorResponse {
     private ErrorDetails error;
 
@@ -16,13 +19,6 @@ public class ErrorResponse {
         private String status;
         private String message;
 
-        /**
-         * error details.
-         *
-         * @param code      the error code
-         * @param status    the error status
-         * @param message   the error message
-         */
         public ErrorDetails(int code, String status, String message) {
             this.code = code;
             this.status = status;

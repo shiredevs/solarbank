@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.solarbank.server.ServerRestController;
-import org.solarbank.server.dto.UserInputDto;
+import org.solarbank.server.EnergySavingController;
+import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.service.CalculateService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +23,7 @@ public class ServerRestControllerTest {
     private CalculateService calculateService;
 
     @InjectMocks
-    private ServerRestController serverRestController;
+    private EnergySavingController energyRestController;
 
     @BeforeEach
     public void setUp() {
@@ -31,17 +31,17 @@ public class ServerRestControllerTest {
     }
 
     @Test
-    public void testUserInput() {
-        UserInputDto userInputDto = new UserInputDto(); // Set appropriate values
+    public void testCalculateRequest() {
+        CalculateRequest calculateRequest = new CalculateRequest(); // Set appropriate values
 
         Map<String, Object> mockResult = new HashMap<>();
         mockResult.put("energyGenPerYear", 1.0);
         mockResult.put("energyGenPerMonth", Map.of("January", 0.1, "February", 0.2));
         mockResult.put("savingsPerYear", Map.of("currencyCode", "USD", "amount", 1000.0));
 
-        when(calculateService.processUserInput(any(UserInputDto.class))).thenReturn(mockResult);
+        when(calculateService.processCalculateRequest(any(CalculateRequest.class))).thenReturn(mockResult);
 
-        ResponseEntity<Map<String, Object>> response = serverRestController.userInput(userInputDto);
+        ResponseEntity<Map<String, Object>> response = energyRestController.userInput(calculateRequest);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockResult, response.getBody());

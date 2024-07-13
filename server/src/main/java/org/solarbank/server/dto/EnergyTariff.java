@@ -8,10 +8,10 @@ import lombok.Data;
 
 @Data
 public class EnergyTariff {
-    @NotBlank
+    @NotBlank(message = "currency code must not be empty")
     private String currencyCode;
 
-    @NotNull
+    @NotNull(message = "energy tariff must be provided")
     @DecimalMin(value = "0.01", message = "amount must be at least 0.01")
     private double amount;
 }
