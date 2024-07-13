@@ -1,0 +1,12 @@
+:root {
+    --solarbank-font-family:
+            -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+            'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+            'Helvetica Neue', sans-serif;
+    --solar-bank-background-colour: #282c34;
+    --solar-bank-primary-colour: #E09D38;
+    --solar-bank-light-font-colour: white;
+    --solar-bank-dark-font-colour: #282c34;
+    --solar-bank-default-text-size: calc(10px + 2vmin);
+    --solar-bank-default-heading-text-size: calc(10px + 5vmin);
+}

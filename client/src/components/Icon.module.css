@@ -1,0 +1,4 @@
+.icon {
+    @apply size-24 m-0;
+    color: var(--solar-bank-primary-colour);
+}
