@@ -3,6 +3,7 @@ package org.solarbank.server;
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.solarbank.server.dto.CalculateRequest;
+import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.service.CalculateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class EnergySavingController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<Map<String, Object>> userInput(
+    public ResponseEntity<CalculateResult> userInput(
             @Valid @RequestBody CalculateRequest calculateRequest) {
         return ResponseEntity.ok(calculateService.processCalculateRequest(calculateRequest));
     }

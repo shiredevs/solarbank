@@ -3,27 +3,29 @@ package org.solarbank.server.service;
 import java.util.HashMap;
 import java.util.Map;
 import org.solarbank.server.dto.CalculateRequest;
+import org.solarbank.server.dto.CalculateResult;
+import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculateService {
-    public Map<String, Object> processCalculateRequest(CalculateRequest calculateRequest) {
+    public CalculateResult processCalculateRequest(CalculateRequest calculateRequest) {
 
         Map<String, Double> energyGenPerMonth = new HashMap<>();
         energyGenPerMonth.put("January", 0.1);
         energyGenPerMonth.put("February", 0.2);
 
-        Map<String, Object> savingsPerYear = new HashMap<>();
-        savingsPerYear.put("currencyCode", "USD");
-        savingsPerYear.put("amount", 1000.0);
+        CalculateResult.SavingsPerYear savingsPerYear = new CalculateResult.SavingsPerYear();
+        savingsPerYear.setCurrencyCode("USD");
+        savingsPerYear.setAmount(1000.0);
 
         double energyGenPerYear = 1.0;
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("energyGenPerYear", energyGenPerYear);
-        response.put("energyGenPerMonth", energyGenPerMonth);
-        response.put("savingsPerYear", savingsPerYear);
+        CalculateResult result = new CalculateResult();
+        result.setEnergyGenPerYear(energyGenPerYear);
+        result.setEnergyGenPerMonth(energyGenPerMonth);
+        result.setSavingsPerYear(savingsPerYear);
 
-        return response;
+        return result;
     }
 }
