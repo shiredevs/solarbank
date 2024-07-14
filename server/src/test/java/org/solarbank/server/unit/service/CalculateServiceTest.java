@@ -1,4 +1,4 @@
-package org.solarbank.server.unit;
+package org.solarbank.server.unit.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

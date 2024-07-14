@@ -1,5 +1,6 @@
 package org.solarbank.server;
 
+import javax.money.UnknownCurrencyException;
 import org.solarbank.server.Messages;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,18 @@ import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler
+    @ResponseStatus
+    public ResponseEntity<ErrorResponse> handleUnknownCurrencyException(UnknownCurrencyException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage()
+        );
+        System.out.println(errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler
     @ResponseStatus
@@ -29,15 +42,18 @@ public class ControllerExceptionHandler {
     @ResponseStatus
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex) {
+
         StringBuilder errorMessage = new StringBuilder();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMessage.append(error.getDefaultMessage()).append("; ");
         });
+
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 errorMessage.toString()
         );
+
         System.out.println(errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
