@@ -1,0 +1,14 @@
+services:
+  solarbank-ui:
+    ports:
+      - ${PORT}:${PORT}
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ${CERT_HOST_PATH}:${CERT_CONTAINER_PATH}
+    environment:
+      PORT: ${PORT}
+      SSL_CRT_FILE: ${CERT_CONTAINER_PATH}/${CRT_FILENAME}
+      SSL_KEY_FILE: ${CERT_CONTAINER_PATH}/${KEY_FILENAME}

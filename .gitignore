@@ -9,4 +9,4 @@ application-local.yml
 node_modules
 build
 coverage
-.env.local
+.env*

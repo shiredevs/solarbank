@@ -51,3 +51,24 @@ To run the tests:
 ```shell
 mvn test
 ```
+### Running with docker locally
+#### Prerequisites
+- docker engine
+
+To start the application with docker you must provide the required environment variables. 
+To do this copy this [template](template.env.local) and rename as `.env`. Then update the required variables.
+
+To start the application run the below command from the project root.
+```shell
+docker compose up -d
+```
+If you have generated locally trusted certificates, then navigate to the valid host, else use https://localhost:3030.
+
+To stop the application run:
+```shell
+docker compose stop
+```
+To stop and delete the container run:
+```shell
+docker compose down
+```
