@@ -45,7 +45,6 @@
   },
   "scripts": {
     "start:local": "env-cmd -f environment/.env.local vite",
-    "start:dev": "env-cmd -f environment/.env.dev vite",
     "build": "vite build",
     "build:serve": "vite build && serve -s build",
     "test": "jest --watchAll=false",
@@ -54,10 +53,17 @@
     "lint": "eslint .",
     "format": "prettier --ignore-path ../.gitignore --write \"**/*.+(js|ts|tsx)\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jest-environment-jsdom",
+    "transform": { "^.+\\.(ts|tsx)$": "ts-jest" },
+    "setupFilesAfterEnv": ["./src/setupTests.ts"],
+    "moduleNameMapper": { "\\.css$": "identity-obj-proxy" }
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
   }
 }

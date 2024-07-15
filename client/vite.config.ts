@@ -1,7 +1,12 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const validateEnvs = (port: string, host: string, keyPath: string, certPath: string): void => {
+const validateEnvs = (env: Record<string, string>): void => {
+  const port: string = env.PORT;
+  const host: string = env.HOST;
+  const keyPath: string = env.SSL_KEY_FILE;
+  const certPath: string = env.SSL_CRT_FILE;
+
   if (!port || !keyPath || !certPath || !host) {
     throw TypeError(
       'Failed to parse ssl parameters to start server. Please ensure you have a .env with correct parameters, see README.md for further details.'
@@ -13,12 +18,7 @@ const validateEnvs = (port: string, host: string, keyPath: string, certPath: str
 export default defineConfig(({ mode }) => {
   const env: Record<string, string> = loadEnv(mode, process.cwd(), '');
 
-  const port: string = env.PORT;
-  const host: string = env.HOST;
-  const keyPath: string = env.SSL_KEY_FILE;
-  const certPath: string = env.SSL_CRT_FILE;
-
-  mode === 'development' && validateEnvs(port, host, keyPath, certPath);
+  mode === 'development' && validateEnvs(env);
 
   return {
     plugins: [react()],
@@ -29,11 +29,11 @@ export default defineConfig(({ mode }) => {
       'process.env': env
     },
     server: {
-      port: parseInt(port),
-      host: host,
+      port: parseInt(env.PORT),
+      host: env.HOST,
       https: {
-        key: keyPath,
-        cert: certPath
+        key: env.SSL_KEY_FILE,
+        cert: env.SSL_CRT_FILE
       }
     }
   };
