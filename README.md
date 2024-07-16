@@ -19,7 +19,7 @@ The client runs locally with `https` enabled, to provide certificates you need t
 [template](./client/environment/template.env.local) and rename as `.env.local`. Then update `SSL_CERT_PATH` to
 point at your certificate and `SSL_KEY_FILE` to point at your private key. 
 
-If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). 
+If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md) and update `HOST` in `.env.local` if you have specified a custom host. 
 
 To serve the client at https://localhost:3030 run:
 ```shell
@@ -43,11 +43,38 @@ Then update `key-store` to point at your `.p12` keystore file and `key-store-pas
 If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). 
 The certificates need to be generated and stored in `.p12` format using the `--pkcs12` flag.
 
-To start the springboot server at https://localhost:8080 `cd` into the [server](./server) folder and run:
+To start the springboot server `cd` into the [server](./server) folder and run:
 ```shell
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
+If you have specified a custom host for your certificates, then navigate to the valid host, else use https://localhost:8080.
+
 To run the tests:
 ```shell
 mvn test
+```
+### Running with docker locally
+#### Prerequisites
+- docker engine
+
+To start the application with docker you must provide the required environment variables. 
+To do this copy this [template](template.env.local) and rename as `.env`. Then update the required variables.
+
+To start the application run the below command from the project root.
+```shell
+docker compose up -d
+```
+If you have specified a custom host for your certificates then navigate to the valid host, else use https://localhost:3030.
+
+To stop the application run:
+```shell
+docker compose stop
+```
+To stop and delete the container run:
+```shell
+docker compose down
+```
+To rebuild the image:
+```shell
+docker compose build
 ```
