@@ -16,7 +16,7 @@ public class CalculateService {
         energyGenPerMonth.put("February", 0.2);
 
         CalculateResult.SavingsPerYear savingsPerYear = new CalculateResult.SavingsPerYear();
-        savingsPerYear.setCurrencyCode("GBP");
+        savingsPerYear.setCurrencyCode("USD");
         savingsPerYear.setAmount(1000.0);
 
         double energyGenPerYear = 1.0;

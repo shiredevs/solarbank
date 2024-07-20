@@ -28,9 +28,4 @@ public class EnergySavingController {
             @Valid @RequestBody CalculateRequest calculateRequest) {
         return ResponseEntity.ok(calculateService.processCalculateRequest(calculateRequest));
     }
-
-    @PostMapping("/force-error")
-    public ResponseEntity<String> forceError() {
-        throw new RuntimeException();
-    }
 }

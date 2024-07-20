@@ -14,6 +14,7 @@ public class ErrorResponse {
     }
 
     @Data
+    @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
     public static class ErrorDetails {
         private int code;
         private String status;
