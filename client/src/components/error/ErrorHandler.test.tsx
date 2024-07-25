@@ -11,7 +11,7 @@ describe('error handler tests', () => {
   const INTERNAL_SERVER_ERROR_MESSAGE: string = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
-    jest.spyOn(logger, 'default').mockImplementationOnce(error => {
+    jest.spyOn(logger, 'logError').mockImplementationOnce(error => {
       loggedError = error;
     });
   });
