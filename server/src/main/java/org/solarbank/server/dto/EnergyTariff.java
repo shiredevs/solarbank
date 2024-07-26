@@ -1,5 +1,6 @@
 package org.solarbank.server.dto;
 
+import org.solarbank.server.ValidCurrencyCode;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import javax.money.CurrencyUnit;
@@ -12,17 +13,11 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class EnergyTariff {
-    private CurrencyUnit currencyCode;
+
+    @ValidCurrencyCode
+    private String currencyCode;
 
     @NotNull(message = "energy tariff must be provided")
     @DecimalMin(value = "0.01", message = "amount must be at least 0.01")
-    private double amount;
-
-    public CurrencyUnit getCurrencyCode() {
-        return currencyCode;
-    }
-
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = Monetary.getCurrency(currencyCode);
-    }
+    private Double amount;
 }
