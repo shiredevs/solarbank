@@ -16,30 +16,6 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus
-    public ResponseEntity<ErrorResponse> handleUnknownCurrencyException(UnknownCurrencyException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                ex.getMessage()
-        );
-        System.out.println(errorResponse);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus
-    public ResponseEntity<ErrorResponse> DefaultExceptionHandler(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                Messages.INTERNAL_SERVER_ERROR.getMessage()
-        );
-        System.out.println(errorResponse);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex) {
 
@@ -57,4 +33,30 @@ public class ControllerExceptionHandler {
         System.out.println(errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    @ResponseStatus
+    public ResponseEntity<ErrorResponse> handleUnknownCurrencyException(UnknownCurrencyException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage()
+        );
+        System.out.println(errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus
+    public ResponseEntity<ErrorResponse> defaultExceptionHandler(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                Messages.INTERNAL_SERVER_ERROR.getMessage()
+        );
+        System.out.println(errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

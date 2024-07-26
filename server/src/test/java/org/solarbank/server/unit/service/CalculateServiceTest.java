@@ -1,5 +1,6 @@
 package org.solarbank.server.unit.service;
 
+import java.util.Map;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
@@ -10,8 +11,6 @@ import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Map;
 
 public class CalculateServiceTest {
 
