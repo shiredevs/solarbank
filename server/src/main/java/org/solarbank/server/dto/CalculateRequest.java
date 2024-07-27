@@ -20,7 +20,7 @@ public class CalculateRequest {
     @NotNull
     @Positive
     @DecimalMax(value = "1.00", message = "Panel efficiency must be at least 1.00")
-    private double panelEfficiency;
+    private Double panelEfficiency;
 
     @Valid
     private EnergyTariff energyTariff;

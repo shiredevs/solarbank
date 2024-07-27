@@ -19,7 +19,7 @@ public class CalculateService {
         savingsPerYear.setCurrencyCode("USD");
         savingsPerYear.setAmount(1000.0);
 
-        double energyGenPerYear = 1.0;
+        Double energyGenPerYear = 1.0;
 
         CalculateResult result = new CalculateResult();
         result.setEnergyGenPerYear(energyGenPerYear);

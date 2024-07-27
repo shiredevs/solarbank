@@ -11,9 +11,9 @@ import lombok.Data;
 public class PanelSize {
     @NotNull(message = "panel height must be provided")
     @Positive(message = "Panel height must be a positive number")
-    private double height;
+    private Double height;
 
     @NotNull(message = "panel width must be provided")
     @Positive(message = "Panel width must be a positive number")
-    private double width;
+    private Double width;
 }
