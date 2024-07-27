@@ -1,6 +1,5 @@
 package org.solarbank.server.dto;
 
-import org.solarbank.server.ValidCurrencyCode;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import javax.money.CurrencyUnit;
@@ -9,6 +8,7 @@ import javax.money.UnknownCurrencyException;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.solarbank.server.ValidCurrencyCode;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)

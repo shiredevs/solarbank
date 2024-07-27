@@ -1,7 +1,6 @@
 package org.solarbank.server;
 
 import jakarta.validation.Valid;
-import java.util.Map;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.service.CalculateService;

@@ -1,5 +1,6 @@
 package org.solarbank.server.unit;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
-    public void invalidInput_handleValidationException_expectedBadRequest() {
+    public void invalidInput_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
 
         BindingResult bindingResult = mock(BindingResult.class);
         FieldError fieldError = new FieldError(
@@ -41,7 +42,9 @@ public class ControllerExceptionHandlerTest {
 
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
 
-        MethodParameter methodParameter = mock(MethodParameter.class);
+        Method method = CalculateRequest.class.getMethod("getPanelEfficiency");
+        MethodParameter methodParameter = new MethodParameter(method, -1);
+
         MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);

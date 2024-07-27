@@ -1,11 +1,13 @@
 package org.solarbank.server;
 
-import javax.money.CurrencyUnit;
-import javax.money.Monetary;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
+
 
 public class CurrencyCodeValidator implements ConstraintValidator<ValidCurrencyCode, String> {
+
     @Override
     public boolean isValid(String currencyCode, ConstraintValidatorContext context) {
         try {
