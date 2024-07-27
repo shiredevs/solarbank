@@ -1,6 +1,7 @@
 package org.solarbank.server.unit;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.solarbank.server.ControllerExceptionHandler;
+import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.core.MethodParameter;
@@ -25,15 +27,67 @@ public class ControllerExceptionHandlerTest {
     @InjectMocks
     private ControllerExceptionHandler handler;
 
+    @Mock
+    private BindingResult bindingResult;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
+    public void bindingResultException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+
+        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
+        when(ex.getBindingResult()).thenThrow(new RuntimeException());
+
+        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        System.out.println(errorDetails);
+        assertEquals(400, errorDetails.getCode());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.NO_BINDING_RESULT.getMessage(), errorDetails.getMessage());
+    }
+
+    @Test
+    public void fieldErrorsException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+
+        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
+        when(ex.getBindingResult()).thenReturn(bindingResult);
+        when(bindingResult.getFieldErrors()).thenThrow(new RuntimeException());
+
+        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        System.out.println(errorDetails);
+        assertEquals(400, errorDetails.getCode());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
+    }
+
+    @Test
+    public void noFieldErrors_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+
+        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
+        when(ex.getBindingResult()).thenReturn(bindingResult);
+        when(bindingResult.getFieldErrors()).thenReturn(Collections.emptyList());
+
+        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        System.out.println(errorDetails);
+        assertEquals(400, errorDetails.getCode());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
+    }
+
+    @Test
     public void invalidInput_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
 
-        BindingResult bindingResult = mock(BindingResult.class);
         FieldError fieldError = new FieldError(
                 "CalculateRequest",
                 "panelEfficiency",
@@ -53,7 +107,7 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
         System.out.println(errorDetails);
         assertEquals(400, errorDetails.getCode());
-        assertEquals("Bad Request", errorDetails.getStatus());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
         assertEquals("Panel efficiency must be between 0 and 1; ", errorDetails.getMessage());
     }
 
@@ -68,7 +122,7 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
         System.out.println(errorDetails);
         assertEquals(500, errorDetails.getCode());
-        assertEquals("Internal Server Error", errorDetails.getStatus());
-        assertEquals("An unexpected error occurred. Please try again later.", errorDetails.getMessage());
+        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage(), errorDetails.getMessage());
     }
 }

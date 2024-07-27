@@ -4,7 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorMessage {
-    INTERNAL_SERVER_ERROR("An unexpected error occurred. Please try again later.");
+    BAD_REQUEST("Bad Request"),
+    INTERNAL_SERVER_ERROR("Internal Server Error"),
+    INTERNAL_SERVER_ERROR_DETAILS("An unexpected error occurred. Please try again later."),
+    NO_BINDING_RESULT("Binding result not found"),
+    NO_FIELD_ERRORS("Field errors not found");
 
     private final String message;
 
