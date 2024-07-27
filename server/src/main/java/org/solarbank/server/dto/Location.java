@@ -15,7 +15,7 @@ public class Location {
     @Min(value = -180, message = "minimum longitude = -180")
     private Double longitude;
 
-    @NotNull(message = "lattitude must be provided")
+    @NotNull(message = "latitude must be provided")
     @Max(value = 90, message = "maximum latitude = 90")
     @Min(value = -90, message = "minimum longitude = -90")
     private Double latitude;

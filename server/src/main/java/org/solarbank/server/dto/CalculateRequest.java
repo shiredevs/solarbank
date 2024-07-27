@@ -17,9 +17,9 @@ public class CalculateRequest {
     @Valid
     private PanelSize panelSize;
 
-    @NotNull
-    @Positive
-    @DecimalMax(value = "1.00", message = "Panel efficiency must be at least 1.00")
+    @NotNull(message = "panel efficiency must be provided")
+    @Positive(message = "Panel efficiency must be a positive number")
+    @DecimalMax(value = "1.00", message = "Panel efficiency can not be above %100")
     private Double panelEfficiency;
 
     @Valid
