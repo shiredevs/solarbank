@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTest {
     private Validator validator;
+    private Location location = new Location();
 
     @BeforeEach
     public void setUp() {
@@ -25,7 +26,6 @@ public class LocationTest {
 
     @Test
     public void testValidLocation() {
-        Location location = new Location();
         location.setLongitude(100.0);
         location.setLatitude(50.0);
 
@@ -35,7 +35,6 @@ public class LocationTest {
 
     @Test
     public void testNullLongitude() {
-        Location location = new Location();
         location.setLongitude(null);
         location.setLatitude(50.0);
 
@@ -46,7 +45,6 @@ public class LocationTest {
 
     @Test
     public void testMaxViolationLongitude() {
-        Location location = new Location();
         location.setLongitude(190.0);
         location.setLatitude(50.0);
 
@@ -57,7 +55,6 @@ public class LocationTest {
 
     @Test
     public void testMinViolationLongitude() {
-        Location location = new Location();
         location.setLongitude(-190.0);
         location.setLatitude(50.0);
 
@@ -68,7 +65,6 @@ public class LocationTest {
 
     @Test
     public void testNullLatitude() {
-        Location location = new Location();
         location.setLongitude(100.0);
         location.setLatitude(null);
 
@@ -79,7 +75,6 @@ public class LocationTest {
 
     @Test
     public void testMaxViolationLatitude() {
-        Location location = new Location();
         location.setLongitude(100.0);
         location.setLatitude(92.0);
 
@@ -90,7 +85,6 @@ public class LocationTest {
 
     @Test
     public void testMinViolationLatitude() {
-        Location location = new Location();
         location.setLongitude(100.0);
         location.setLatitude(-92.0);
 

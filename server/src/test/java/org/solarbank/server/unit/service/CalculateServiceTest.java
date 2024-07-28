@@ -13,6 +13,7 @@ import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.solarbank.server.CreateMockCalculateRequest.createCalculateRequest;
 
 public class CalculateServiceTest {
 
@@ -20,17 +21,11 @@ public class CalculateServiceTest {
 
     @Test
     public void calculateRequest_validInputs_returnsExpectedResult() {
-        CalculateRequest calculateRequest = new CalculateRequest();
+        CalculateRequest calculateRequest = createCalculateRequest();
 
-        PanelSize panelSize = new PanelSize();
-        panelSize.setWidth(1.0);
-        panelSize.setHeight(2.0);
-
-        Double panelEfficiency = 0.01;
-
-        EnergyTariff energyTariff = new EnergyTariff();
-        energyTariff.setCurrencyCode("USD");
-        energyTariff.setAmount(1000.0);
+        PanelSize panelSize = calculateRequest.getPanelSize();
+        Double panelEfficiency = calculateRequest.getPanelEfficiency();
+        EnergyTariff energyTariff = calculateRequest.getEnergyTariff();
 
         CalculateResult result = calculateService.processCalculateRequest(panelSize, panelEfficiency, energyTariff);
 

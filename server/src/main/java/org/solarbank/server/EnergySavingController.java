@@ -27,7 +27,7 @@ public class EnergySavingController {
     @PostMapping("/calculate")
     public ResponseEntity<CalculateResult> userInput(
             @Valid @RequestBody CalculateRequest calculateRequest) {
-        System.out.println("*********************" + calculateRequest.getLocation());
+
         PanelSize panelSize = calculateRequest.getPanelSize();
         Double panelEfficiency = calculateRequest.getPanelEfficiency();
         EnergyTariff energyTariff = calculateRequest.getEnergyTariff();

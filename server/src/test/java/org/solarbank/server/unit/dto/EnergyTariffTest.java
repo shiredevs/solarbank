@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EnergyTariffTest {
     private Validator validator;
+    private EnergyTariff energyTariff = new EnergyTariff();
 
     @BeforeEach
     public void setUp() {
@@ -25,7 +26,6 @@ public class EnergyTariffTest {
 
     @Test
     public void testValidEnergyTariff() {
-        EnergyTariff energyTariff = new EnergyTariff();
         energyTariff.setCurrencyCode("USD");
         energyTariff.setAmount(50.0);
 
@@ -35,7 +35,6 @@ public class EnergyTariffTest {
 
     @Test
     public void testCurrencyNotFound() {
-        EnergyTariff energyTariff = new EnergyTariff();
         energyTariff.setCurrencyCode("AAA");
         energyTariff.setAmount(50.0);
 
@@ -46,7 +45,6 @@ public class EnergyTariffTest {
 
     @Test
     public void testNullAmount() {
-        EnergyTariff energyTariff = new EnergyTariff();
         energyTariff.setCurrencyCode("USD");
         energyTariff.setAmount(null);
 
@@ -57,7 +55,6 @@ public class EnergyTariffTest {
 
     @Test
     public void testMinViolationAmount() {
-        EnergyTariff energyTariff = new EnergyTariff();
         energyTariff.setCurrencyCode("USD");
         energyTariff.setAmount(0.0);
 

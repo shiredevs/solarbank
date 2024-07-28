@@ -14,35 +14,14 @@ import org.solarbank.server.ValidationMessage;
 
 import java.util.Set;
 
+import static org.solarbank.server.CreateMockCalculateRequest.createCalculateRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalculateRequestTest {
     private Validator validator;
 
-    private CalculateRequest createCalculateRequest() {
-        Location location = new Location();
-        location.setLatitude(90.0);
-        location.setLongitude(45.0);
-
-        PanelSize panelSize = new PanelSize();
-        panelSize.setHeight(2.0);
-        panelSize.setWidth(3.0);
-
-        Double panelEfficiency = 0.15;
-
-        EnergyTariff energyTariff = new EnergyTariff();
-        energyTariff.setAmount(0.01);
-        energyTariff.setCurrencyCode("USD");
-
-        CalculateRequest calculateRequest = new CalculateRequest();
-        calculateRequest.setLocation(location);
-        calculateRequest.setPanelSize(panelSize);
-        calculateRequest.setPanelEfficiency(panelEfficiency);
-        calculateRequest.setEnergyTariff(energyTariff);
-
-        return calculateRequest;
-    }
+    private CalculateRequest calculateRequest = createCalculateRequest();
 
     @BeforeEach
     public void setUp() {
@@ -52,15 +31,12 @@ public class CalculateRequestTest {
 
     @Test
     public void testValidCalculateRequest() {
-        CalculateRequest calculateRequest = createCalculateRequest();
-
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertTrue(violations.isEmpty());
     }
 
     @Test
     public void testNullPanelEfficiency() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setPanelEfficiency(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -70,7 +46,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testPositiveViolationPanelEfficiency() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setPanelEfficiency(-0.1);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -80,7 +55,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testMaxViolationPanelEfficiency() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setPanelEfficiency(1.01);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -90,7 +64,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testNullLocation() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setLocation(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -100,7 +73,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testInvalidLocation() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.getLocation().setLongitude(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -109,7 +81,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testNullPanelSize() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setPanelSize(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -119,7 +90,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testInvalidPanelSize() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.getPanelSize().setWidth(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -128,7 +98,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testNullEnergyTariff() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.setEnergyTariff(null);
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
@@ -138,7 +107,6 @@ public class CalculateRequestTest {
 
     @Test
     public void testInvalidEnergyTariff() {
-        CalculateRequest calculateRequest = createCalculateRequest();
         calculateRequest.getEnergyTariff().setCurrencyCode("AAA");
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);

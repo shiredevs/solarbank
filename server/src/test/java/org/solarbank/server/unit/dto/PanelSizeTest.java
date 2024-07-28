@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PanelSizeTest {
     private Validator validator;
+    private PanelSize panelSize = new PanelSize();
 
     @BeforeEach
     public void setUp() {
@@ -25,7 +26,6 @@ public class PanelSizeTest {
 
     @Test
     public void testValidPanelSize() {
-        PanelSize panelSize = new PanelSize();
         panelSize.setHeight(2.0);
         panelSize.setWidth(3.0);
 
@@ -35,7 +35,6 @@ public class PanelSizeTest {
 
     @Test
     public void testNullHeight() {
-        PanelSize panelSize = new PanelSize();
         panelSize.setHeight(null);
         panelSize.setWidth(3.0);
 
@@ -46,7 +45,6 @@ public class PanelSizeTest {
 
     @Test
     public void testPositiveViolationHeight() {
-        PanelSize panelSize = new PanelSize();
         panelSize.setHeight(-1.0);
         panelSize.setWidth(3.0);
 
@@ -57,7 +55,6 @@ public class PanelSizeTest {
 
     @Test
     public void testNullWidth() {
-        PanelSize panelSize = new PanelSize();
         panelSize.setHeight(2.0);
         panelSize.setWidth(null);
 
@@ -68,7 +65,6 @@ public class PanelSizeTest {
 
     @Test
     public void testPositiveViolationWidth() {
-        PanelSize panelSize = new PanelSize();
         panelSize.setHeight(2.0);
         panelSize.setWidth(-3.0);
 
