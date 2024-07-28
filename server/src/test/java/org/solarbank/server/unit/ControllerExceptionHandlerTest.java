@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.solarbank.server.ControllerExceptionHandler;
 import org.solarbank.server.ErrorMessage;
+import org.solarbank.server.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.core.MethodParameter;
@@ -30,6 +31,9 @@ public class ControllerExceptionHandlerTest {
     @Mock
     private BindingResult bindingResult;
 
+    @Mock
+    private MethodArgumentNotValidException ex;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -37,15 +41,13 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void bindingResultException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-
-        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         when(ex.getBindingResult()).thenThrow(new RuntimeException());
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-        System.out.println(errorDetails);
+
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_BINDING_RESULT.getMessage(), errorDetails.getMessage());
@@ -53,8 +55,6 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void fieldErrorsException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-
-        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenThrow(new RuntimeException());
 
@@ -62,7 +62,7 @@ public class ControllerExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-        System.out.println(errorDetails);
+
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
@@ -70,8 +70,6 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void noFieldErrors_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-
-        MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(Collections.emptyList());
 
@@ -79,7 +77,7 @@ public class ControllerExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-        System.out.println(errorDetails);
+
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
@@ -87,17 +85,16 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void invalidInput_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-
         FieldError fieldError = new FieldError(
                 "CalculateRequest",
                 "panelEfficiency",
-                "Panel efficiency must be between 0 and 1"
+                ValidationMessage.PANEL_EFF_POSITIVE.getMessage()
         );
 
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
 
-        Method method = CalculateRequest.class.getMethod("getPanelEfficiency");
-        MethodParameter methodParameter = new MethodParameter(method, -1);
+        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
 
         MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
@@ -108,19 +105,18 @@ public class ControllerExceptionHandlerTest {
         System.out.println(errorDetails);
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
-        assertEquals("Panel efficiency must be between 0 and 1; ", errorDetails.getMessage());
+        assertEquals(ValidationMessage.PANEL_EFF_POSITIVE.getMessage()+ "; ", errorDetails.getMessage());
     }
 
     @Test
     public void exception_defaultExceptionHandler_expectedServerError() {
-
         Exception exception = new Exception();
 
         ResponseEntity<ErrorResponse> response = handler.defaultExceptionHandler(exception);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-        System.out.println(errorDetails);
+
         assertEquals(500, errorDetails.getCode());
         assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getStatus());
         assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage(), errorDetails.getMessage());
