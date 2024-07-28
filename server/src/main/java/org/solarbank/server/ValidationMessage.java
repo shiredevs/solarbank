@@ -19,7 +19,10 @@ public enum ValidationMessage {
     PANEL_EFF_MAX("Panel efficiency can not be above %100"),
     CURRENCY_CODE("Invalid currency code"),
     AMOUNT_NULL("energy tariff must be provided"),
-    AMOUNT_MIN("amount must be at least 0.01");
+    AMOUNT_MIN("amount must be at least 0.01"),
+    LOCATION_NULL("Location must be provided"),
+    PANEL_SIZE_NULL("panel size must be provided"),
+    ENERGY_TARIFF_NULL("Energy tariff must be provided");
 
     private final String message;
 

@@ -12,9 +12,11 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class CalculateRequest {
     @Valid
+    @NotNull(message = "Location must be provided")
     private Location location;
 
     @Valid
+    @NotNull(message = "panel size must be provided")
     private PanelSize panelSize;
 
     @NotNull(message = "panel efficiency must be provided")
@@ -23,5 +25,6 @@ public class CalculateRequest {
     private Double panelEfficiency;
 
     @Valid
+    @NotNull(message = "Energy tariff must be provided")
     private EnergyTariff energyTariff;
 }
