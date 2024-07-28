@@ -6,9 +6,9 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
-import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
+import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
 package org.solarbank.server;
 
 import jakarta.validation.Valid;
-import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
+import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.service.CalculateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,10 @@ public class EnergySavingController {
         Double panelEfficiency = calculateRequest.getPanelEfficiency();
         EnergyTariff energyTariff = calculateRequest.getEnergyTariff();
 
-        return ResponseEntity.ok(calculateService.processCalculateRequest(panelSize, panelEfficiency, energyTariff));
+        return ResponseEntity.ok(calculateService.processCalculateRequest(
+                panelSize,
+                panelEfficiency,
+                energyTariff
+        ));
     }
 }

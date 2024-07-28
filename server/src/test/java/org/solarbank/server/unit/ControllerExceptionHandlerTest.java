@@ -102,7 +102,7 @@ public class ControllerExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-        System.out.println(errorDetails);
+
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
         assertEquals(ValidationMessage.PANEL_EFF_POSITIVE.getMessage()+ "; ", errorDetails.getMessage());

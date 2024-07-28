@@ -3,15 +3,13 @@ package org.solarbank.server.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.util.Map;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
-import java.util.Map;
 import lombok.Data;
-import org.javamoney.moneta.Money;
 import org.solarbank.server.CurrencyUnitSerializer;
 import org.solarbank.server.MonetaryAmountSerializer;
-
 
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)

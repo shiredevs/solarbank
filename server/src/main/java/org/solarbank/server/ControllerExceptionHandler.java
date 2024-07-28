@@ -10,7 +10,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -35,7 +34,6 @@ public class ControllerExceptionHandler {
         if (bindingResult != null) {
             try {
                 List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-                System.out.println("*****************" + fieldErrors);
                 if (fieldErrors.isEmpty()) {
                     message.append(ErrorMessage.NO_FIELD_ERRORS.getMessage());
                 } else {
