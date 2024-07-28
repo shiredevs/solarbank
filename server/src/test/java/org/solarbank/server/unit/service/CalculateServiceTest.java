@@ -28,9 +28,9 @@ public class CalculateServiceTest {
         assertEquals(0.2, energyGenPerMonth.get("February"));
 
         CalculateResult.SavingsPerYear savingsPerYear = result.getSavingsPerYear();
-        assertEquals("USD", savingsPerYear.getCurrencyCode());
-
-        MonetaryAmount expectedAmount = Money.of(1000.0, "USD");
-        assertEquals(expectedAmount.getNumber().doubleValue(), savingsPerYear.getAmount(), 0.001);
+        CurrencyUnit expectedCurrencyUnit = Monetary.getCurrency("USD");
+        MonetaryAmount expectedAmount = Money.of(1000, expectedCurrencyUnit);
+        assertEquals(expectedCurrencyUnit, savingsPerYear.getCurrencyCode());
+        assertEquals(expectedAmount, savingsPerYear.getAmount());
     }
 }
