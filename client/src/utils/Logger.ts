@@ -23,7 +23,9 @@ const logResponse = (response: AxiosResponse): void => {
 };
 
 const logHttpError = <R>(url: string, request: R, error: Error): void => {
-  console.log(`calculate request to ${url} with body ${JSON.stringify(request)} failed. Error message is: ${error.message}`);
+  console.log(
+    `calculate request to ${url} with body ${JSON.stringify(request)} failed. Error message is: ${error.message}`
+  );
 };
 
 export { logError, logRequest, logResponse, logHttpError };

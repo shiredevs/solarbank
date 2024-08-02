@@ -44,7 +44,10 @@ describe('http client tests', () => {
 
     interceptPostRequest(requestBody, expectedResponseBody, expectedStatus, MOCK_ENDPOINT);
 
-    const actualResponse: AxiosResponse<MockResponseData, never> = await post(MOCK_URL, requestBody);
+    const actualResponse: AxiosResponse<MockResponseData, never> = await post(
+      MOCK_URL,
+      requestBody
+    );
 
     expect(actualRequest.url).toEqual(MOCK_URL);
     expect(actualRequest.data).toEqual(JSON.stringify(requestBody));

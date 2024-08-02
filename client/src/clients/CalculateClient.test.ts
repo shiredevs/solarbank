@@ -62,9 +62,8 @@ describe('calculate client tests', () => {
 
     try {
       response = await doCalculate(mockRequest);
-
     } catch (err) {
-     expect(err).toBeInstanceOf(ApiRequestError);
+      expect(err).toBeInstanceOf(ApiRequestError);
     }
 
     expect(response).toBeUndefined();

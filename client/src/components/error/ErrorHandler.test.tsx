@@ -18,7 +18,7 @@ describe('error handler tests', () => {
 
   afterEach(() => {
     loggedError = undefined;
-  })
+  });
 
   it('renders expected error page when user navigate to an invalid url', () => {
     const pageError: PageNotFoundError = new PageNotFoundError();

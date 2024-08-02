@@ -16,7 +16,7 @@ jest.mock('./config/CalculateConfig', () => ({
     SERVER_URL: MOCK_BASEPATH,
     CALCULATE_ENDPOINT: '/api/V1/calculate'
   }
- }));
+}));
 
 const interceptPostRequest = (
   request: MockRequestData,
@@ -24,9 +24,9 @@ const interceptPostRequest = (
   status: number,
   endpoint: string
 ): void => {
-  nock(MOCK_BASEPATH).post(endpoint, request as RequestBodyMatcher)
+  nock(MOCK_BASEPATH)
+    .post(endpoint, request as RequestBodyMatcher)
     .reply(status, response);
 };
-
 
 export { interceptPostRequest };
