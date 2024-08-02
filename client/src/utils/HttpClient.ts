@@ -14,9 +14,12 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   return response;
 });
 
-const post = async <B extends object>(url: string, body: B): Promise<AxiosResponse> => {
+const post = async <RequestData extends object, ResponseData extends object>(
+  url: string,
+  request: RequestData
+): Promise<AxiosResponse<ResponseData, never>> => {
   try {
-    return await axios.post(url, body);
+    return await axios.post(url, request);
   } catch (err) {
     throw new ApiRequestError(err as Error);
   }
