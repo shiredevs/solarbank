@@ -1,9 +1,9 @@
 //TODO: replace with logging implementation
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import ApiRequestError from '../components/error/types/ApiRequestError';
 
-const logError = (error: Error): void => {
-  console.log(`${error.stack ? error.stack : error.message}`);
+const logError = (message: string, error?: Error): void => {
+  message && console.log(message);
+  error && console.log(`${error.stack}`);
 };
 
 const logRequest = (request: InternalAxiosRequestConfig): void => {
@@ -22,8 +22,8 @@ const logResponse = (response: AxiosResponse): void => {
   );
 };
 
-const logHttpError = <R>(url: string, request: R, error: ApiRequestError): void => {
-  console.log(`calculate request to ${url} with body ${JSON.stringify(request)} failed. Error message is: ${error.parentError.message}`);
-}
+const logHttpError = <R>(url: string, request: R, error: Error): void => {
+  console.log(`calculate request to ${url} with body ${JSON.stringify(request)} failed. Error message is: ${error.message}`);
+};
 
 export { logError, logRequest, logResponse, logHttpError };

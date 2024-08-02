@@ -1,8 +1,6 @@
 import { post } from '../utils/HttpClient';
 import { AxiosResponse } from 'axios';
 import {config} from '../config/CalculateConfig';
-import { logHttpError } from '../utils/Logger';
-import ApiRequestError from '../components/error/types/ApiRequestError';
 
 const CALCULATE_URL: string = `${config.SERVER_URL}${config.CALCULATE_ENDPOINT}`;
 
@@ -34,15 +32,9 @@ export type CalculateResponse = {
 }
 
 const doCalculate = async (request: CalculateRequest): Promise<CalculateResponse> => {
-  try {
-    const response: AxiosResponse<CalculateResponse, never> = await post(CALCULATE_URL, request);
-    return response.data;
+  const response: AxiosResponse<CalculateResponse, never> = await post(CALCULATE_URL, request);
 
-  } catch (err) {
-    const apiRequestError: ApiRequestError = err as ApiRequestError;
-    logHttpError<CalculateRequest>(CALCULATE_URL, request, apiRequestError);
-    throw apiRequestError;
-  }
+  return response.data;
 };
 
 export { doCalculate };

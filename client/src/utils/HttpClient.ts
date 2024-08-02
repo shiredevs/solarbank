@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import ApiRequestError from '../components/error/types/ApiRequestError';
-import { logRequest, logResponse } from './Logger';
+import { logHttpError, logRequest, logResponse } from './Logger';
 
 axios.interceptors.request.use((request: InternalAxiosRequestConfig) => {
   logRequest(request);
@@ -21,6 +21,8 @@ const post = async <RequestData extends object, ResponseData extends object>(
   try {
     return await axios.post(url, request);
   } catch (err) {
+    logHttpError<RequestData>(url, request, err as Error);
+
     throw new ApiRequestError(err as Error);
   }
 };

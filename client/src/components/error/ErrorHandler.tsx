@@ -19,7 +19,7 @@ const ErrorHandler = (props: ErrorHandlerProps): JSX.Element => {
     childError = error;
   }
 
-  logError(childError);
+  childError && logError(childError.message, childError);
 
   return <ErrorPage message={message} />;
 };
