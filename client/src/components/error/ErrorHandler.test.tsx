@@ -7,13 +7,17 @@ import * as router from 'react-router';
 import InternalServerError from './types/InternalServerError';
 
 describe('error handler tests', () => {
-  let loggedError: Error;
+  let loggedError: Error | undefined;
   const INTERNAL_SERVER_ERROR_MESSAGE: string = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   beforeEach(() => {
-    jest.spyOn(logger, 'logError').mockImplementationOnce(error => {
+    jest.spyOn(logger, 'logError').mockImplementationOnce((_message, error) => {
       loggedError = error;
     });
+  });
+
+  afterEach(() => {
+    loggedError = undefined;
   });
 
   it('renders expected error page when user navigate to an invalid url', () => {

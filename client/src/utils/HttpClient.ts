@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import ApiRequestError from '../components/error/types/ApiRequestError';
-import { logRequest, logResponse } from './Logger';
+import { logHttpError, logRequest, logResponse } from './Logger';
 
 axios.interceptors.request.use((request: InternalAxiosRequestConfig) => {
   logRequest(request);
@@ -14,10 +14,15 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   return response;
 });
 
-const post = async <B extends object>(url: string, body: B): Promise<AxiosResponse> => {
+const post = async <RequestData extends object, ResponseData extends object>(
+  url: string,
+  request: RequestData
+): Promise<AxiosResponse<ResponseData, never>> => {
   try {
-    return await axios.post(url, body);
+    return await axios.post(url, request);
   } catch (err) {
+    logHttpError<RequestData>(url, request, err as Error);
+
     throw new ApiRequestError(err as Error);
   }
 };
