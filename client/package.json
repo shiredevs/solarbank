@@ -48,7 +48,7 @@
   "scripts": {
     "start:local": "env-cmd -f environment/.env.local vite",
     "build": "vite build",
-    "build:serve": "vite build && serve -s build",
+    "build:serve": "env-cmd -f environment/.env.local vite build && serve -s build",
     "test": "jest --watchAll=false",
     "audit": "npm audit",
     "dependencies": "npm ls --all",
