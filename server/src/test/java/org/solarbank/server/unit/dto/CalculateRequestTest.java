@@ -14,7 +14,7 @@ import org.solarbank.server.ValidationMessage;
 
 import java.util.Set;
 
-import static org.solarbank.server.CreateMockCalculateRequest.createCalculateRequest;
+import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +41,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_EFF_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_EFF_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_EFF_POSITIVE.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_EFF_POSITIVE, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_EFF_MAX.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_EFF_MAX, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LOCATION_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LOCATION_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_SIZE_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_SIZE_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class CalculateRequestTest {
 
         Set<ConstraintViolation<CalculateRequest>> violations = validator.validate(calculateRequest);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.ENERGY_TARIFF_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.ENERGY_TARIFF_NULL, violations.iterator().next().getMessage());
     }
 
     @Test

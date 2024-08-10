@@ -40,7 +40,7 @@ public class EnergyTariffTest {
 
         Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.CURRENCY_CODE.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.CURRENCY_CODE, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class EnergyTariffTest {
 
         Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.AMOUNT_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.AMOUNT_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -60,6 +60,6 @@ public class EnergyTariffTest {
 
         Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.AMOUNT_MIN.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.AMOUNT_MIN, violations.iterator().next().getMessage());
     }
 }

@@ -5,15 +5,16 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import org.solarbank.server.ValidationMessage;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)
 public class PanelSize {
-    @NotNull(message = "panel height must be provided")
-    @Positive(message = "Panel height must be a positive number")
+    @NotNull(message = ValidationMessage.PANEL_HEIGHT_NULL)
+    @Positive(message = ValidationMessage.PANEL_HEIGHT_POSITIVE)
     private Double height;
 
-    @NotNull(message = "panel width must be provided")
-    @Positive(message = "Panel width must be a positive number")
+    @NotNull(message = ValidationMessage.PANEL_WIDTH_NULL)
+    @Positive(message = ValidationMessage.PANEL_WIDTH_POSITIVE)
     private Double width;
 }

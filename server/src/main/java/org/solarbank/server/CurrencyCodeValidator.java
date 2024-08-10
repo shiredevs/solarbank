@@ -10,11 +10,12 @@ public class CurrencyCodeValidator implements ConstraintValidator<ValidCurrencyC
 
     @Override
     public boolean isValid(String currencyCode, ConstraintValidatorContext context) {
-        try {
-            CurrencyUnit currencyUnit = Monetary.getCurrency(currencyCode);
-            return true;
-        } catch (Exception e) {
-            return false;
+        boolean result = false;
+
+        if (currencyCode != null) {
+            result = Monetary.isCurrencyAvailable(currencyCode);
         }
+
+        return result;
     }
 }

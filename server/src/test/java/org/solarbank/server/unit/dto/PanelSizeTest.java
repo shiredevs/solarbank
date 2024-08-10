@@ -40,7 +40,7 @@ public class PanelSizeTest {
 
         Set<ConstraintViolation<PanelSize>> violations = validator.validate(panelSize);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_HEIGHT_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_HEIGHT_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class PanelSizeTest {
 
         Set<ConstraintViolation<PanelSize>> violations = validator.validate(panelSize);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_HEIGHT_POSITIVE.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_HEIGHT_POSITIVE, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class PanelSizeTest {
 
         Set<ConstraintViolation<PanelSize>> violations = validator.validate(panelSize);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_WIDTH_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_WIDTH_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -70,6 +70,6 @@ public class PanelSizeTest {
 
         Set<ConstraintViolation<PanelSize>> violations = validator.validate(panelSize);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.PANEL_WIDTH_POSITIVE.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.PANEL_WIDTH_POSITIVE, violations.iterator().next().getMessage());
     }
 }

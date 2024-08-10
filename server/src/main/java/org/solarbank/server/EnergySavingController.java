@@ -1,5 +1,6 @@
 package org.solarbank.server;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.Valid;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
@@ -28,14 +29,10 @@ public class EnergySavingController {
     public ResponseEntity<CalculateResult> userInput(
             @Valid @RequestBody CalculateRequest calculateRequest) {
 
-        PanelSize panelSize = calculateRequest.getPanelSize();
-        Double panelEfficiency = calculateRequest.getPanelEfficiency();
-        EnergyTariff energyTariff = calculateRequest.getEnergyTariff();
-
         return ResponseEntity.ok(calculateService.processCalculateRequest(
-                panelSize,
-                panelEfficiency,
-                energyTariff
+                calculateRequest.getPanelSize(),
+                calculateRequest.getPanelEfficiency(),
+                calculateRequest.getEnergyTariff()
         ));
     }
 }

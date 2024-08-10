@@ -40,40 +40,16 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
-    public void bindingResultException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-        when(ex.getBindingResult()).thenThrow(new RuntimeException());
-
-        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-
-        assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
-        assertEquals(ErrorMessage.NO_BINDING_RESULT.getMessage(), errorDetails.getMessage());
-    }
-
-    @Test
-    public void fieldErrorsException_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
-        when(ex.getBindingResult()).thenReturn(bindingResult);
-        when(bindingResult.getFieldErrors()).thenThrow(new RuntimeException());
-
-        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-
-        assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
-        assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
-    }
-
-    @Test
     public void noFieldErrors_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(Collections.emptyList());
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
+
+        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
@@ -88,7 +64,7 @@ public class ControllerExceptionHandlerTest {
         FieldError fieldError = new FieldError(
                 "CalculateRequest",
                 "panelEfficiency",
-                ValidationMessage.PANEL_EFF_POSITIVE.getMessage()
+                ValidationMessage.PANEL_EFF_POSITIVE
         );
 
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
@@ -105,7 +81,7 @@ public class ControllerExceptionHandlerTest {
 
         assertEquals(400, errorDetails.getCode());
         assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
-        assertEquals(ValidationMessage.PANEL_EFF_POSITIVE.getMessage()+ "; ", errorDetails.getMessage());
+        assertEquals(ValidationMessage.PANEL_EFF_POSITIVE, errorDetails.getMessage());
     }
 
     @Test

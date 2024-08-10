@@ -40,7 +40,7 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LONGITUDE_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LONGITUDE_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LONGITUDE_MAX.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LONGITUDE_MAX, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LONGITUDE_MIN.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LONGITUDE_MIN, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LATITUDE_NULL.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LATITUDE_NULL, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LATITUDE_MAX.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LATITUDE_MAX, violations.iterator().next().getMessage());
     }
 
     @Test
@@ -90,6 +90,6 @@ public class LocationTest {
 
         Set<ConstraintViolation<Location>> violations = validator.validate(location);
         assertEquals(1, violations.size());
-        assertEquals(ValidationMessage.LATITUDE_MIN.getMessage(), violations.iterator().next().getMessage());
+        assertEquals(ValidationMessage.LATITUDE_MIN, violations.iterator().next().getMessage());
     }
 }

@@ -13,7 +13,7 @@ import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.solarbank.server.CreateMockCalculateRequest.createCalculateRequest;
+import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 
 public class CalculateServiceTest {
 

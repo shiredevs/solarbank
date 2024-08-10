@@ -1,6 +1,8 @@
 package org.solarbank.server;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -10,11 +12,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    private void log(Exception ex) {
+    private void log(Exception ex, ErrorResponse errorResponse) {
+        String logMessage = String.format(
+                "Exception occurred with message: %s; Response to client: %s",
+                ex.getMessage(),
+                errorResponse.toString()
+        );
+        System.out.println(logMessage);
         ex.printStackTrace();
     }
 
@@ -22,37 +31,23 @@ public class ControllerExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex) {
 
-        StringBuilder message = new StringBuilder();
-        BindingResult bindingResult = null;
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(), "no error captured"))
+                .collect(Collectors.joining("; "));
 
-        try {
-            bindingResult = ex.getBindingResult();
-        } catch (Exception e) {
-            message.append(ErrorMessage.NO_BINDING_RESULT.getMessage());
-        }
-
-        if (bindingResult != null) {
-            try {
-                List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-                if (fieldErrors.isEmpty()) {
-                    message.append(ErrorMessage.NO_FIELD_ERRORS.getMessage());
-                } else {
-                    fieldErrors.forEach(error -> {
-                        message.append(error.getDefaultMessage()).append("; ");
-                    });
-                }
-            } catch (Exception e) {
-                message.append(ErrorMessage.NO_FIELD_ERRORS.getMessage());
-            }
+        if (message.isEmpty()) {
+            message = ErrorMessage.NO_FIELD_ERRORS.getMessage();
         }
 
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                message.toString()
+                message
         );
 
-        log(ex);
+        log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -63,7 +58,18 @@ public class ControllerExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage()
         );
-        log(ex);
+        log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ValidationMessage.REQUEST_NULL
+        );
+        log(ex, errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
