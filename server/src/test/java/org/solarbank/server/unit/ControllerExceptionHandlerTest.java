@@ -3,9 +3,11 @@ package org.solarbank.server.unit;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.solarbank.server.ControllerExceptionHandler;
@@ -14,18 +16,18 @@ import org.solarbank.server.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class ControllerExceptionHandlerTest {
 
-    @InjectMocks
     private ControllerExceptionHandler handler;
 
     @Mock
@@ -36,7 +38,7 @@ public class ControllerExceptionHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        handler = new ControllerExceptionHandler();
     }
 
     @Test
@@ -85,6 +87,45 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
+    public void invalidInputMulitple_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+        List<FieldError> fieldErrors = new ArrayList<>();
+
+        FieldError panelEfficiencyError = new FieldError(
+                "CalculateRequest",
+                "panelEfficiency",
+                ValidationMessage.PANEL_EFF_POSITIVE
+        );
+
+        FieldError locationError = new FieldError(
+                "CalculateRequest",
+                "location",
+                ValidationMessage.LOCATION_NULL
+        );
+
+        fieldErrors.add(panelEfficiencyError);
+        fieldErrors.add(locationError);
+
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+
+        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
+
+        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
+
+        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+
+        assertEquals(400, errorDetails.getCode());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(
+                ValidationMessage.PANEL_EFF_POSITIVE + "; " + ValidationMessage.LOCATION_NULL ,
+                errorDetails.getMessage()
+        );
+    }
+
+    @Test
     public void exception_defaultExceptionHandler_expectedServerError() {
         Exception exception = new Exception();
 
@@ -96,5 +137,19 @@ public class ControllerExceptionHandlerTest {
         assertEquals(500, errorDetails.getCode());
         assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getStatus());
         assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage(), errorDetails.getMessage());
+    }
+
+    @Test
+    public void messageNotReadableException_messageNotReadableExceptionHandler_expectedServerError() {
+        HttpMessageNotReadableException ex = new HttpMessageNotReadableException("Invalid request body");
+
+        ResponseEntity<ErrorResponse> response = handler.handleHttpMessageNotReadableException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), errorDetails.getCode());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
+        assertEquals(ValidationMessage.REQUEST_NULL, errorDetails.getMessage());
     }
 }
