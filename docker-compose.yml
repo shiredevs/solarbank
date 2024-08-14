@@ -1,0 +1,30 @@
+services:
+  client:
+    ports:
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ${CERT_HOST_PATH}:${CERT_CONTAINER_PATH}
+    environment:
+      PORT: ${CLIENT_PORT}
+      SSL_CRT_FILE: ${CERT_CONTAINER_PATH}/${CLIENT_CRT_FILENAME}
+      SSL_KEY_FILE: ${CERT_CONTAINER_PATH}/${CLIENT_KEY_FILENAME}
+      SERVER_URL: ${SERVER_URL}
+      CALCULATE_ENDPOINT: ${SERVER_CALCULATE_ENDPOINT}
+
+  server:
+    ports:
+       - ${SERVER_PORT}:${SERVER_PORT}
+    restart: unless-stopped
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - ${CERT_HOST_PATH}:${CERT_CONTAINER_PATH}
+    environment:
+      PORT: ${SERVER_PORT}
+      KEY_STORE: ${CERT_CONTAINER_PATH}/${SERVER_KEY_STORE_FILENAME}
+      KEY_STORE_PASSWORD: ${SERVER_KEY_STORE_PASSWORD}

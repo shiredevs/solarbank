@@ -1,4 +1,3 @@
-import React from 'react';
 import ErrorPage from './ErrorPage';
 import { render, screen } from '@testing-library/react';
 import ERROR_MESSAGES from '../components/error/ErrorMessages';

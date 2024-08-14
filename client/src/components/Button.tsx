@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import { JSX } from 'react';
 import style from './Button.module.css';
 
 type ButtonProps = {
