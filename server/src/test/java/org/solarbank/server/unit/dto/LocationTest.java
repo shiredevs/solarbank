@@ -16,12 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTest {
     private Validator validator;
-    private Location location = new Location();
+    private Location location;
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        location = new Location();
+
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @Test

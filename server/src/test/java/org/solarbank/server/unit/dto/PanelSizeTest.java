@@ -16,12 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PanelSizeTest {
     private Validator validator;
-    private PanelSize panelSize = new PanelSize();
+    private PanelSize panelSize;
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        panelSize = new PanelSize();
+
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @Test

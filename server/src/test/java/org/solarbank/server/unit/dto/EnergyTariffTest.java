@@ -16,12 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EnergyTariffTest {
     private Validator validator;
-    private EnergyTariff energyTariff = new EnergyTariff();
+    private EnergyTariff energyTariff;
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        energyTariff = new EnergyTariff();
+
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @Test
@@ -36,6 +39,26 @@ public class EnergyTariffTest {
     @Test
     public void testCurrencyNotFound() {
         energyTariff.setCurrencyCode("AAA");
+        energyTariff.setAmount(50.0);
+
+        Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);
+        assertEquals(1, violations.size());
+        assertEquals(ValidationMessage.CURRENCY_CODE, violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testEmptyCurrency() {
+        energyTariff.setCurrencyCode("");
+        energyTariff.setAmount(50.0);
+
+        Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);
+        assertEquals(1, violations.size());
+        assertEquals(ValidationMessage.CURRENCY_CODE, violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testNullCurrency() {
+        energyTariff.setCurrencyCode(null);
         energyTariff.setAmount(50.0);
 
         Set<ConstraintViolation<EnergyTariff>> violations = validator.validate(energyTariff);

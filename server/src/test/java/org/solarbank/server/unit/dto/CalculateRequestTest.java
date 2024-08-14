@@ -1,5 +1,6 @@
 package org.solarbank.server.unit.dto;
 
+import java.util.Set;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -11,22 +12,21 @@ import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.ValidationMessage;
-
-import java.util.Set;
-
 import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalculateRequestTest {
     private Validator validator;
-
-    private CalculateRequest calculateRequest = createCalculateRequest();
+    private CalculateRequest calculateRequest;
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        calculateRequest = createCalculateRequest();
+
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @Test
