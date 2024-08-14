@@ -87,6 +87,31 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
+    public void invalidInput_validationExceptionHandlerNullMessage_expectedErrorResponse() throws NoSuchMethodException {
+        FieldError fieldError = new FieldError(
+                "CalculateRequest",
+                "panelEfficiency",
+                null
+        );
+
+        when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
+
+        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
+
+        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
+
+        ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+
+        assertEquals(400, errorDetails.getCode());
+        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.NO_ERROR_MESSAGE.getMessage(), errorDetails.getMessage());
+    }
+
+    @Test
     public void invalidInputMulitple_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
         List<FieldError> fieldErrors = new ArrayList<>();
 
