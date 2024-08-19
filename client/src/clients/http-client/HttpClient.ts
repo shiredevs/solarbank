@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import ApiRequestError from '../components/error/types/ApiRequestError';
-import { logHttpError, logRequest, logResponse } from './Logger';
+import ApiRequestError from '../../components/error/types/ApiRequestError';
+import { logHttpError, logRequest, logResponse } from '../../utils/Logger';
 
 axios.interceptors.request.use((request: InternalAxiosRequestConfig) => {
   logRequest(request);

@@ -5,10 +5,10 @@
 import nock from 'nock';
 import { post } from './HttpClient';
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import ApiRequestError from '../components/error/types/ApiRequestError';
-import * as logger from './Logger';
-import errorMessages from '../components/error/ErrorMessages';
-import { interceptPostRequest, MockRequestData, MockResponseData } from '../setupTests';
+import ApiRequestError from '../../components/error/types/ApiRequestError';
+import * as logger from '../../utils/Logger';
+import errorMessages from '../../components/error/ErrorMessages';
+import { interceptPostRequest, MockRequestData, MockResponseData } from '../../setupTests';
 
 describe('http client tests', () => {
   const MOCK_BASEPATH: string = 'https://localhost:8080';
@@ -42,7 +42,13 @@ describe('http client tests', () => {
     const expectedResponseBody: MockResponseData = { result: 'test_response_body' };
     const expectedStatus: number = 200;
 
-    interceptPostRequest(requestBody, expectedResponseBody, expectedStatus, MOCK_ENDPOINT);
+    interceptPostRequest(
+      requestBody,
+      expectedResponseBody,
+      expectedStatus,
+      MOCK_BASEPATH,
+      MOCK_ENDPOINT
+    );
 
     const actualResponse: AxiosResponse<MockResponseData, never> = await post(
       MOCK_URL,
@@ -58,7 +64,7 @@ describe('http client tests', () => {
   it('returns 200 with empty request body', async (): Promise<void> => {
     const expectedStatus: number = 200;
 
-    interceptPostRequest({}, {}, expectedStatus, MOCK_ENDPOINT);
+    interceptPostRequest({}, {}, expectedStatus, MOCK_BASEPATH, MOCK_ENDPOINT);
 
     const actualResponse: AxiosResponse<MockResponseData, never> = await post(MOCK_URL, {});
 
@@ -69,7 +75,7 @@ describe('http client tests', () => {
     let response;
     const invalidEndpoint: string = '/invalid-endpoint';
 
-    interceptPostRequest({}, {}, 404, invalidEndpoint);
+    interceptPostRequest({}, {}, 404, MOCK_BASEPATH, invalidEndpoint);
 
     try {
       response = await post(`${MOCK_BASEPATH}${invalidEndpoint}`, {});
@@ -85,7 +91,7 @@ describe('http client tests', () => {
   it('throws expected axios error when the server is unavailable', async (): Promise<void> => {
     let response;
 
-    interceptPostRequest({}, {}, 500, MOCK_ENDPOINT);
+    interceptPostRequest({}, {}, 500, MOCK_BASEPATH, MOCK_ENDPOINT);
 
     try {
       response = await post(MOCK_URL, {});

@@ -5,8 +5,15 @@
 import nock from 'nock';
 import { CalculateRequest, CalculateResponse, doCalculate } from './CalculateClient';
 import { interceptPostRequest } from '../setupTests';
-import { config } from '../config/CalculateConfig';
+import { config } from './config/CalculateConfig';
 import ApiRequestError from '../components/error/types/ApiRequestError';
+
+jest.mock('./config/CalculateConfig', () => ({
+  config: {
+    SERVER_URL: 'https://localhost:8080',
+    CALCULATE_ENDPOINT: '/api/V1/calculate'
+  }
+}));
 
 describe('calculate client tests', () => {
   let mockRequest: CalculateRequest;
@@ -48,7 +55,13 @@ describe('calculate client tests', () => {
   });
 
   it('request to calculate, valid request body, expected response returned', async (): Promise<void> => {
-    interceptPostRequest(mockRequest, expectedResponse, 200, config.CALCULATE_ENDPOINT as string);
+    interceptPostRequest(
+      mockRequest,
+      expectedResponse,
+      200,
+      config.SERVER_URL as string,
+      config.CALCULATE_ENDPOINT as string
+    );
 
     const actualResponse: CalculateResponse = await doCalculate(mockRequest);
 
@@ -58,7 +71,13 @@ describe('calculate client tests', () => {
   it('request to calculate, server error, throws expected exception', async (): Promise<void> => {
     let response;
 
-    interceptPostRequest(mockRequest, expectedResponse, 500, config.CALCULATE_ENDPOINT as string);
+    interceptPostRequest(
+      mockRequest,
+      expectedResponse,
+      500,
+      config.SERVER_URL as string,
+      config.CALCULATE_ENDPOINT as string
+    );
 
     try {
       response = await doCalculate(mockRequest);

@@ -7,35 +7,65 @@ import { Router } from '@remix-run/router';
 import ERROR_MESSAGES from './components/error/ErrorMessages';
 import App from './App';
 import fetchMock from 'jest-fetch-mock';
+import { CalculateConfig } from './clients/config/CalculateConfig';
 
 describe('app integration tests', (): void => {
-  let inMemoryRouter: Router;
+  const ROUTER: Router = createMemoryRouter(router.routes, { initialEntries: [ROUTE_PATHS.ROOT] });
+  const CONFIG: CalculateConfig = {
+    SERVER_URL: 'https://localhost:8080',
+    CALCULATE_ENDPOINT: '/api/V1/calculate'
+  };
+  const renderApp = (config: CalculateConfig): void => {
+    render(<App router={ROUTER} calculateConfig={config} />);
+  };
 
-  beforeEach((): void => {
-    fetchMock.mockOnce(); // mock global.fetch, used by Router
-    inMemoryRouter = createMemoryRouter(router.routes, { initialEntries: [ROUTE_PATHS.ROOT] });
+  beforeAll((): void => {
+    fetchMock.enableMocks(); // mock global.fetch, used by Router
+  });
 
-    render(<App router={inMemoryRouter} />);
+  afterAll((): void => {
+    fetchMock.resetMocks();
+  });
+
+  it('should navigate to landing page when the app is first loaded', () => {
+    renderApp(CONFIG);
 
     expect(screen.getByRole('landing-page-container')).toBeInTheDocument();
   });
 
   it('should navigate to form page when user clicks begin', (): void => {
+    renderApp(CONFIG);
     const button: HTMLElement = screen.getByRole('button');
     fireEvent.click(button);
 
     const formPage: HTMLElement = screen.getByRole('paragraph');
+
     expect(formPage).toBeInTheDocument();
     expect(formPage).toHaveTextContent('form...');
   });
 
   it('should navigate to error page when user navigates to unknown path', async (): Promise<void> => {
-    await waitFor(() => inMemoryRouter.navigate('/invalid'));
+    renderApp(CONFIG);
+    await waitFor(() => ROUTER.navigate('/invalid'));
 
     const errorPage: HTMLElement = screen.getByRole('paragraph');
+
     expect(errorPage).toBeInTheDocument();
     expect(errorPage).toHaveTextContent(ERROR_MESSAGES.PAGE_NOT_FOUND);
   });
 
-  // todo: test unhandled error path once an error can be thrown inside the application, most likely via a failed api call to the backend
+  it('should navigate to error page when the configuration is invalid', (): void => {
+    const invalidConfig: CalculateConfig = {
+      SERVER_URL: undefined,
+      CALCULATE_ENDPOINT: '/api/V1/calculate'
+    };
+    renderApp(invalidConfig);
+
+    const errorPage: HTMLElement = screen.getByRole('paragraph');
+
+    expect(errorPage).toBeInTheDocument();
+    expect(errorPage).toHaveTextContent(ERROR_MESSAGES.CONFIGURATION_MISSING);
+  });
+
+  // todo: should navigate to error page with default message with an unhandled error - can do this once api call to server is added as will throw api request error if it fails
 });
