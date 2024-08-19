@@ -1,6 +1,6 @@
-import { post } from '../utils/HttpClient';
+import { post } from './http-client/HttpClient';
 import { AxiosResponse } from 'axios';
-import { config } from '../config/CalculateConfig';
+import { config } from './config/CalculateConfig';
 
 const CALCULATE_URL: string = `${config.SERVER_URL}${config.CALCULATE_ENDPOINT}`;
 

@@ -1,4 +1,6 @@
 FROM node:20.15.1-alpine AS build-stage
+ARG SERVER_URL
+ARG CALCULATE_ENDPOINT
 WORKDIR /solarbank/client
 COPY package*.json ./
 RUN npm ci

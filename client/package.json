@@ -10,7 +10,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
-    "axios": "^1.7.2"
+    "axios": "^1.7.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
@@ -48,7 +48,7 @@
   "scripts": {
     "start:local": "env-cmd -f environment/.env.local vite",
     "build": "vite build",
-    "build:serve": "vite build && serve -s build",
+    "build:serve": "env-cmd -f environment/.env.local vite build && serve -s build",
     "test": "jest --watchAll=false",
     "audit": "npm audit",
     "dependencies": "npm ls --all",
