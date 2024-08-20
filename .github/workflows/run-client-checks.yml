@@ -26,3 +26,5 @@ jobs:
         run: cd client && npm run lint
       - name: run vulnerability scan
         run: cd client && npm run audit
+      - name: run build
+        run: cd client && npm run build
