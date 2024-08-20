@@ -66,6 +66,4 @@ describe('app integration tests', (): void => {
     expect(errorPage).toBeInTheDocument();
     expect(errorPage).toHaveTextContent(ERROR_MESSAGES.CONFIGURATION_MISSING);
   });
-
-  // todo: should navigate to error page with default message with an unhandled error - can do this once api call to server is added as will throw api request error if it fails
 });

@@ -4,6 +4,7 @@ import { CalculateRequest, CalculateResponse, doCalculate } from '../clients/Cal
 import ResultPage from './ResultPage';
 import ErrorHandler from '../components/error/ErrorHandler';
 
+// todo: replace with form component for user input
 const staticRequest: CalculateRequest = {
   location: {
     long: 1234.12,

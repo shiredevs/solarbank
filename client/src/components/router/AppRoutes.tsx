@@ -16,7 +16,7 @@ const ROUTES: RouteType[] = [
   {
     path: ROUTE_PATHS.ROOT,
     element: <LandingPage />,
-    errorElement: <ErrorHandler error={new InternalServerError()} />
+    errorElement: <ErrorHandler error={new InternalServerError()} /> // only applies on exceptions thrown during render
   },
   {
     path: ROUTE_PATHS.FORM,
