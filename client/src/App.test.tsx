@@ -38,10 +38,10 @@ describe('app integration tests', (): void => {
     const button: HTMLElement = screen.getByRole('button');
     fireEvent.click(button);
 
-    const formPage: HTMLElement = screen.getByRole('paragraph');
+    const formPage: HTMLElement = screen.getByRole('form-page-container');
 
     expect(formPage).toBeInTheDocument();
-    expect(formPage).toHaveTextContent('form...');
+    expect(formPage).toHaveTextContent('submit');
   });
 
   it('should navigate to error page when user navigates to unknown path', async (): Promise<void> => {

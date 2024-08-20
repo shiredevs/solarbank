@@ -20,7 +20,8 @@ const ROUTES: RouteType[] = [
   },
   {
     path: ROUTE_PATHS.FORM,
-    element: <FormPage />
+    element: <FormPage />,
+    errorElement: <ErrorHandler error={new InternalServerError()} />
   },
   {
     path: ROUTE_PATHS.OTHER,
