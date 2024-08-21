@@ -3,6 +3,13 @@ import ROUTES from './AppRoutes';
 import ROUTE_PATHS from './RoutePaths';
 import { AgnosticDataRouteObject } from '@remix-run/router';
 
+jest.mock('../../clients/config/CalculateConfig', () => ({
+  config: {
+    SERVER_URL: 'https://localhost:8080',
+    CALCULATE_ENDPOINT: '/api/V1/calculate'
+  }
+}));
+
 describe('app router tests', () => {
   it('Should contain expected routes', () => {
     const mappedRoutes: AgnosticDataRouteObject[] = router.routes;
