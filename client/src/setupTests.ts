@@ -1,6 +1,14 @@
 import '@testing-library/jest-dom'; // provides expect() and other matchers in test
 import nock, { RequestBodyMatcher } from 'nock';
 
+// required to mock config provide from process.env
+jest.mock('./clients/config/CalculateConfig', () => ({
+  config: {
+    SERVER_URL: 'https://localhost:8080',
+    CALCULATE_ENDPOINT: '/api/V1/calculate'
+  }
+}));
+
 export type MockRequestData = {
   [key: string]: string | number | object;
 };

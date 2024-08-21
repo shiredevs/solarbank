@@ -8,13 +8,6 @@ import { interceptPostRequest } from '../setupTests';
 import { config } from './config/CalculateConfig';
 import ApiRequestError from '../components/error/types/ApiRequestError';
 
-jest.mock('./config/CalculateConfig', () => ({
-  config: {
-    SERVER_URL: 'https://localhost:8080',
-    CALCULATE_ENDPOINT: '/api/V1/calculate'
-  }
-}));
-
 describe('calculate client tests', () => {
   let mockRequest: CalculateRequest;
   let expectedResponse: CalculateResponse;
