@@ -12,6 +12,9 @@
     "react-router-dom": "^6.23.1",
     "axios": "^1.7.4"
   },
+  "overrides": {
+    "micromatch": "4.0.8"
+  },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
     "@testing-library/jest-dom": "^5.17.0",
