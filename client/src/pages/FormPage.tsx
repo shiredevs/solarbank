@@ -31,6 +31,7 @@ const FormPage = (): JSX.Element => {
       setResult(err as Error);
     }
   };
+
   return (
     <div role="form-page-container">
       {result instanceof Error ? (
