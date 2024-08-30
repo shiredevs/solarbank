@@ -1,6 +1,19 @@
 import ResultPage from './ResultPage';
 import { CalculateResponse } from '../clients/CalculateClient';
 import { render, screen } from '@testing-library/react';
+import * as router from 'react-router';
+import { Location } from 'react-router-dom';
+
+const mockLocation = (mockResult: CalculateResponse): void => {
+  const mockLocation: Location = {
+    state: mockResult,
+    pathname: '/form',
+    search: '/form',
+    hash: 'hash',
+    key: '1234'
+  };
+  jest.spyOn(router, 'useLocation').mockReturnValue(mockLocation);
+};
 
 describe('result page tests', () => {
   it('renders result page as expected when all results are defined', () => {
@@ -17,8 +30,9 @@ describe('result page tests', () => {
         amount: 5000
       }
     };
+    mockLocation(mockResult);
 
-    render(<ResultPage result={mockResult} />);
+    render(<ResultPage />);
 
     expect(screen.getByRole('result-page-container')).toBeInTheDocument();
     const energyGenPerYearCard: HTMLElement = screen.getByRole('energy-gen-per-year-card');
@@ -52,8 +66,9 @@ describe('result page tests', () => {
         amount: 5000
       }
     };
+    mockLocation(mockResult);
 
-    render(<ResultPage result={mockResult} />);
+    render(<ResultPage />);
 
     expect(screen.getByRole('result-page-container')).toBeInTheDocument();
     const energyGenPerYearCard: HTMLElement = screen.getByRole('energy-gen-per-year-card');

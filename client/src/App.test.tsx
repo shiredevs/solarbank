@@ -46,6 +46,8 @@ describe('application integration tests', (): void => {
     });
 
     it('should navigate to results page when user submits form and results retrieved successfully', () => {});
+
+    it('should navigate back from results page to form page if the user clicks back in the browser', () => {});
   });
 
   describe('unhappy path tests', () => {

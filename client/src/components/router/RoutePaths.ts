@@ -5,6 +5,7 @@ type RoutePaths = {
 const ROUTE_PATHS: RoutePaths = {
   ROOT: '/',
   FORM: '/form',
+  RESULT: '/result',
   OTHER: '*'
 };
 

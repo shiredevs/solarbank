@@ -1,8 +1,9 @@
 import { JSX, useState } from 'react';
 import Button from '../components/Button';
 import { CalculateRequest, CalculateResponse, doCalculate } from '../clients/CalculateClient';
-import ResultPage from './ResultPage';
 import ErrorHandler from '../components/error/ErrorHandler';
+import { Navigate } from 'react-router-dom';
+import ROUTE_PATHS from '../components/router/RoutePaths';
 
 // todo: replace with form component for user input
 const staticRequest: CalculateRequest = {
@@ -37,7 +38,7 @@ const FormPage = (): JSX.Element => {
       {result instanceof Error ? (
         <ErrorHandler error={result} />
       ) : result ? (
-        <ResultPage result={result} />
+        <Navigate to={ROUTE_PATHS.RESULT} state={result} replace={true} />
       ) : (
         <Button handleClick={() => handleCalculate(staticRequest)} label={'submit'} />
       )}

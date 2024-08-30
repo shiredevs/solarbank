@@ -5,6 +5,9 @@ import ApiRequestError from '../components/error/types/ApiRequestError';
 import InternalServerError from '../components/error/types/InternalServerError';
 import ERROR_MESSAGES from '../components/error/ErrorMessages';
 import { CalculateResponse } from '../clients/CalculateClient';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import ROUTE_PATHS from '../components/router/RoutePaths';
+import ResultPage from './ResultPage';
 
 const triggerFormSubmission = async () => {
   const button: HTMLElement = screen.getByRole('button');
@@ -51,7 +54,18 @@ describe('form page tests', () => {
     };
     jest.spyOn(CalculateClient, 'doCalculate').mockResolvedValueOnce(mockResponse);
 
-    render(<FormPage />);
+    render(
+      <MemoryRouter initialEntries={[ROUTE_PATHS.FORM]}>
+        <Routes>
+          <Route path={ROUTE_PATHS.FORM} element={<FormPage />} />
+          <Route path={ROUTE_PATHS.RESULT} element={<ResultPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const renderedFormPage: HTMLElement = screen.getByRole('form-page-container');
+    expect(renderedFormPage).toBeInTheDocument();
+
     await triggerFormSubmission();
 
     const renderedResultsPage: HTMLElement = screen.getByRole('result-page-container');
