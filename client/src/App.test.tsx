@@ -9,7 +9,7 @@ import App from './App';
 import fetchMock from 'jest-fetch-mock';
 import { CalculateConfig } from './clients/config/CalculateConfig';
 
-describe('app integration tests', (): void => {
+describe('application integration tests', (): void => {
   const ROUTER: Router = createMemoryRouter(router.routes, { initialEntries: [ROUTE_PATHS.ROOT] });
   const CONFIG: CalculateConfig = {
     SERVER_URL: 'https://localhost:8080',
@@ -27,43 +27,51 @@ describe('app integration tests', (): void => {
     fetchMock.resetMocks();
   });
 
-  it('should navigate to landing page when the app is first loaded', () => {
-    renderApp(CONFIG);
+  describe('happy path tests', () => {
+    it('should navigate to landing page when the app is first loaded', () => {
+      renderApp(CONFIG);
 
-    expect(screen.getByRole('landing-page-container')).toBeInTheDocument();
+      expect(screen.getByRole('landing-page-container')).toBeInTheDocument();
+    });
+
+    it('should navigate to form page when user clicks begin', (): void => {
+      renderApp(CONFIG);
+      const button: HTMLElement = screen.getByRole('button');
+      fireEvent.click(button);
+
+      const formPage: HTMLElement = screen.getByRole('form-page-container');
+
+      expect(formPage).toBeInTheDocument();
+      expect(formPage).toHaveTextContent('submit');
+    });
+
+    it('should navigate to results page when user submits form and results retrieved successfully', () => {});
   });
 
-  it('should navigate to form page when user clicks begin', (): void => {
-    renderApp(CONFIG);
-    const button: HTMLElement = screen.getByRole('button');
-    fireEvent.click(button);
+  describe('unhappy path tests', () => {
+    it('should navigate to error page when user submits the form and result are not retrieved successfully', () => {});
 
-    const formPage: HTMLElement = screen.getByRole('form-page-container');
+    it('should navigate to error page when user navigates to unknown path', async (): Promise<void> => {
+      renderApp(CONFIG);
+      await waitFor(() => ROUTER.navigate('/invalid'));
 
-    expect(formPage).toBeInTheDocument();
-    expect(formPage).toHaveTextContent('submit');
-  });
+      const errorPage: HTMLElement = screen.getByRole('paragraph');
 
-  it('should navigate to error page when user navigates to unknown path', async (): Promise<void> => {
-    renderApp(CONFIG);
-    await waitFor(() => ROUTER.navigate('/invalid'));
+      expect(errorPage).toBeInTheDocument();
+      expect(errorPage).toHaveTextContent(ERROR_MESSAGES.PAGE_NOT_FOUND);
+    });
 
-    const errorPage: HTMLElement = screen.getByRole('paragraph');
+    it('should navigate to error page when the configuration is invalid', (): void => {
+      const invalidConfig: CalculateConfig = {
+        SERVER_URL: undefined,
+        CALCULATE_ENDPOINT: '/api/V1/calculate'
+      };
+      renderApp(invalidConfig);
 
-    expect(errorPage).toBeInTheDocument();
-    expect(errorPage).toHaveTextContent(ERROR_MESSAGES.PAGE_NOT_FOUND);
-  });
+      const errorPage: HTMLElement = screen.getByRole('paragraph');
 
-  it('should navigate to error page when the configuration is invalid', (): void => {
-    const invalidConfig: CalculateConfig = {
-      SERVER_URL: undefined,
-      CALCULATE_ENDPOINT: '/api/V1/calculate'
-    };
-    renderApp(invalidConfig);
-
-    const errorPage: HTMLElement = screen.getByRole('paragraph');
-
-    expect(errorPage).toBeInTheDocument();
-    expect(errorPage).toHaveTextContent(ERROR_MESSAGES.CONFIGURATION_MISSING);
+      expect(errorPage).toBeInTheDocument();
+      expect(errorPage).toHaveTextContent(ERROR_MESSAGES.CONFIGURATION_MISSING);
+    });
   });
 });
