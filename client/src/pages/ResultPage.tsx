@@ -2,7 +2,6 @@ import { JSX } from 'react';
 import { CalculateResponse } from '../clients/CalculateClient';
 import { useLocation } from 'react-router-dom';
 
-
 // todo: replace with result cards
 const reduceToString = (energyGenPerMonth: { [key: string]: number }) => {
   return Object.entries(energyGenPerMonth).reduce((output, [month, value]) => {

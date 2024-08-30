@@ -7,7 +7,7 @@ type ErrorProps = {
 
 const ErrorPage = (props: ErrorProps): JSX.Element => {
   return (
-    <div>
+    <div role="error-page-container">
       <p>{props?.message || ERROR_MESSAGES.INTERNAL_SERVER_ERROR}</p>
     </div>
   );

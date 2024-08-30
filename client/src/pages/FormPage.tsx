@@ -38,7 +38,7 @@ const FormPage = (): JSX.Element => {
       {result instanceof Error ? (
         <ErrorHandler error={result} />
       ) : result ? (
-        <Navigate to={ROUTE_PATHS.RESULT} state={result} replace={true} />
+        <Navigate to={ROUTE_PATHS.RESULT} state={result} replace={false} />
       ) : (
         <Button handleClick={() => handleCalculate(staticRequest)} label={'submit'} />
       )}

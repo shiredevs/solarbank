@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'; // provides expect() and other matchers in test
-import nock, { RequestBodyMatcher } from 'nock';
+import { server } from './test-setup/mockServer';
 
 // required to mock config provide from process.env
 jest.mock('./clients/config/CalculateConfig', () => ({
@@ -9,24 +9,15 @@ jest.mock('./clients/config/CalculateConfig', () => ({
   }
 }));
 
-export type MockRequestData = {
-  [key: string]: string | number | object;
-};
+beforeAll(() => {
+  server.listen();
+});
 
-export type MockResponseData = {
-  [key: string]: string | number | object;
-};
+afterEach(() => {
+  server.resetHandlers();
+  jest.restoreAllMocks();
+});
 
-const interceptPostRequest = (
-  request: MockRequestData,
-  response: MockResponseData,
-  status: number,
-  basePath: string,
-  endpoint: string
-): void => {
-  nock(basePath)
-    .post(endpoint, request as RequestBodyMatcher)
-    .reply(status, response);
-};
-
-export { interceptPostRequest };
+afterAll(() => {
+  server.close();
+});
