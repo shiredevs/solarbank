@@ -6,7 +6,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.solarbank.server.ValidationMessage;
 
 @Constraint(validatedBy = CurrencyCodeValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })

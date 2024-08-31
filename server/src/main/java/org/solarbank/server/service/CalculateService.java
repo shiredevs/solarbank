@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculateService {
     public CalculateResult processCalculateRequest(
-            PanelSize panelSize,
-            Double panelEfficiency,
-            EnergyTariff energyTariff
+        PanelSize panelSize,
+        Double panelEfficiency,
+        EnergyTariff energyTariff
     ) {
 
         Map<String, Double> energyGenPerMonth = new HashMap<>();

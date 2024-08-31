@@ -1,11 +1,11 @@
 package org.solarbank.server.dto;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.util.Map;
 import javax.money.CurrencyUnit;
@@ -30,9 +30,9 @@ public class CalculateResult {
     public static class SavingsPerYearSerializer extends JsonSerializer<SavingsPerYear> {
         @Override
         public void serialize(
-                SavingsPerYear savingsPerYear,
-                JsonGenerator jsonGenerator,
-                SerializerProvider serializerProvider
+            SavingsPerYear savingsPerYear,
+            JsonGenerator jsonGenerator,
+            SerializerProvider serializerProvider
         ) throws IOException {
             String currencyCode = savingsPerYear.getCurrencyCode().getCurrencyCode();
             double amount = savingsPerYear.getAmount().getNumber().doubleValue();

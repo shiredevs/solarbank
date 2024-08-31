@@ -21,8 +21,7 @@ public class IntegrationTestBase {
 
     private final ObjectMapper requestMapper = new ObjectMapper();
 
-    public String mapToString(CalculateRequest calculateRequest)
-            throws JsonProcessingException {
+    public String mapToString(CalculateRequest calculateRequest) throws JsonProcessingException {
         return requestMapper.writeValueAsString(calculateRequest);
     }
 

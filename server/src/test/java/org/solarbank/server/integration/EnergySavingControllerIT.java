@@ -26,15 +26,15 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
         String validRequest = mapToString(calculateRequest);
 
         mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validRequest))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.EnergyGenPerYear").value(1.0))
-                .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(0.1))
-                .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(0.2))
-                .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
-                .andExpect(jsonPath("$.SavingsPerYear.Amount").value(1000.0));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validRequest))
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andExpect(jsonPath("$.EnergyGenPerYear").value(1.0))
+            .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(0.1))
+            .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(0.2))
+            .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
+            .andExpect(jsonPath("$.SavingsPerYear.Amount").value(1000.0));
     }
 
     @Test
@@ -46,24 +46,24 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
         String invalidRequest = mapToString(calculateRequest);
 
         mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequest))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_MAX));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidRequest))
+            .andExpect(status().isBadRequest())
+            .andDo(print())
+            .andExpect(jsonPath("$.Error.Code").value(400))
+            .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+            .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_MAX));
     }
 
     @Test
     public void energySavingController_emptyRequest_status400() throws Exception {
         mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andDo(print())
+            .andExpect(jsonPath("$.Error.Code").value(400))
+            .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+            .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
     }
 
     @Test
@@ -78,12 +78,12 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
         )).thenThrow(new RuntimeException());
 
         mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validRequest))
-                .andExpect(status().isInternalServerError())
-                .andDo(print())
-                .andExpect(jsonPath("$.Error.Code").value(500))
-                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validRequest))
+            .andExpect(status().isInternalServerError())
+            .andDo(print())
+            .andExpect(jsonPath("$.Error.Code").value(500))
+            .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+            .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
     }
 }

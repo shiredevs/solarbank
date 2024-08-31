@@ -1,6 +1,5 @@
 package org.solarbank.server.unit;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +15,7 @@ import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,11 +53,11 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
-    public void validationFails_singleFieldError_singleInvalidUserInputReponseReturned() {
+    public void validationFails_singleFieldError_singleInvalidUserInputResponseReturned() {
         FieldError fieldError = new FieldError(
-                "CalculateRequest",
-                "panelEfficiency",
-                ValidationMessage.PANEL_EFF_POSITIVE
+            "CalculateRequest",
+            "panelEfficiency",
+            ValidationMessage.PANEL_EFF_POSITIVE
         );
 
         when(ex.getBindingResult()).thenReturn(bindingResult);
@@ -75,9 +75,9 @@ public class ControllerExceptionHandlerTest {
     @Test
     public void validationFails_nullValidationErrorMessage_noErrorResponseReturned() {
         FieldError fieldError = new FieldError(
-                "CalculateRequest",
-                "panelEfficiency",
-                null
+            "CalculateRequest",
+            "panelEfficiency",
+            null
         );
 
         when(ex.getBindingResult()).thenReturn(bindingResult);
@@ -86,30 +86,18 @@ public class ControllerExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
         assertEquals(400, errorDetails.getCode());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_ERROR_MESSAGE.getMessage(), errorDetails.getMessage());
     }
 
     @Test
-    public void validationFails_mutlipleFieldErrors_multipleInvalidUserInputReponseReturned() {
-        List<FieldError> fieldErrors = new ArrayList<>();
-
-        FieldError panelEfficiencyError = new FieldError(
-                "CalculateRequest",
-                "panelEfficiency",
-                ValidationMessage.PANEL_EFF_POSITIVE
+    public void validationFails_multipleFieldErrors_multipleInvalidUserInputResponseReturned() {
+        List<FieldError> fieldErrors = List.of(
+            new FieldError("CalculateRequest", "panelEfficiency", ValidationMessage.PANEL_EFF_POSITIVE),
+            new FieldError("CalculateRequest", "location", ValidationMessage.LOCATION_NULL)
         );
-
-        FieldError locationError = new FieldError(
-                "CalculateRequest",
-                "location",
-                ValidationMessage.LOCATION_NULL
-        );
-
-        fieldErrors.add(panelEfficiencyError);
-        fieldErrors.add(locationError);
 
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
@@ -117,13 +105,13 @@ public class ControllerExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
 
         assertEquals(400, errorDetails.getCode());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(
-                ValidationMessage.PANEL_EFF_POSITIVE + "; " + ValidationMessage.LOCATION_NULL ,
-                errorDetails.getMessage()
+            ValidationMessage.PANEL_EFF_POSITIVE + "; " + ValidationMessage.LOCATION_NULL ,
+            errorDetails.getMessage()
         );
     }
 
@@ -134,7 +122,7 @@ public class ControllerExceptionHandlerTest {
         ResponseEntity<ErrorResponse> response = handler.defaultExceptionHandler(exception);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
 
         assertEquals(500, errorDetails.getCode());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), errorDetails.getStatus());
@@ -143,12 +131,15 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void messageNotReadableException_nullRequestBody_emptyUserRequestResponse() {
-        HttpMessageNotReadableException ex = new HttpMessageNotReadableException("Invalid request body");
+        HttpMessageNotReadableException ex = new HttpMessageNotReadableException(
+            "Invalid request body",
+            new MockHttpInputMessage(new byte[0])
+        );
 
         ResponseEntity<ErrorResponse> response = handler.handleHttpMessageNotReadableException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), errorDetails.getCode());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
