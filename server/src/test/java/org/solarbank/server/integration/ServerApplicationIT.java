@@ -1,13 +1,9 @@
 package org.solarbank.server.integration;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class ServerApplicationIT {
+public class ServerApplicationIT extends IntegrationTestBase {
 
 	@Test
-	void contextLoads() {}
+	public void contextLoads() {}
 }
