@@ -5,6 +5,7 @@ import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.service.CalculateService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import static org.mockito.Mockito.when;
@@ -50,7 +51,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(ErrorMessage.BAD_REQUEST.getMessage()))
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                 .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_MAX));
     }
 
@@ -61,7 +62,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(ErrorMessage.BAD_REQUEST.getMessage()))
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                 .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
     }
 
@@ -82,7 +83,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                 .andExpect(status().isInternalServerError())
                 .andDo(print())
                 .andExpect(jsonPath("$.Error.Code").value(500))
-                .andExpect(jsonPath("$.Error.Status").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()))
-                .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage()));
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
     }
 }

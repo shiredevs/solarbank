@@ -1,21 +1,18 @@
 package org.solarbank.server.unit;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.solarbank.server.ControllerExceptionHandler;
 import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.ValidationMessage;
-import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.ErrorResponse;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,77 +39,61 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
-    public void noFieldErrors_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+    public void validationFails_noFieldErrorsCreated_noFieldErrorResponseReturned() {
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(Collections.emptyList());
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
-        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
-        MethodParameter methodParameter = new MethodParameter(method, 0);
-
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
-
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
         assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_FIELD_ERRORS.getMessage(), errorDetails.getMessage());
     }
 
     @Test
-    public void invalidInput_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+    public void validationFails_singleFieldError_singleInvalidUserInputReponseReturned() {
         FieldError fieldError = new FieldError(
                 "CalculateRequest",
                 "panelEfficiency",
                 ValidationMessage.PANEL_EFF_POSITIVE
         );
 
+        when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
-
-        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
-        MethodParameter methodParameter = new MethodParameter(method, 0);
-
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
         assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ValidationMessage.PANEL_EFF_POSITIVE, errorDetails.getMessage());
     }
 
     @Test
-    public void invalidInput_validationExceptionHandlerNullMessage_expectedErrorResponse() throws NoSuchMethodException {
+    public void validationFails_nullValidationErrorMessage_noErrorResponseReturned() {
         FieldError fieldError = new FieldError(
                 "CalculateRequest",
                 "panelEfficiency",
                 null
         );
 
+        when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
-
-        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
-        MethodParameter methodParameter = new MethodParameter(method, 0);
-
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
-
         assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NO_ERROR_MESSAGE.getMessage(), errorDetails.getMessage());
     }
 
     @Test
-    public void invalidInputMulitple_validationExceptionHandler_expectedErrorResponse() throws NoSuchMethodException {
+    public void validationFails_mutlipleFieldErrors_multipleInvalidUserInputReponseReturned() {
         List<FieldError> fieldErrors = new ArrayList<>();
 
         FieldError panelEfficiencyError = new FieldError(
@@ -130,12 +111,8 @@ public class ControllerExceptionHandlerTest {
         fieldErrors.add(panelEfficiencyError);
         fieldErrors.add(locationError);
 
+        when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
-
-        Method method = CalculateRequest.class.getMethod("setPanelEfficiency", Double.class);
-        MethodParameter methodParameter = new MethodParameter(method, 0);
-
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(methodParameter, bindingResult);
 
         ResponseEntity<ErrorResponse> response = handler.handleValidationException(ex);
 
@@ -143,7 +120,7 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
 
         assertEquals(400, errorDetails.getCode());
-        assertEquals(ErrorMessage.BAD_REQUEST.getMessage(), errorDetails.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(
                 ValidationMessage.PANEL_EFF_POSITIVE + "; " + ValidationMessage.LOCATION_NULL ,
                 errorDetails.getMessage()
@@ -151,7 +128,7 @@ public class ControllerExceptionHandlerTest {
     }
 
     @Test
-    public void exception_defaultExceptionHandler_expectedServerError() {
+    public void defaultException_defaultExceptionThrown_internalServerErrorResponseReturned() {
         Exception exception = new Exception();
 
         ResponseEntity<ErrorResponse> response = handler.defaultExceptionHandler(exception);
@@ -160,12 +137,12 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = response.getBody().getError();
 
         assertEquals(500, errorDetails.getCode());
-        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getStatus());
-        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage(), errorDetails.getMessage());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getMessage());
     }
 
     @Test
-    public void messageNotReadableException_messageNotReadableExceptionHandler_expectedServerError() {
+    public void messageNotReadableException_nullRequestBody_emptyUserRequestResponse() {
         HttpMessageNotReadableException ex = new HttpMessageNotReadableException("Invalid request body");
 
         ResponseEntity<ErrorResponse> response = handler.handleHttpMessageNotReadableException(ex);

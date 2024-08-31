@@ -1,14 +1,11 @@
 package org.solarbank.server;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,7 +31,7 @@ public class ControllerExceptionHandler {
         String message = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(), "no error captured"))
+                .map(fieldError -> Objects.requireNonNullElse(fieldError.getDefaultMessage(), ErrorMessage.NO_ERROR_MESSAGE.getMessage()))
                 .collect(Collectors.joining("; "));
 
         if (message.isEmpty()) {
@@ -56,7 +53,7 @@ public class ControllerExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                ErrorMessage.INTERNAL_SERVER_ERROR_DETAILS.getMessage()
+                ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()
         );
         log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
