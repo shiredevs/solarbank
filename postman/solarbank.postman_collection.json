@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "58e05780-8bf4-4f49-ab69-973cd5797827",
+		"name": "Solarbank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38038479"
+	},
+	"item": [
+		{
+			"name": "happy path",
+			"item": [
+				{
+					"name": "valid request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Location\": {\n    \"Longitude\": 180,\n    \"Latitude\": 90\n  },\n  \"PanelSize\": {\n    \"Height\": 20,\n    \"Width\": 20\n  },\n  \"PanelEfficiency\": 1.0,\n  \"EnergyTariff\": {\n    \"CurrencyCode\": \"GBP\",\n    \"Amount\": 120\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://solarbank.server.local:8080/v1.0/api/calculate",
+							"protocol": "https",
+							"host": [
+								"solarbank",
+								"server",
+								"local"
+							],
+							"port": "8080",
+							"path": [
+								"v1.0",
+								"api",
+								"calculate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "unhappy path",
+			"item": []
+		},
+		{
+			"name": "empty body for missing property",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"Location\": {\n    \"Longitude\": 180,\n    \"Latitude\": \n  },\n  \"PanelSize\": {\n    \"Height\": 20,\n    \"Width\": 20\n  },\n  \"PanelEfficiency\": 1.0,\n  \"EnergyTariff\": {\n    \"CurrencyCode\": \"GBP\",\n    \"Amount\": 120\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://solarbank.server.local:8080/v1.0/api/calculate",
+					"protocol": "https",
+					"host": [
+						"solarbank",
+						"server",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"v1.0",
+						"api",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "location with lowercase causes empty body",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"location\": {\n    \"Longitude\": 180,\n    \"Latitude\": \n  },\n  \"PanelSize\": {\n    \"Height\": 20,\n    \"Width\": 20\n  },\n  \"PanelEfficiency\": 1.0,\n  \"EnergyTariff\": {\n    \"CurrencyCode\": \"GBP\",\n    \"Amount\": 120\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://solarbank.server.local:8080/v1.0/api/calculate",
+					"protocol": "https",
+					"host": [
+						"solarbank",
+						"server",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"v1.0",
+						"api",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
