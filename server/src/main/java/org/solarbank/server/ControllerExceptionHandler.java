@@ -79,7 +79,7 @@ public class ControllerExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ErrorMessage.NOT_FOUND.getMessage()
+                ErrorMessage.NOT_FOUND.getMessage() + ex.getResourcePath()
         );
         log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);

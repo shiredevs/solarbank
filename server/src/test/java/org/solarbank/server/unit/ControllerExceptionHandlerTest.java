@@ -149,7 +149,8 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void noResourceFoundException_noResourceFoundExceptionThrown_pageNotFoundResponseReturned() {
-        NoResourceFoundException exception = new NoResourceFoundException(HttpMethod.POST, "test");
+        String requestPath = "nonexistent-page";
+        NoResourceFoundException exception = new NoResourceFoundException(HttpMethod.POST, requestPath);
 
         ResponseEntity<ErrorResponse> response = handler.handleNoResourceFoundException(exception);
 
@@ -157,6 +158,6 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
         assertEquals(404, errorDetails.getCode());
         assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), errorDetails.getStatus());
-        assertEquals(ErrorMessage.NOT_FOUND.getMessage(), errorDetails.getMessage());
+        assertEquals(ErrorMessage.NOT_FOUND.getMessage() + requestPath, errorDetails.getMessage());
     }
 }

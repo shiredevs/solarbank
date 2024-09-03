@@ -86,4 +86,13 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
             .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
             .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
     }
+
+    @Test
+    public void nonExistentPath_postRequest_returnsNotFound404() throws Exception  {
+        mockMvc.perform(post("/nonexistent-page"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.Error.Code").value(404))
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.NOT_FOUND.getReasonPhrase()))
+                .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.NOT_FOUND.getMessage() + "nonexistent-page"));
+    }
 }
