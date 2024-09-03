@@ -14,11 +14,13 @@ import org.solarbank.server.ValidationMessage;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.http.MockHttpInputMessage;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -140,9 +142,21 @@ public class ControllerExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
-
         assertEquals(HttpStatus.BAD_REQUEST.value(), errorDetails.getCode());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ValidationMessage.REQUEST_NULL, errorDetails.getMessage());
+    }
+
+    @Test
+    public void noResourceFoundException_noResourceFoundExceptionThrown_pageNotFoundResponseReturned() {
+        NoResourceFoundException exception = new NoResourceFoundException(HttpMethod.POST, "test");
+
+        ResponseEntity<ErrorResponse> response = handler.handleNoResourceFoundException(exception);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
+        assertEquals(404, errorDetails.getCode());
+        assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.NOT_FOUND.getMessage(), errorDetails.getMessage());
     }
 }
