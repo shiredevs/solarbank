@@ -127,7 +127,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    public void missSpelledLocation_postRequest_returnsNullRequest400() throws Exception  {
+    public void lowerCaseLocation_postRequest_returnsNullRequest400() throws Exception  {
         String invalidRequestBody = """
                 {
                   "location": {
