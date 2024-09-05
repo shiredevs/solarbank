@@ -8,6 +8,7 @@ import org.solarbank.server.service.CalculateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -97,7 +98,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    public void emptyLatitude_postRequest_returnsNullRequest400() throws Exception  {
+    public void emptyLatitude_postRequest_returnsNullRequest400() {
         String invalidRequestBody = """
                 {
                   "Location": {
@@ -115,19 +116,22 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                   }
                 }
                 """;
-
-        mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequestBody))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+        try {
+            mockMvc.perform(post("/v1.0/api/calculate")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(invalidRequestBody))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andExpect(jsonPath("$.Error.Code").value(400))
+                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+                    .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+        } catch (Exception e) {
+            fail("failed to perform test api requests as expected");
+        }
     }
 
     @Test
-    public void lowerCaseLocation_postRequest_returnsNullRequest400() throws Exception  {
+    public void lowerCaseLocation_postRequest_returnsNullRequest400() {
         String invalidRequestBody = """
                 {
                   "location": {
@@ -146,13 +150,17 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                 }
                 """;
 
-        mockMvc.perform(post("/v1.0/api/calculate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequestBody))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(jsonPath("$.Error.Code").value(400))
-                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LOCATION_NULL));
+        try {
+            mockMvc.perform(post("/v1.0/api/calculate")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(invalidRequestBody))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andExpect(jsonPath("$.Error.Code").value(400))
+                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+                    .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LOCATION_NULL));
+        } catch (Exception e) {
+            fail("failed to perform test api requests as expected");
+        }
     }
 }
