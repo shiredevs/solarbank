@@ -97,22 +97,62 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    public void energySavingController_nullLocation_nullLocationResponse() throws Exception {
-        CalculateRequest calculateRequest = createCalculateRequest();
-
-        calculateRequest.getLocation().setLatitude(null);
-
-        System.out.println(calculateRequest);
-
-        String invalidRequest = mapToString(calculateRequest);
+    public void emptyLatitude_postRequest_returnsNullRequest400() throws Exception  {
+        String invalidRequestBody = """
+                {
+                  "Location": {
+                    "Longitude": 180,
+                    "Latitude":
+                  },
+                  "PanelSize": {
+                    "Height": 20,
+                    "Width": 20
+                  },
+                  "PanelEfficiency": 1.0,
+                  "EnergyTariff": {
+                    "CurrencyCode": "GBP",
+                    "Amount": 120
+                  }
+                }
+                """;
 
         mockMvc.perform(post("/v1.0/api/calculate")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequest))
+                        .content(invalidRequestBody))
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andExpect(jsonPath("$.Error.Code").value(400))
                 .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_NULL));
+                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+    }
+
+    @Test
+    public void missSpelledLocation_postRequest_returnsNullRequest400() throws Exception  {
+        String invalidRequestBody = """
+                {
+                  "location": {
+                    "Longitude": 180,
+                    "Latitude": 90
+                  },
+                  "PanelSize": {
+                    "Height": 20,
+                    "Width": 20
+                  },
+                  "PanelEfficiency": 1.0,
+                  "EnergyTariff": {
+                    "CurrencyCode": "GBP",
+                    "Amount": 120
+                  }
+                }
+                """;
+
+        mockMvc.perform(post("/v1.0/api/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequestBody))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(jsonPath("$.Error.Code").value(400))
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LOCATION_NULL));
     }
 }
