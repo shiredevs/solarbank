@@ -95,4 +95,24 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                 .andExpect(jsonPath("$.Error.Status").value(HttpStatus.NOT_FOUND.getReasonPhrase()))
                 .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.NOT_FOUND.getMessage() + "nonexistent-page"));
     }
+
+    @Test
+    public void energySavingController_nullLocation_nullLocationResponse() throws Exception {
+        CalculateRequest calculateRequest = createCalculateRequest();
+
+        calculateRequest.getLocation().setLatitude(null);
+
+        System.out.println(calculateRequest);
+
+        String invalidRequest = mapToString(calculateRequest);
+
+        mockMvc.perform(post("/v1.0/api/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidRequest))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(jsonPath("$.Error.Code").value(400))
+                .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+                .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_NULL));
+    }
 }
