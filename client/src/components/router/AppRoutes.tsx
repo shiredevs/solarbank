@@ -5,6 +5,7 @@ import ErrorHandler from '../error/ErrorHandler';
 import PageNotFoundError from '../error/types/PageNotFoundError';
 import InternalServerError from '../error/types/InternalServerError';
 import ROUTE_PATHS from './RoutePaths';
+import ResultPage from '../../pages/ResultPage';
 
 export type RouteType = {
   path: string;
@@ -16,11 +17,17 @@ const ROUTES: RouteType[] = [
   {
     path: ROUTE_PATHS.ROOT,
     element: <LandingPage />,
-    errorElement: <ErrorHandler error={new InternalServerError()} />
+    errorElement: <ErrorHandler error={new InternalServerError()} /> // only applies on exceptions thrown during render
   },
   {
     path: ROUTE_PATHS.FORM,
-    element: <FormPage />
+    element: <FormPage />,
+    errorElement: <ErrorHandler error={new InternalServerError()} />
+  },
+  {
+    path: ROUTE_PATHS.RESULT,
+    element: <ResultPage />,
+    errorElement: <ErrorHandler error={new InternalServerError()} />
   },
   {
     path: ROUTE_PATHS.OTHER,
