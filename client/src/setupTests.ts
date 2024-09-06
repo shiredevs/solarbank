@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'; // provides expect() and other matchers in test
-import { server } from './test-setup/mockServer';
+import { server } from './testSetup/MockServer';
 
 // required to mock config provide from process.env
 jest.mock('./clients/config/CalculateConfig', () => ({

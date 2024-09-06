@@ -11,20 +11,20 @@ const reduceToString = (energyGenPerMonth: { [key: string]: number }) => {
 
 const ResultPage = (): JSX.Element => {
   const { state } = useLocation();
-  const { energyGenPerYear, energyGenPerMonth, savingsPerYear }: CalculateResponse = state;
+  const { EnergyGenPerYear, EnergyGenPerMonth, SavingsPerYear }: CalculateResponse = state;
 
   return (
     <div role="result-page-container">
       <p role="energy-gen-per-year-card">
-        {energyGenPerYear ? `annual energy generation of ${energyGenPerYear} kWh` : 'not available'}
+        {EnergyGenPerYear ? `annual energy generation of ${EnergyGenPerYear} kWh` : 'not available'}
       </p>
       <p role="savings-per-year-card">
-        {savingsPerYear.amount && savingsPerYear.currencyCode
-          ? `annual energy savings of ${savingsPerYear.amount} ${savingsPerYear.currencyCode}`
+        {SavingsPerYear.Amount && SavingsPerYear.CurrencyCode
+          ? `annual energy savings of ${SavingsPerYear.Amount} ${SavingsPerYear.CurrencyCode}`
           : 'not available'}
       </p>
       <p role="energy-gen-per-month-card">
-        {energyGenPerMonth ? reduceToString(energyGenPerMonth) : 'not available'}
+        {EnergyGenPerMonth ? reduceToString(EnergyGenPerMonth) : 'not available'}
       </p>
     </div>
   );
