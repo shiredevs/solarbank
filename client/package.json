@@ -74,7 +74,7 @@
       "./src/setupTests.ts"
     ],
     "setupFiles": [
-      "./src/test-setup/jest.polyfills.ts"
+      "./src/testSetup/jest.polyfills.ts"
     ],
     "moduleNameMapper": {
       "\\.css$": "identity-obj-proxy"

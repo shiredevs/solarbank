@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class IntegrationTestBase {
     @Autowired
     protected MockMvc mockMvc;
-
+    protected final String FAIL_MESSAGE = "failed to perform test api requests as expected";
     private final ObjectMapper requestMapper = new ObjectMapper();
 
     public String mapToString(CalculateRequest calculateRequest) throws JsonProcessingException {

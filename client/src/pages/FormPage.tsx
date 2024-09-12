@@ -7,18 +7,18 @@ import ROUTE_PATHS from '../components/router/RoutePaths';
 
 // todo: replace with form component for user input
 const staticRequest: CalculateRequest = {
-  location: {
-    long: 1234.12,
-    lat: 1234.51
+  Location: {
+    Longitude: 180,
+    Latitude: 90
   },
-  panelSize: {
-    height: 20,
-    width: 20
+  PanelSize: {
+    Height: 20,
+    Width: 20
   },
-  panelEfficiency: 100,
-  energyTariff: {
-    currencyCode: 'GBP',
-    amount: 120
+  PanelEfficiency: 0.1,
+  EnergyTariff: {
+    CurrencyCode: 'GBP',
+    Amount: 120
   }
 };
 

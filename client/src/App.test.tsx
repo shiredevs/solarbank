@@ -7,8 +7,8 @@ import { Router } from '@remix-run/router';
 import ERROR_MESSAGES from './components/error/ErrorMessages';
 import App from './App';
 import { CalculateConfig, config } from './clients/config/CalculateConfig';
-import { interceptPost } from './test-setup/RequestInterceptor';
-import { validRequest, validResponse } from './test-setup/calculate-response';
+import { interceptPost } from './testSetup/RequestInterceptor';
+import { validRequest, validResponse } from './testSetup/CalculateResponse';
 
 describe('application integration tests', (): void => {
   let appRouter: Router;
@@ -60,19 +60,19 @@ describe('application integration tests', (): void => {
         screen.getByRole('energy-gen-per-year-card')
       );
       expect(energyGenYearCard).toHaveTextContent(
-        `annual energy generation of ${validResponse.energyGenPerYear} kWh`
+        `annual energy generation of ${validResponse.EnergyGenPerYear} kWh`
       );
       const savingsCard: HTMLElement = await waitFor(() =>
         screen.getByRole('savings-per-year-card')
       );
       expect(savingsCard).toHaveTextContent(
-        `annual energy savings of ${validResponse.savingsPerYear.amount} ${validResponse.savingsPerYear.currencyCode}`
+        `annual energy savings of ${validResponse.SavingsPerYear.Amount} ${validResponse.SavingsPerYear.CurrencyCode}`
       );
       const energyGenMonthCard: HTMLElement = await waitFor(() =>
         screen.getByRole('energy-gen-per-month-card')
       );
       expect(energyGenMonthCard).toHaveTextContent(
-        `energy generation by month - January: ${validResponse.energyGenPerMonth.January} kWh February: ${validResponse.energyGenPerMonth.February} kWh`
+        `energy generation by month - January: ${validResponse.EnergyGenPerMonth.January} kWh February: ${validResponse.EnergyGenPerMonth.February} kWh`
       );
     });
 
