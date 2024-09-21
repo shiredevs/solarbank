@@ -1,4 +1,4 @@
-import { server } from './mockServer';
+import { server } from './MockServer';
 import { http, HttpResponse } from 'msw';
 
 export type RequestData = {

@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'ax
 import ApiRequestError from '../../components/error/types/ApiRequestError';
 import * as logger from '../../utils/Logger';
 import errorMessages from '../../components/error/ErrorMessages';
-import { interceptPost, RequestData, ResponseData } from '../../test-setup/RequestInterceptor';
+import { interceptPost, RequestData, ResponseData } from '../../testSetup/RequestInterceptor';
 
 describe('http client tests', () => {
   const MOCK_BASEPATH: string = 'https://localhost:8080';

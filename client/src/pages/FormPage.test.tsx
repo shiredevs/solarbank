@@ -4,10 +4,10 @@ import * as CalculateClient from '../clients/CalculateClient';
 import ApiRequestError from '../components/error/types/ApiRequestError';
 import InternalServerError from '../components/error/types/InternalServerError';
 import ERROR_MESSAGES from '../components/error/ErrorMessages';
-import { CalculateResponse } from '../clients/CalculateClient';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ROUTE_PATHS from '../components/router/RoutePaths';
 import ResultPage from './ResultPage';
+import { validResponse } from '../testSetup/CalculateResponse';
 
 const triggerFormSubmission = async () => {
   const button: HTMLElement = screen.getByRole('button');
@@ -41,18 +41,7 @@ describe('form page tests', () => {
   });
 
   it('should render results page when form is submitted and result is successfully retrieved', async () => {
-    const mockResponse: CalculateResponse = {
-      energyGenPerYear: 1000,
-      energyGenPerMonth: {
-        January: 500,
-        February: 500
-      },
-      savingsPerYear: {
-        currencyCode: 'GBP',
-        amount: 5000
-      }
-    };
-    jest.spyOn(CalculateClient, 'doCalculate').mockResolvedValueOnce(mockResponse);
+    jest.spyOn(CalculateClient, 'doCalculate').mockResolvedValueOnce(validResponse);
 
     render(
       <MemoryRouter initialEntries={[ROUTE_PATHS.FORM]}>
