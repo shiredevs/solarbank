@@ -17,6 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EnergySavingControllerIT extends IntegrationTestBase {
 
+    private static final String failMessage = "failed to perform test api requests as expected";
+
     @SpyBean
     private CalculateService calculateService;
 
@@ -38,7 +40,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
                     .andExpect(jsonPath("$.SavingsPerYear.Amount").value(1000.0));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -59,7 +61,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LATITUDE_MAX));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -74,7 +76,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -100,7 +102,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -126,7 +128,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.NOT_FOUND.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.NOT_FOUND.getMessage() + "/"));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -159,7 +161,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 
@@ -193,7 +195,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
                     .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.LOCATION_NULL));
         } catch (Exception e) {
-            fail(FAIL_MESSAGE);
+            fail(failMessage);
         }
     }
 }
