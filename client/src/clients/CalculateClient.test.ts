@@ -1,8 +1,8 @@
 import { CalculateRequest, CalculateResponse, doCalculate } from './CalculateClient';
-import { interceptPost } from '../test-setup/RequestInterceptor';
+import { interceptPost } from '../testSetup/RequestInterceptor';
 import { config } from './config/CalculateConfig';
 import ApiRequestError from '../components/error/types/ApiRequestError';
-import { validRequest, validResponse } from '../test-setup/calculate-response';
+import { validRequest, validResponse } from '../testSetup/CalculateResponse';
 
 describe('calculate client tests', () => {
   it('request to calculate, valid request body, expected response returned', async (): Promise<void> => {

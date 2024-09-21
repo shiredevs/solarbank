@@ -2,3 +2,7 @@ server:
   ssl:
     key-store: <LOCATION OF .p12 file>
     key-store-password: <keystore password>
+
+application:
+  cors:
+    allowed-origin: https://localhost:3030

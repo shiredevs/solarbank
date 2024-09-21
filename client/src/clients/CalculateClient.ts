@@ -1,33 +1,33 @@
-import { post } from './http-client/HttpClient';
+import { post } from './httpClient/HttpClient';
 import { AxiosResponse } from 'axios';
 import { config } from './config/CalculateConfig';
 
 const CALCULATE_URL: string = `${config.SERVER_URL}${config.CALCULATE_ENDPOINT}`;
 
 export type CalculateRequest = {
-  location: {
-    long: number;
-    lat: number;
+  Location: {
+    Longitude: number;
+    Latitude: number;
   };
-  panelSize: {
-    height: number;
-    width: number;
+  PanelSize: {
+    Height: number;
+    Width: number;
   };
-  panelEfficiency: number;
-  energyTariff: {
-    currencyCode: string;
-    amount: number;
+  PanelEfficiency: number;
+  EnergyTariff: {
+    CurrencyCode: string;
+    Amount: number;
   };
 };
 
 export type CalculateResponse = {
-  energyGenPerYear: number;
-  energyGenPerMonth: {
+  EnergyGenPerYear: number;
+  EnergyGenPerMonth: {
     [key: string]: number;
   };
-  savingsPerYear: {
-    currencyCode: string;
-    amount: number;
+  SavingsPerYear: {
+    CurrencyCode: string;
+    Amount: number;
   };
 };
 

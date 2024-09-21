@@ -3,6 +3,7 @@ import { CalculateResponse } from '../clients/CalculateClient';
 import { render, screen } from '@testing-library/react';
 import * as router from 'react-router';
 import { Location } from 'react-router-dom';
+import { validResponse } from '../testSetup/CalculateResponse';
 
 const mockLocation = (mockResult: CalculateResponse): void => {
   const mockLocation: Location = {
@@ -17,19 +18,7 @@ const mockLocation = (mockResult: CalculateResponse): void => {
 
 describe('result page tests', () => {
   it('renders result page as expected when all results are defined', () => {
-    const mockResult: CalculateResponse = {
-      energyGenPerYear: 10000,
-      energyGenPerMonth: {
-        Jan: 1000,
-        Feb: 1000,
-        Mar: 1000,
-        Apr: 1000
-      },
-      savingsPerYear: {
-        currencyCode: 'GBP',
-        amount: 5000
-      }
-    };
+    const mockResult: CalculateResponse = validResponse;
     mockLocation(mockResult);
 
     render(<ResultPage />);
@@ -38,32 +27,32 @@ describe('result page tests', () => {
     const energyGenPerYearCard: HTMLElement = screen.getByRole('energy-gen-per-year-card');
     expect(energyGenPerYearCard).toBeInTheDocument();
     expect(energyGenPerYearCard).toHaveTextContent(
-      `annual energy generation of ${mockResult.energyGenPerYear}`
+      `annual energy generation of ${mockResult.EnergyGenPerYear}`
     );
     const savingsPerYearCard: HTMLElement = screen.getByRole('savings-per-year-card');
     expect(savingsPerYearCard).toBeInTheDocument();
     expect(savingsPerYearCard).toHaveTextContent(
-      `annual energy savings of ${mockResult.savingsPerYear.amount} ${mockResult.savingsPerYear.currencyCode}`
+      `annual energy savings of ${mockResult.SavingsPerYear.Amount} ${mockResult.SavingsPerYear.CurrencyCode}`
     );
     const energyGenPerMonthCard: HTMLElement = screen.getByRole('energy-gen-per-month-card');
     expect(energyGenPerMonthCard).toBeInTheDocument();
     expect(energyGenPerMonthCard).toHaveTextContent(
-      'energy generation by month - Jan: 1000 kWh Feb: 1000 kWh Mar: 1000 kWh Apr: 1000 kWh'
+      'energy generation by month - January: 500 kWh February: 500 kWh'
     );
   });
 
   it('renders result page as expected when some results are defined', () => {
     const mockResult: CalculateResponse = {
-      energyGenPerYear: NaN,
-      energyGenPerMonth: {
+      EnergyGenPerYear: NaN,
+      EnergyGenPerMonth: {
         Jan: NaN,
         Feb: 1000,
         Mar: 1000,
         Apr: NaN
       },
-      savingsPerYear: {
-        currencyCode: '',
-        amount: 5000
+      SavingsPerYear: {
+        CurrencyCode: '',
+        Amount: 5000
       }
     };
     mockLocation(mockResult);
