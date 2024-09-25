@@ -5,19 +5,30 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
+import org.springframework.web.reactive.function.client.WebClient;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 
 public class CalculateServiceTest {
 
-    private CalculateService calculateService = new CalculateService();
+    private CalculateService calculateService;
+    private NasaClient nasaClient;
+
+    @BeforeEach
+    public void setUp() {
+        WebClient.Builder webClientBuilder = WebClient.builder();
+        nasaClient = new NasaClient(webClientBuilder);
+        calculateService = new CalculateService(nasaClient);
+    }
 
     @Test
     public void calculateRequest_validInputs_returnsExpectedResult() {

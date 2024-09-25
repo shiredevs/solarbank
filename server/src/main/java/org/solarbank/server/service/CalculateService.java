@@ -6,19 +6,21 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
+import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
-import org.springframework.web.reactive.function.client.WebClient;
-
 @Service
 public class CalculateService {
 
-    @Autowired
-    private WebClient nasaClient;
+    private final NasaClient nasaClient;
+
+    public CalculateService(NasaClient nasaClient) {
+        this.nasaClient = nasaClient;
+    }
 
     public CalculateResult processCalculateRequest(
         PanelSize panelSize,
@@ -26,16 +28,7 @@ public class CalculateService {
         EnergyTariff energyTariff
     ) {
 
-        String url = "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&longitude=-118.25&latitude=34.05&start=20230101&end=20231231&format=JSON";
-
-        WebClient.Builder nasaClient = WebClient.builder();
-
-        String nasaResponse = nasaClient.build()
-                .get()
-                .uri(url)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String nasaResponse = nasaClient.getNasaData();
 
         System.out.println("----------------------------------");
         System.out.println(nasaResponse);
