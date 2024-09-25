@@ -10,6 +10,7 @@ import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.dto.EnergyTariff;
+import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class CalculateService {
         EnergyTariff energyTariff
     ) {
 
-        String nasaResponse = nasaClient.getNasaData();
+        NasaResponse nasaResponse = nasaClient.getNasaData();
 
         System.out.println("----------------------------------");
         System.out.println(nasaResponse);

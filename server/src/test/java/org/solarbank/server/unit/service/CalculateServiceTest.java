@@ -11,6 +11,7 @@ import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.EnergyTariff;
+import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
