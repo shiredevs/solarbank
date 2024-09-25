@@ -12,13 +12,34 @@ import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.reactive.function.client.WebClient;
+
 @Service
 public class CalculateService {
+
+    @Autowired
+    private WebClient nasaClient;
+
     public CalculateResult processCalculateRequest(
         PanelSize panelSize,
         Double panelEfficiency,
         EnergyTariff energyTariff
     ) {
+
+        String url = "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&longitude=-118.25&latitude=34.05&start=20230101&end=20231231&format=JSON";
+
+        WebClient.Builder nasaClient = WebClient.builder();
+
+        String nasaResponse = nasaClient.build()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        System.out.println("----------------------------------");
+        System.out.println(nasaResponse);
+        System.out.println("----------------------------------");
 
         Map<String, Double> energyGenPerMonth = new HashMap<>();
         energyGenPerMonth.put("January", 0.1);
