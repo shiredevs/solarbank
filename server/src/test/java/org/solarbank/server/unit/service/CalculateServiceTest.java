@@ -11,6 +11,7 @@ import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.EnergyTariff;
+import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
@@ -35,11 +36,12 @@ public class CalculateServiceTest {
     public void calculateRequest_validInputs_returnsExpectedResult() {
         CalculateRequest calculateRequest = createCalculateRequest();
 
+        Location location = calculateRequest.getLocation();
         PanelSize panelSize = calculateRequest.getPanelSize();
         Double panelEfficiency = calculateRequest.getPanelEfficiency();
         EnergyTariff energyTariff = calculateRequest.getEnergyTariff();
 
-        CalculateResult result = calculateService.processCalculateRequest(panelSize, panelEfficiency, energyTariff);
+        CalculateResult result = calculateService.processCalculateRequest(location, panelSize, panelEfficiency, energyTariff);
 
         assertEquals(1.0, result.getEnergyGenPerYear());
 

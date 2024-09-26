@@ -86,6 +86,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
             String validRequest = mapToString(calculateRequest);
 
             when(calculateService.processCalculateRequest(
+                    calculateRequest.getLocation(),
                     calculateRequest.getPanelSize(),
                     calculateRequest.getPanelEfficiency(),
                     calculateRequest.getEnergyTariff()
