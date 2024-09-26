@@ -1,5 +1,7 @@
 package org.solarbank.server;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
 import org.springframework.stereotype.Component;
@@ -15,9 +17,24 @@ public class NasaClient {
     }
 
     public NasaResponse getNasaData(Location location) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(12);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String endDateString = endDate.format(formatter);
+        String startDateString = startDate.format(formatter);
+
         return webClient.get()
-                .uri("/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&longitude={longitude}&latitude={longitude}&start=20230101&end=20231231&format=JSON",
-                        location.getLongitude(), location.getLatitude())
+                .uri(uriBuilder -> uriBuilder
+                        .path("/point")
+                        .queryParam("parameters", "ALLSKY_SFC_SW_DWN")
+                        .queryParam("community", "RE")
+                        .queryParam("longitude", location.getLongitude())
+                        .queryParam("latitude", location.getLatitude())
+                        .queryParam("start", startDateString)
+                        .queryParam("end", endDateString)
+                        .queryParam("format", "JSON")
+                        .build())
                 .retrieve()
                 .bodyToMono(NasaResponse.class)
                 .block();
