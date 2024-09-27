@@ -1,8 +1,8 @@
 package org.solarbank.server.dto;
 
+import lombok.Data;
 import java.util.List;
 import java.util.Map;
-import lombok.Data;
 
 @Data
 public class NasaResponse {

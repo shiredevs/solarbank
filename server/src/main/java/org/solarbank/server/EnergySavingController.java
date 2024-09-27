@@ -1,5 +1,6 @@
 package org.solarbank.server;
 
+import java.util.Map;
 import jakarta.validation.Valid;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
@@ -30,11 +31,7 @@ public class EnergySavingController {
         @Valid @RequestBody CalculateRequest calculateRequest
     ) {
 
-        NasaResponse nasaResponse = nasaClient.getNasaData(calculateRequest.getLocation());
-
-        System.out.println("----------------------------------");
-        System.out.println(nasaResponse);
-        System.out.println("----------------------------------");
+        Map<String, Double> nasaData = nasaClient.getNasaData(calculateRequest.getLocation());
 
         return ResponseEntity.ok(calculateService.processCalculateRequest(
                 calculateRequest.getPanelSize(),

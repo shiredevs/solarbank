@@ -27,7 +27,7 @@ public class IntegrationTestBase {
 
     public static CalculateRequest createCalculateRequest() {
         Location location = new Location();
-        location.setLatitude(90.0);
+        location.setLatitude(52.0);
         location.setLongitude(45.0);
 
         PanelSize panelSize = new PanelSize();
