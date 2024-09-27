@@ -1,29 +1,22 @@
-package org.solarbank.server;
+package org.solarbank.server.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Component
+@Service
 public class NasaClient {
 
     private final WebClient webClient;
 
     public NasaClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://power.larc.nasa.gov/api/temporal/daily").build();
+        this.webClient = webClientBuilder.baseUrl("https://power.larc.nasa.gov/api/temporal/monthly").build();
     }
 
     public NasaResponse getNasaData(Location location) {
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = endDate.minusMonths(12);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String endDateString = endDate.format(formatter);
-        String startDateString = startDate.format(formatter);
-
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/point")
@@ -31,8 +24,8 @@ public class NasaClient {
                         .queryParam("community", "RE")
                         .queryParam("longitude", location.getLongitude())
                         .queryParam("latitude", location.getLatitude())
-                        .queryParam("start", startDateString)
-                        .queryParam("end", endDateString)
+                        .queryParam("start", "2011")
+                        .queryParam("end", "2021")
                         .queryParam("format", "JSON")
                         .build())
                 .retrieve()

@@ -6,37 +6,19 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
-import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.dto.EnergyTariff;
-import org.solarbank.server.dto.Location;
-import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculateService {
-
-    private final NasaClient nasaClient;
-
-    public CalculateService(NasaClient nasaClient) {
-        this.nasaClient = nasaClient;
-    }
-
     public CalculateResult processCalculateRequest(
-            Location location,
         PanelSize panelSize,
         Double panelEfficiency,
         EnergyTariff energyTariff
     ) {
-
-        NasaResponse nasaResponse = nasaClient.getNasaData(location);
-
-        System.out.println("----------------------------------");
-        System.out.println(nasaResponse);
-        System.out.println("----------------------------------");
-
         Map<String, Double> energyGenPerMonth = new HashMap<>();
         energyGenPerMonth.put("January", 0.1);
         energyGenPerMonth.put("February", 0.2);

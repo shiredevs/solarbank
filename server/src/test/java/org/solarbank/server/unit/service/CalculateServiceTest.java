@@ -5,43 +5,28 @@ import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.solarbank.server.NasaClient;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.EnergyTariff;
-import org.solarbank.server.dto.Location;
-import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
-import org.springframework.web.reactive.function.client.WebClient;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 
 public class CalculateServiceTest {
 
-    private CalculateService calculateService;
-    private NasaClient nasaClient;
-
-    @BeforeEach
-    public void setUp() {
-        WebClient.Builder webClientBuilder = WebClient.builder();
-        nasaClient = new NasaClient(webClientBuilder);
-        calculateService = new CalculateService(nasaClient);
-    }
+    private CalculateService calculateService = new CalculateService();
 
     @Test
     public void calculateRequest_validInputs_returnsExpectedResult() {
         CalculateRequest calculateRequest = createCalculateRequest();
-
-        Location location = calculateRequest.getLocation();
         PanelSize panelSize = calculateRequest.getPanelSize();
         Double panelEfficiency = calculateRequest.getPanelEfficiency();
         EnergyTariff energyTariff = calculateRequest.getEnergyTariff();
 
-        CalculateResult result = calculateService.processCalculateRequest(location, panelSize, panelEfficiency, energyTariff);
+        CalculateResult result = calculateService.processCalculateRequest(panelSize, panelEfficiency, energyTariff);
 
         assertEquals(1.0, result.getEnergyGenPerYear());
 
