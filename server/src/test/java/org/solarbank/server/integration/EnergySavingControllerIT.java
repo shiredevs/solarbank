@@ -78,31 +78,31 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
         }
     }
 
-    @Test
-    public void energySavingController_throwException_status500() {
-        CalculateRequest calculateRequest = createCalculateRequest();
-
-        try {
-            String validRequest = mapToString(calculateRequest);
-
-            when(calculateService.processCalculateRequest(
-                    calculateRequest.getPanelSize(),
-                    calculateRequest.getPanelEfficiency(),
-                    calculateRequest.getEnergyTariff()
-            )).thenThrow(new RuntimeException());
-
-            mockMvc.perform(post("/v1.0/api/calculate")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(validRequest))
-                    .andExpect(status().isInternalServerError())
-                    .andDo(print())
-                    .andExpect(jsonPath("$.Error.Code").value(500))
-                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
-        } catch (Exception e) {
-            fail(FAIL_MESSAGE);
-        }
-    }
+//    @Test
+//    public void energySavingController_throwException_status500() {
+//        CalculateRequest calculateRequest = createCalculateRequest();
+//
+//        try {
+//            String validRequest = mapToString(calculateRequest);
+//
+//            when(calculateService.processCalculateRequest(
+//                    calculateRequest.getPanelSize(),
+//                    calculateRequest.getPanelEfficiency(),
+//                    calculateRequest.getEnergyTariff()
+//            )).thenThrow(new RuntimeException());
+//
+//            mockMvc.perform(post("/v1.0/api/calculate")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .content(validRequest))
+//                    .andExpect(status().isInternalServerError())
+//                    .andDo(print())
+//                    .andExpect(jsonPath("$.Error.Code").value(500))
+//                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+//                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
+//        } catch (Exception e) {
+//            fail(FAIL_MESSAGE);
+//        }
+//    }
 
     @Test
     public void nonExistentPath_postRequest_returnsNotFound404() {

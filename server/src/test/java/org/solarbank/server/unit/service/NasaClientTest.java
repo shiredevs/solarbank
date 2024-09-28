@@ -28,9 +28,7 @@ public class NasaClientTest {
 
         Map<String, Double> nasaData  = nasaClient.getNasaData(location);
 
-        System.out.println("----------------------------------");
         System.out.println(nasaData);
-        System.out.println("----------------------------------");
 
         assertNotNull(nasaData);
     }

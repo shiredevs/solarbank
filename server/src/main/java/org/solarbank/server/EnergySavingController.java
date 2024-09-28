@@ -36,7 +36,8 @@ public class EnergySavingController {
         return ResponseEntity.ok(calculateService.processCalculateRequest(
                 calculateRequest.getPanelSize(),
                 calculateRequest.getPanelEfficiency(),
-                calculateRequest.getEnergyTariff()
+                calculateRequest.getEnergyTariff(),
+                nasaData
         ));
     }
 }

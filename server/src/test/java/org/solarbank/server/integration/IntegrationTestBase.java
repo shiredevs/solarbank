@@ -37,7 +37,7 @@ public class IntegrationTestBase {
         Double panelEfficiency = 0.15;
 
         EnergyTariff energyTariff = new EnergyTariff();
-        energyTariff.setAmount(0.01);
+        energyTariff.setAmount(0.50);
         energyTariff.setCurrencyCode("USD");
 
         CalculateRequest calculateRequest = new CalculateRequest();
