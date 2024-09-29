@@ -1,7 +1,6 @@
 package org.solarbank.server.service;
 
 import java.util.Map;
-import java.util.HashMap;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
 import org.springframework.stereotype.Service;

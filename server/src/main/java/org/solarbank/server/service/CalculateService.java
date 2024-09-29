@@ -1,10 +1,16 @@
 package org.solarbank.server.service;
 
+import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import tech.tablesaw.aggregate.AggregateFunctions;
+import tech.tablesaw.api.DoubleColumn;
+import tech.tablesaw.api.NumericColumn;
+import tech.tablesaw.api.StringColumn;
+import tech.tablesaw.api.Table;
 import org.javamoney.moneta.Money;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
@@ -12,13 +18,6 @@ import org.solarbank.server.dto.EnergyTariff;
 import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.Location;
 import org.springframework.stereotype.Service;
-
-import java.time.Month;
-import tech.tablesaw.api.Table;
-import tech.tablesaw.api.StringColumn;
-import tech.tablesaw.api.DoubleColumn;
-import tech.tablesaw.api.NumericColumn;
-import tech.tablesaw.aggregate.AggregateFunctions;
 
 @Service
 public class CalculateService {
@@ -83,6 +82,8 @@ public class CalculateService {
 
         Table monthlyAverageTable = table.summarize("Value", AggregateFunctions.mean)
                 .by("Month");
+
+        /* Forgot to do Mean * number of days in each month */
 
         NumericColumn<?> meanColumn = monthlyAverageTable.numberColumn("Mean [Value]");
         DoubleColumn energyColumn = meanColumn.multiply(panelEfficiency).multiply(panelArea).setName("Energy");
