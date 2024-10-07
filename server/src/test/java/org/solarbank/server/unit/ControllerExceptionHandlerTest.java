@@ -1,5 +1,6 @@
 package org.solarbank.server.unit;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,9 @@ public class ControllerExceptionHandlerTest {
 
     @Mock
     private MethodArgumentNotValidException ex;
+
+    @Mock
+    private HttpServletRequest request;
 
     @BeforeEach
     public void setUp() {
@@ -149,10 +153,12 @@ public class ControllerExceptionHandlerTest {
 
     @Test
     public void noResourceFoundException_noResourceFoundExceptionThrown_pageNotFoundResponseReturned() {
-        String requestPath = "nonexistent-page";
+        String requestPath = "/nonexistent-page";
         NoResourceFoundException exception = new NoResourceFoundException(HttpMethod.POST, requestPath);
 
-        ResponseEntity<ErrorResponse> response = handler.handleNoResourceFoundException(exception);
+        when(request.getRequestURI()).thenReturn(requestPath);
+
+        ResponseEntity<ErrorResponse> response = handler.handleNoResourceFoundException(exception, request);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
