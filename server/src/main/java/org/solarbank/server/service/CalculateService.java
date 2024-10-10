@@ -1,8 +1,10 @@
 package org.solarbank.server.service;
 
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
@@ -83,11 +85,26 @@ public class CalculateService {
         Table monthlyAverageTable = table.summarize("Value", AggregateFunctions.mean)
                 .by("Month");
 
-        /* Forgot to do Mean * number of days in each month */
+        DoubleColumn daysInMonthColumn = DoubleColumn.create("DaysInMonth",
+                monthlyAverageTable.stringColumn("Month").asList().stream()
+                        .mapToDouble(monthName -> {
+                            int monthValue = Month.valueOf(monthName.toUpperCase()).getValue();
+                            YearMonth yearMonth = YearMonth.of(2023, monthValue);
+                            return yearMonth.lengthOfMonth();
+                        }).toArray()
+        );
 
-        NumericColumn<?> meanColumn = monthlyAverageTable.numberColumn("Mean [Value]");
-        DoubleColumn energyColumn = meanColumn.multiply(panelEfficiency).multiply(panelArea).setName("Energy");
-        monthlyAverageTable.addColumns(energyColumn);
+        monthlyAverageTable.addColumns(daysInMonthColumn);
+
+        DoubleColumn monthlyTotalRadiation = monthlyAverageTable.doubleColumn("Mean [Value]")
+                .multiply(monthlyAverageTable.doubleColumn("DaysInMonth"))
+                .multiply(panelEfficiency)
+                .multiply(panelArea)
+                .setName("Energy");
+
+        monthlyAverageTable.addColumns(monthlyTotalRadiation);
+
+        System.out.println(monthlyAverageTable);
 
         return monthlyAverageTable;
     }
