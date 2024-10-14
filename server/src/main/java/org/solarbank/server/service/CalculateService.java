@@ -41,6 +41,7 @@ public class CalculateService {
         }
 
         Double energyGenPerYear = monthlyAverageTable.doubleColumn("Energy").sum();
+        energyGenPerYear = Math.round(energyGenPerYear * 10.0) / 10.0;
 
         Double savings = energyGenPerYear * energyTariff.getAmount();
 
@@ -58,10 +59,7 @@ public class CalculateService {
         return result;
     }
 
-    public Table calculateEnergyGenPerMonth(
-            Map<String, Double> nasaData,
-            Double panelEfficiency,
-            Double panelArea) {
+    public Table calculateEnergyGenPerMonth(Map<String, Double> nasaData, Double panelEfficiency, Double panelArea) {
         StringColumn dateColumn = StringColumn.create("Date");
         DoubleColumn valueColumn = DoubleColumn.create("Value");
 
@@ -75,20 +73,17 @@ public class CalculateService {
 
         table = table.dropWhere(table.stringColumn("Date").map(date -> date.substring(4, 6)).isEqualTo("13"));
 
-        StringColumn monthColumn = table.stringColumn("Date").map(date -> {
-            int monthValue = Integer.parseInt(date.substring(4, 6));
-            String monthName = Month.of(monthValue).name().toLowerCase();
-            return monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
-        }).setName("Month");
-        table.addColumns(monthColumn);
+        StringColumn monthStringColumn = table.stringColumn("Date").map(date -> date.substring(4, 6)).setName("MM");
+        table.addColumns(monthStringColumn);
 
         Table monthlyAverageTable = table.summarize("Value", AggregateFunctions.mean)
-                .by("Month");
+                .by("MM")
+                .sortOn("MM");
 
         DoubleColumn daysInMonthColumn = DoubleColumn.create("DaysInMonth",
-                monthlyAverageTable.stringColumn("Month").asList().stream()
-                        .mapToDouble(monthName -> {
-                            int monthValue = Month.valueOf(monthName.toUpperCase()).getValue();
+                monthlyAverageTable.stringColumn("MM").asList().stream()
+                        .mapToDouble(month -> {
+                            int monthValue = Integer.parseInt(month);
                             YearMonth yearMonth = YearMonth.of(2023, monthValue);
                             return yearMonth.lengthOfMonth();
                         }).toArray()
@@ -100,11 +95,16 @@ public class CalculateService {
                 .multiply(monthlyAverageTable.doubleColumn("DaysInMonth"))
                 .multiply(panelEfficiency)
                 .multiply(panelArea)
+                .map(value -> Math.round(value * 10.0) / 10.0)
                 .setName("Energy");
 
-        monthlyAverageTable.addColumns(monthlyTotalRadiation);
+        StringColumn monthColumn = monthlyAverageTable.stringColumn("MM").map(mm -> {
+            int monthValue = Integer.parseInt(mm);
+            String monthName = Month.of(monthValue).name().toLowerCase();
+            return monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
+        }).setName("Month");
 
-        System.out.println(monthlyAverageTable);
+        monthlyAverageTable.addColumns(monthColumn, monthlyTotalRadiation);
 
         return monthlyAverageTable;
     }

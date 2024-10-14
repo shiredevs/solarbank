@@ -1,6 +1,10 @@
 package org.solarbank.server.unit.service;
 
+import java.time.Month;
+import java.util.EnumSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
@@ -15,6 +19,7 @@ import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.service.CalculateService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 import static org.solarbank.server.integration.IntegrationTestBase.createNasaData;
 
@@ -24,13 +29,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CalculateServiceTest {
 
     private CalculateService calculateService = new CalculateService();
-//    private NasaClient nasaClient;
-//
-//    @BeforeEach
-//    void setUp() {
-//        WebClient.Builder webClientBuilder = WebClient.builder().baseUrl("https://power.larc.nasa.gov/api/temporal/daily");
-//        nasaClient = new NasaClient(webClientBuilder);
-//    }
 
     @Test
     public void calculateRequest_validInputs_returnsExpectedResult() {
@@ -45,5 +43,23 @@ public class CalculateServiceTest {
         CalculateResult result = calculateService.processCalculateRequest(panelSize, panelEfficiency, energyTariff, nasaData);
 
         System.out.println(result);
+
+        assertEquals(917.4, result.getEnergyGenPerYear());
+
+        Map<String, Double> energyGenPerMonth = result.getEnergyGenPerMonth();
+        Set<String> validMonths = EnumSet.allOf(Month.class).stream()
+                .map(month -> month.name().substring(0, 1).toUpperCase() + month.name().substring(1).toLowerCase())
+                .collect(Collectors.toSet());
+        assertTrue(energyGenPerMonth.keySet().stream().allMatch(validMonths::contains));
+        assertEquals(12, energyGenPerMonth.size());
+        assertEquals(23.2, energyGenPerMonth.get("January"));
+        assertEquals(138.0, energyGenPerMonth.get("May"));
+        assertEquals(84.2, energyGenPerMonth.get("September"));
+
+        CalculateResult.SavingsPerYear savingsPerYear = result.getSavingsPerYear();
+        CurrencyUnit expectedCurrencyUnit = Monetary.getCurrency("USD");
+        MonetaryAmount expectedAmount = Money.of(458.7, expectedCurrencyUnit);
+        assertEquals(expectedCurrencyUnit, savingsPerYear.getCurrencyCode());
+        assertEquals(expectedAmount, savingsPerYear.getAmount());
     }
 }
