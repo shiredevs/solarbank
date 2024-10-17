@@ -33,4 +33,17 @@ public class NasaClientTest {
         assertNotNull(nasaData);
         assertEquals(130, nasaData.size());
     }
+
+    @Test
+    public void nasaClient_notFound_throwsException() {
+        CalculateRequest calculateRequest = createCalculateRequest();
+        Location location = calculateRequest.getLocation();
+
+        Map<String, Double> nasaData = nasaClient.getNasaData(location);
+
+        System.out.println(nasaData);
+
+        assertNotNull(nasaData);
+        assertEquals(130, nasaData.size());
+    }
 }
