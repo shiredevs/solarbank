@@ -26,10 +26,11 @@ public class NasaClientTest {
         CalculateRequest calculateRequest = createCalculateRequest();
         Location location = calculateRequest.getLocation();
 
-        Map<String, Double> nasaData  = nasaClient.getNasaData(location);
+        Map<String, Double> nasaData = nasaClient.getNasaData(location);
 
         System.out.println(nasaData);
 
         assertNotNull(nasaData);
+        assertEquals(130, nasaData.size());
     }
 }

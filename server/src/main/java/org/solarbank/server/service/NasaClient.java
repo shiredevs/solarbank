@@ -24,7 +24,7 @@ public class NasaClient {
                         .queryParam("community", "RE")
                         .queryParam("longitude", location.getLongitude())
                         .queryParam("latitude", location.getLatitude())
-                        .queryParam("start", "2011")
+                        .queryParam("start", "2012")
                         .queryParam("end", "2021")
                         .queryParam("format", "JSON")
                         .build())
