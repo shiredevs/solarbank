@@ -2,6 +2,7 @@ package org.solarbank.server;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

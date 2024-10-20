@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.service.NasaClient;
@@ -70,7 +71,7 @@ public class NasaClientTest {
                 .expectErrorMatches(throwable -> throwable.getMessage()
                         .equals("Retries exhausted: 3/3") && throwable.getCause()
                         .getMessage()
-                        .contains("Something went wrong: NASA API not found"))
+                        .contains(ErrorMessage.SOMETHING_WRONG.getMessage() + ErrorMessage.API_NOT_FOUND.getMessage()))
                 .verify();
     }
 
@@ -86,7 +87,8 @@ public class NasaClientTest {
                 .expectErrorMatches(throwable -> throwable.getMessage()
                         .equals("Retries exhausted: 3/3") && throwable.getCause()
                         .getMessage()
-                        .contains("Something went wrong: NASA API is not responding"))
+                        .contains(ErrorMessage.SOMETHING_WRONG.getMessage() +
+                                ErrorMessage.API_NOT_RESPONDING.getMessage()))
                 .verify();
     }
 

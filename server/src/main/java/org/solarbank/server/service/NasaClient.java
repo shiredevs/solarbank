@@ -2,6 +2,7 @@ package org.solarbank.server.service;
 
 import java.time.Duration;
 import java.util.Map;
+import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import reactor.util.retry.Retry;
 
 @Service
 public class NasaClient {
-
     private final WebClient webClient;
     private static final String allSkyParameter = "ALLSKY_SFC_SW_DWN";
     private static final int MAX_RETRY_ATTEMPTS = 3;
@@ -37,16 +37,16 @@ public class NasaClient {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.NOT_FOUND::equals,
-                        error -> Mono.error(new RuntimeException("NASA API not found")))
+                        error -> Mono.error(new RuntimeException(ErrorMessage.API_NOT_FOUND.getMessage())))
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals,
-                        error -> Mono.error(new RuntimeException("NASA API is not responding")))
+                        error -> Mono.error(new RuntimeException(ErrorMessage.API_NOT_RESPONDING.getMessage())))
                 .bodyToMono(NasaResponse.class)
-                .doOnError(error -> System.out.println("An error has occurred: " + error.getMessage()))
+                .doOnError(error -> System.out.println(ErrorMessage.ERROR_OCCURRED.getMessage() + error.getMessage()))
                 .onErrorResume(
-                        e -> Mono.error(new RuntimeException("Something went wrong: " + e.getMessage())))
+                        e -> Mono.error(new RuntimeException(ErrorMessage.SOMETHING_WRONG.getMessage() + e.getMessage())))
                 .retryWhen(Retry.fixedDelay(MAX_RETRY_ATTEMPTS, Duration.ofMillis(DELAY_MILLIS))
                         .doBeforeRetry(retrySignal -> {
-                            System.out.println("Retrying... Attempt #" + retrySignal.totalRetries());
+                            System.out.println(ErrorMessage.RETRYING.getMessage() + retrySignal.totalRetries());
                         }))
                 .block();
 
