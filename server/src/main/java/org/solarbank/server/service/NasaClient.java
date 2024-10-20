@@ -18,10 +18,9 @@ public class NasaClient {
     private static final int MAX_RETRY_ATTEMPTS = 3;
     private static final int DELAY_MILLIS = 100;
     private static final String URL = "https://power.larc.nasa.gov/api/temporal/monthly";
-    private static final String BROKEN_URL = "https://adrgaeraehaerh";
 
-    public NasaClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(BROKEN_URL).build();
+    public NasaClient(String URL) {
+        this.webClient = WebClient.create(URL);
     }
 
     public Map<String, Double> getNasaData(Location location) {
@@ -42,10 +41,13 @@ public class NasaClient {
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals,
                         error -> Mono.error(new RuntimeException("NASA API is not responding")))
                 .bodyToMono(NasaResponse.class)
-                .doOnError(error -> System.out.println("An error has occurred" + error.getMessage()))
+                .doOnError(error -> System.out.println("An error has occurred: " + error.getMessage()))
                 .onErrorResume(
                         e -> Mono.error(new RuntimeException("Something went wrong: " + e.getMessage())))
-                .retryWhen(Retry.fixedDelay(MAX_RETRY_ATTEMPTS, Duration.ofMillis(DELAY_MILLIS)))
+                .retryWhen(Retry.fixedDelay(MAX_RETRY_ATTEMPTS, Duration.ofMillis(DELAY_MILLIS))
+                        .doBeforeRetry(retrySignal -> {
+                            System.out.println("Retrying... Attempt #" + retrySignal.totalRetries());
+                        }))
                 .block();
 
         return nasaResponse.getProperties().getParameter().get(allSkyParameter);
