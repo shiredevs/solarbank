@@ -11,3 +11,7 @@ server:
 application:
   cors:
     allowed-origin: ${ALLOWED_ORIGIN}
+
+nasa:
+  api:
+    base-url: "https://power.larc.nasa.gov/api/temporal/monthly"

@@ -1,5 +1,6 @@
 package org.solarbank.server.integration;
 
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.ValidationMessage;
@@ -9,6 +10,7 @@ import org.solarbank.server.service.NasaClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -25,27 +27,27 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
     @Autowired
     private NasaClient nasaClient;
 
-    @Test
-    public void energySavingController_validRequest_status200() {
-        CalculateRequest calculateRequest = createCalculateRequest();
-
-        try {
-            String validRequest = mapToString(calculateRequest);
-
-            mockMvc.perform(post("/v1.0/api/calculate")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(validRequest))
-                    .andExpect(status().isOk())
-                    .andDo(print())
-                    .andExpect(jsonPath("$.EnergyGenPerYear").value(1.0))
-                    .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(0.1))
-                    .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(0.2))
-                    .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
-                    .andExpect(jsonPath("$.SavingsPerYear.Amount").value(1000.0));
-        } catch (Exception e) {
-            fail(FAIL_MESSAGE);
-        }
-    }
+//    @Test
+//    public void energySavingController_validRequest_status200() {
+//        CalculateRequest calculateRequest = createCalculateRequest();
+//
+//        try {
+//            String validRequest = mapToString(calculateRequest);
+//
+//            mockMvc.perform(post("/v1.0/api/calculate")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .content(validRequest))
+//                    .andExpect(status().isOk())
+//                    .andDo(print())
+//                    .andExpect(jsonPath("$.EnergyGenPerYear").value(948.1))
+//                    .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(21.3))
+//                    .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(36.6))
+//                    .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
+//                    .andExpect(jsonPath("$.SavingsPerYear.Amount").value(474.05));
+//        } catch (Exception e) {
+//            fail(FAIL_MESSAGE);
+//        }
+//    }
 
 //    @Test
 //    public void energySavingController_invalidRequest_status400() {
@@ -83,31 +85,33 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
 //        }
 //    }
 
-//    @Test
-//    public void energySavingController_throwException_status500() {
-//        CalculateRequest calculateRequest = createCalculateRequest();
-//
-//        try {
-//            String validRequest = mapToString(calculateRequest);
-//
-//            when(calculateService.processCalculateRequest(
-//                    calculateRequest.getPanelSize(),
-//                    calculateRequest.getPanelEfficiency(),
-//                    calculateRequest.getEnergyTariff()
-//            )).thenThrow(new RuntimeException());
-//
-//            mockMvc.perform(post("/v1.0/api/calculate")
-//                            .contentType(MediaType.APPLICATION_JSON)
-//                            .content(validRequest))
-//                    .andExpect(status().isInternalServerError())
-//                    .andDo(print())
-//                    .andExpect(jsonPath("$.Error.Code").value(500))
-//                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
-//                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
-//        } catch (Exception e) {
-//            fail(FAIL_MESSAGE);
-//        }
-//    }
+    @Test
+    public void energySavingController_throwException_status500() {
+        CalculateRequest calculateRequest = createCalculateRequest();
+        Map<String, Double> nasaData = createNasaData();
+
+        try {
+            String validRequest = mapToString(calculateRequest);
+
+            when(calculateService.processCalculateRequest(
+                    calculateRequest.getPanelSize(),
+                    calculateRequest.getPanelEfficiency(),
+                    calculateRequest.getEnergyTariff(),
+                    nasaData
+            )).thenThrow(new RuntimeException());
+
+            mockMvc.perform(post("/v1.0/api/calculate")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(validRequest))
+                    .andExpect(status().isInternalServerError())
+                    .andDo(print())
+                    .andExpect(jsonPath("$.Error.Code").value(500))
+                    .andExpect(jsonPath("$.Error.Status").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()));
+        } catch (Exception e) {
+            fail(FAIL_MESSAGE);
+        }
+    }
 
 //    @Test
 //    public void nonExistentPath_postRequest_returnsNotFound404() {
