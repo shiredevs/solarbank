@@ -1,5 +1,6 @@
 package org.solarbank.server;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.solarbank.server.ErrorMessage;
@@ -76,11 +77,11 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ErrorMessage.NOT_FOUND.getMessage() + ex.getResourcePath()
+                ErrorMessage.NOT_FOUND.getMessage() + request.getRequestURI()
         );
         log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
