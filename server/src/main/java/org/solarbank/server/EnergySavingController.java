@@ -1,9 +1,12 @@
 package org.solarbank.server;
 
+import java.util.Map;
 import jakarta.validation.Valid;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
+import org.solarbank.server.dto.NasaResponse;
 import org.solarbank.server.service.CalculateService;
+import org.solarbank.server.service.NasaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,22 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1.0/api")
 public class EnergySavingController {
-
     private final CalculateService calculateService;
+    private final NasaClient nasaClient;
 
     @Autowired
-    public EnergySavingController(CalculateService calculateService) {
+    public EnergySavingController(CalculateService calculateService, NasaClient nasaClient) {
         this.calculateService = calculateService;
+        this.nasaClient = nasaClient;
     }
 
     @PostMapping("/calculate")
     public ResponseEntity<CalculateResult> userInput(
         @Valid @RequestBody CalculateRequest calculateRequest
     ) {
+
+        Map<String, Double> nasaData = nasaClient.getNasaData(calculateRequest.getLocation());
+
         return ResponseEntity.ok(calculateService.processCalculateRequest(
-            calculateRequest.getPanelSize(),
-            calculateRequest.getPanelEfficiency(),
-            calculateRequest.getEnergyTariff()
+                calculateRequest.getPanelSize(),
+                calculateRequest.getPanelEfficiency(),
+                calculateRequest.getEnergyTariff(),
+                nasaData
         ));
     }
 }
