@@ -5,6 +5,7 @@ import java.util.Map;
 import org.solarbank.server.ErrorMessage;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.NasaResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,10 +18,9 @@ public class NasaClient {
     private static final String allSkyParameter = "ALLSKY_SFC_SW_DWN";
     private static final int MAX_RETRY_ATTEMPTS = 3;
     private static final int DELAY_MILLIS = 100;
-    private static final String URL = "https://power.larc.nasa.gov/api/temporal/monthly";
 
-    public NasaClient(String URL) {
-        this.webClient = WebClient.create(URL);
+    public NasaClient(@Value("${nasa.api.url}") String baseUrl) {
+        this.webClient = WebClient.create(baseUrl);
     }
 
     public Map<String, Double> getNasaData(Location location) {

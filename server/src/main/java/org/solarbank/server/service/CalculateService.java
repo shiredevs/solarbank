@@ -2,23 +2,22 @@ package org.solarbank.server.service;
 
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.function.ToDoubleFunction;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.ToDoubleFunction;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import tech.tablesaw.aggregate.AggregateFunctions;
 import tech.tablesaw.api.DoubleColumn;
-import tech.tablesaw.api.NumericColumn;
 import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import org.javamoney.moneta.Money;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
 import org.solarbank.server.dto.EnergyTariff;
-import org.solarbank.server.dto.PanelSize;
 import org.solarbank.server.dto.Location;
+import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
 @Service

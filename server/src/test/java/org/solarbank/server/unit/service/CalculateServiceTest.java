@@ -10,7 +10,6 @@ import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.EnergyTariff;
@@ -22,9 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 import static org.solarbank.server.integration.IntegrationTestBase.createNasaData;
-
-import org.solarbank.server.service.NasaClient;
-import org.springframework.web.reactive.function.client.WebClient;
 
 public class CalculateServiceTest {
 
