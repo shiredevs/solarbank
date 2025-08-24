@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
-// @ts-ignore
+// @ts-expect-error - missing types can be ignored
 import react from '@vitejs/plugin-react';
 
 const validateEnvs = (env: Record<string, string>): void => {
