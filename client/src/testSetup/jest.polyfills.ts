@@ -10,6 +10,11 @@ Object.defineProperties(globalThis, {
   TextEncoder: { value: TextEncoder }
 });
 
+import { MessageChannel } from 'node:worker_threads';
+Object.defineProperties(globalThis, {
+  MessagePort: { value: new MessageChannel().constructor }
+});
+
 import { Blob, File } from 'node:buffer';
 import { fetch, Headers, FormData, Request, Response } from 'undici';
 
