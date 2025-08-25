@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
+// @ts-expect-error - missing types can be ignored
 import react from '@vitejs/plugin-react';
 
 const validateEnvs = (env: Record<string, string>): void => {
@@ -24,9 +25,6 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     build: {
       outDir: 'build'
-    },
-    define: {
-      'process.env': env
     },
     server: {
       port: parseInt(env.PORT),

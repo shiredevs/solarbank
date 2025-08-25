@@ -5,9 +5,11 @@ export type CalculateConfig = Config & {
   CALCULATE_ENDPOINT: string | undefined;
 };
 
+const env = import.meta.env;
+
 const config: CalculateConfig = {
-  SERVER_URL: process.env.SERVER_URL,
-  CALCULATE_ENDPOINT: process.env.CALCULATE_ENDPOINT
+  SERVER_URL: env.VITE_SERVER_URL,
+  CALCULATE_ENDPOINT: env.VITE_CALCULATE_ENDPOINT
 };
 
 export { config };
