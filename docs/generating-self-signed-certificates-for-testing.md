@@ -1,15 +1,15 @@
 # Generating self-signed certificates for testing
-## Prequisities
-- openssl on command line
+## Prerequisites
+- openssl on the command line
 
 ## Create certificate
-This will generate sef-signed certificate which should be used for testing only.
+This will generate self-signed certificates which should be used for testing only.
 
 - Generate a private key:
 ```shell
 openssl genpkey -algorithm RSA -out test-key.pem -aes256
 ```
-- Generate self signed cert using key valid for 365 days:
+- Generate a self-signed certificate using the key valid for 365 days:
 ```shell
 openssl req -x509 -key test-key.pem -out test-cert.pem -days 365
 ```
