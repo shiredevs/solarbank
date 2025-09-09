@@ -2,15 +2,15 @@
 ## Quickstart
 ### Client
 #### Prerequisites
-- Node.js - see [.nvmrc](client/.nvmrc) for current version used
+- Node.js - see [.nvmrc](client/.nvmrc) for the current version used
 
-If your using [node version manager](https://github.com/nvm-sh/nvm) simply install and use required node version with:
+If you're using [node version manager](https://github.com/nvm-sh/nvm) install and use the required node version with:
 ```shell
 nvm install && nvm use
 ```
 
 #### Starting the client 
-For first time setup navigate to the [client](./client) folder and pull dependencies by running:
+To start the client, navigate to the [client](./client) folder and pull the dependencies by running:
 ```shell
 npm ci
 ```
@@ -21,7 +21,7 @@ point at your certificate and `SSL_KEY_FILE` to point at your private key.
 
 If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md) and update `HOST` in `.env.local` if you have specified a custom host. 
 
-To serve the client at https://localhost:3030 run:
+To serve the client at https://localhost:3030, run:
 ```shell
 npm run start:local
 ```
@@ -35,12 +35,12 @@ npm run test
 - Java 21
 - Maven
 
-The server runs locally with `https` enabled and requires trusted or self-signed PKCS12 certificates. 
+The server runs locally with `https` enabled, so you will need trusted or self-signed PKCS12 certificates. 
 
-To provide certificates you need to copy this [template](./server/src/main/resources/template-application-local-yml) and rename it to `application-local.yml`. 
+To provide certificates, you need to copy this [template](./server/src/main/resources/template-application-local-yml) and rename it to `application-local.yml`. 
 Then update `key-store` to point at your `.p12` keystore file and `key-store-password` with your store password.
 
-If you want to generate trusted local certificates then follow this [guide](docs/generating-trusted-certs.md). 
+If you want to generate trusted local certificates, then follow this [guide](docs/generating-trusted-certs.md). 
 The certificates need to be generated and stored in `.p12` format using the `--pkcs12` flag.
 
 To start the springboot server `cd` into the [server](./server) folder and run:
@@ -57,20 +57,20 @@ mvn test
 #### Prerequisites
 - docker engine
 
-To start the application with docker you must provide the required environment variables. 
+To start the application with docker, you must provide the required environment variables. 
 To do this copy this [template](template.env.local) and rename as `.env`. Then update the required variables.
 
-To start the application run the below command from the project root.
+Run the below command from the project root to start the application:
 ```shell
 docker compose up -d
 ```
-If you have specified a custom host for your certificates then navigate to the valid host, else use https://localhost:3030.
+If you have specified a custom host for your certificates, then navigate to the valid host, else use https://localhost:3030.
 
 To stop the application run:
 ```shell
 docker compose stop
 ```
-To stop and delete the container run:
+To stop and delete the container, run:
 ```shell
 docker compose down
 ```

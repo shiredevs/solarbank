@@ -2,7 +2,7 @@
 ## Prerequisites
 - `mkcert` on command line
 ## First time setup
-First create a local CA and root certificate:
+Create a local CA and root certificate:
 ```shell
 mkcert -install
 ```
@@ -20,7 +20,7 @@ This will generate a certificate and key `.pem` in the current directory, signed
 If you want to generate a `.p12` file then you can run with `mkcert --pkcs12 <hostname>`. The password will default to `changeit`.
 
 ## Troubleshooting
-You may need to manually add the local CA to your browser of choice. For example in Firefox
+You may need to manually add the local CA to your browser of choice. For example, in Firefox
 you go to:
 
 `settings -> privacy & security -> view certificates -> authorities -> import`
