@@ -7,7 +7,7 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.solarbank.server.dto.EnergyTariff;
-import org.solarbank.server.ValidationMessage;
+import org.solarbank.server.validation.ValidationMessage;
 
 import java.util.Set;
 

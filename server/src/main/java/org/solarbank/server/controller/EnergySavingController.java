@@ -1,4 +1,4 @@
-package org.solarbank.server;
+package org.solarbank.server.controller;
 
 import jakarta.validation.Valid;
 import org.solarbank.server.dto.CalculateRequest;

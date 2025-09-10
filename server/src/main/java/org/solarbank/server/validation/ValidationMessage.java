@@ -1,4 +1,4 @@
-package org.solarbank.server;
+package org.solarbank.server.validation;
 
 public class ValidationMessage {
     public static final String LONGITUDE_NULL = "longitude must be provided";
@@ -20,5 +20,4 @@ public class ValidationMessage {
     public static final String LOCATION_NULL = "Location must be provided";
     public static final String PANEL_SIZE_NULL = "panel size must be provided";
     public static final String ENERGY_TARIFF_NULL = "Energy tariff must be provided";
-    public static final String REQUEST_NULL = "Invalid or empty request body, please check your request meets the api specification";
 }
