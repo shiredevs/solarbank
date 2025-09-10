@@ -1,8 +1,9 @@
-package org.solarbank.server.integration;
+package org.solarbank.server.integration.controller;
 
 import org.junit.jupiter.api.Test;
-import org.solarbank.server.ErrorMessage;
-import org.solarbank.server.ValidationMessage;
+import org.solarbank.server.error.ErrorMessage;
+import org.solarbank.server.integration.IntegrationTestBase;
+import org.solarbank.server.validation.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.service.CalculateService;
 import org.springframework.http.HttpStatus;
@@ -72,7 +73,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andDo(print())
                     .andExpect(jsonPath("$.Error.Code").value(400))
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                    .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INVALID_BODY.getMessage()));
         } catch (Exception e) {
             fail(FAIL_MESSAGE);
         }
@@ -157,7 +158,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
                     .andDo(print())
                     .andExpect(jsonPath("$.Error.Code").value(400))
                     .andExpect(jsonPath("$.Error.Status").value(HttpStatus.BAD_REQUEST.getReasonPhrase()))
-                    .andExpect(jsonPath("$.Error.Message").value(ValidationMessage.REQUEST_NULL));
+                    .andExpect(jsonPath("$.Error.Message").value(ErrorMessage.INVALID_BODY.getMessage()));
         } catch (Exception e) {
             fail(FAIL_MESSAGE);
         }

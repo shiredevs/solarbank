@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.solarbank.server.ValidationMessage;
+import org.solarbank.server.validation.ValidationMessage;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)

@@ -1,8 +1,9 @@
-package org.solarbank.server;
+package org.solarbank.server.error;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +70,7 @@ public class ControllerExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(
             HttpStatus.BAD_REQUEST.value(),
             HttpStatus.BAD_REQUEST.getReasonPhrase(),
-            ValidationMessage.REQUEST_NULL
+            ErrorMessage.INVALID_BODY.getMessage()
         );
         log(ex, errorResponse);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
-import org.solarbank.server.ValidationMessage;
+import org.solarbank.server.validation.ValidationMessage;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)

@@ -1,4 +1,4 @@
-package org.solarbank.server.unit;
+package org.solarbank.server.unit.error;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -9,9 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mock;
-import org.solarbank.server.ControllerExceptionHandler;
-import org.solarbank.server.ErrorMessage;
-import org.solarbank.server.ValidationMessage;
+import org.solarbank.server.error.ControllerExceptionHandler;
+import org.solarbank.server.error.ErrorMessage;
+import org.solarbank.server.validation.ValidationMessage;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpStatus;
@@ -148,7 +148,7 @@ public class ControllerExceptionHandlerTest {
         ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
         assertEquals(HttpStatus.BAD_REQUEST.value(), errorDetails.getCode());
         assertEquals(HttpStatus.BAD_REQUEST.getReasonPhrase(), errorDetails.getStatus());
-        assertEquals(ValidationMessage.REQUEST_NULL, errorDetails.getMessage());
+        assertEquals(ErrorMessage.INVALID_BODY.getMessage(), errorDetails.getMessage());
     }
 
     @Test
