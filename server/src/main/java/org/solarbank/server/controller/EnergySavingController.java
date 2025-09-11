@@ -3,7 +3,7 @@ package org.solarbank.server.controller;
 import jakarta.validation.Valid;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.dto.CalculateResult;
-import org.solarbank.server.service.CalculateService;
+import org.solarbank.server.service.EnergySavingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1.0/api")
 public class EnergySavingController {
 
-    private final CalculateService calculateService;
+    private final EnergySavingService energySavingService;
 
     @Autowired
-    public EnergySavingController(CalculateService calculateService) {
-        this.calculateService = calculateService;
+    public EnergySavingController(EnergySavingService energySavingService) {
+        this.energySavingService = energySavingService;
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<CalculateResult> userInput(
+    public ResponseEntity<CalculateResult> getSavings(
         @Valid @RequestBody CalculateRequest calculateRequest
     ) {
-        return ResponseEntity.ok(calculateService.processCalculateRequest(
+        return ResponseEntity.ok(energySavingService.calculateSavings(
             calculateRequest.getPanelSize(),
             calculateRequest.getPanelEfficiency(),
             calculateRequest.getEnergyTariff()

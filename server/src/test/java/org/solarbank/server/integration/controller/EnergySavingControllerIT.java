@@ -5,7 +5,7 @@ import org.solarbank.server.error.ErrorMessage;
 import org.solarbank.server.integration.IntegrationTestBase;
 import org.solarbank.server.validation.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
-import org.solarbank.server.service.CalculateService;
+import org.solarbank.server.service.EnergySavingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EnergySavingControllerIT extends IntegrationTestBase {
 
     @SpyBean
-    private CalculateService calculateService;
+    private EnergySavingService energySavingService;
 
     @Test
     public void energySavingController_validRequest_status200() {
@@ -86,7 +86,7 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
         try {
             String validRequest = mapToString(calculateRequest);
 
-            when(calculateService.processCalculateRequest(
+            when(energySavingService.calculateSavings(
                     calculateRequest.getPanelSize(),
                     calculateRequest.getPanelEfficiency(),
                     calculateRequest.getEnergyTariff()
