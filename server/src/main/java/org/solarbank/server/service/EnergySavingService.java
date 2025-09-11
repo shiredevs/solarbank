@@ -13,8 +13,8 @@ import org.solarbank.server.dto.PanelSize;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CalculateService {
-    public CalculateResult processCalculateRequest(
+public class EnergySavingService {
+    public CalculateResult calculateSavings(
         PanelSize panelSize,
         Double panelEfficiency,
         EnergyTariff energyTariff
