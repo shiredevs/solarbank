@@ -163,6 +163,17 @@ public class DailyRadianceProcessorTest {
         assertEquals(0.0, actualResult.getTotalMeanDailyRadiance());
         assertEquals(0, actualResult.getNumberOfMonthsRecorded());
     }
+    @Test
+    public void calculateTotalRadiance_inputDataNull_returnsExpectedResult() {
+        MeanDailyRadiance inputData = null;
+
+        Map<Month, TotalMeanDailyRadiance> result = processor.calculateTotalMeanDailyRadianceByMonth(inputData);
+
+        result.forEach((month, monthlyRadiance) -> {
+            assertEquals(0, monthlyRadiance.getNumberOfMonthsRecorded());
+            assertEquals(0.0, monthlyRadiance.getTotalMeanDailyRadiance());
+        });
+    }
 
     @Test
     public void calculateMeanDailyRadiance_validDataInputs_returnsCorrectResult() {
