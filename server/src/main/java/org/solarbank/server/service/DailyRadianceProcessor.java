@@ -15,20 +15,11 @@ import java.util.stream.IntStream;
 public class DailyRadianceProcessor {
 
     public Map<Month, TotalMeanDailyRadiance> calculateTotalMeanDailyRadianceByMonth(MeanDailyRadiance meanDailyRadiance) {
-        Map<String, Double> radianceByDate = meanDailyRadiance.meanDailyRadianceByMonthAndYear();
         Map<Month, TotalMeanDailyRadiance> result = prePopulateResult();
 
-        radianceByDate.forEach((date, radianceValue) -> {
-            int monthValue = 0;
-
-            if (isValidString(date)) {
-                monthValue = Integer.parseInt(date.substring(date.length() - 2));
-            }
-
-            if (isValidEntry(radianceValue, monthValue)) {
-                result.computeIfPresent(Month.of(monthValue), updateRadianceWith(radianceValue));
-            }
-        });
+        if (meanDailyRadiance != null) {
+            handleCalculation(meanDailyRadiance.meanDailyRadianceByMonthAndYear(), result);
+        }
 
         return result;
     }
@@ -53,14 +44,6 @@ public class DailyRadianceProcessor {
             dailyRadiance >= 0;
     }
 
-    private static boolean isValidString(String date) {
-        return date.length() == 6 && Character.isDigit(date.charAt(4)) && Character.isDigit(date.charAt(5));
-    }
-
-    private boolean isValidEntry(Double radianceValue, int monthValue) {
-        return radianceValue != null && radianceValue >= 0 && monthValue >= 1 && monthValue <= 12;
-    }
-
     private Map<Month, TotalMeanDailyRadiance> prePopulateResult() {
         return IntStream.rangeClosed(1, 12)
             .boxed()
@@ -70,6 +53,28 @@ public class DailyRadianceProcessor {
                 (oldValue, newValue) -> oldValue,
                 LinkedHashMap::new
             ));
+    }
+
+    private void handleCalculation(Map<String, Double> radianceByDate, Map<Month, TotalMeanDailyRadiance> result) {
+        radianceByDate.forEach((date, radianceValue) -> {
+            int monthValue = 0;
+
+            if (isValidString(date)) {
+                monthValue = Integer.parseInt(date.substring(date.length() - 2));
+            }
+
+            if (isValidEntry(radianceValue, monthValue)) {
+                result.computeIfPresent(Month.of(monthValue), updateRadianceWith(radianceValue));
+            }
+        });
+    }
+
+    private static boolean isValidString(String date) {
+        return date.length() == 6 && Character.isDigit(date.charAt(4)) && Character.isDigit(date.charAt(5));
+    }
+
+    private boolean isValidEntry(Double radianceValue, int monthValue) {
+        return radianceValue != null && radianceValue >= 0 && monthValue >= 1 && monthValue <= 12;
     }
 
     private BiFunction<Month, TotalMeanDailyRadiance, TotalMeanDailyRadiance> updateRadianceWith(Double radianceValue) {
