@@ -9,10 +9,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application")
 public class ApplicationProperties {
     private CorsProperties cors;
+    private clientProperties client;
 
     @Getter
     @Setter
     public static class CorsProperties {
         private String allowedOrigin;
+    }
+
+    @Getter
+    @Setter
+    public static class clientProperties {
+        private int retryMaxAttempts;
+        private int retryMaxBackoff;
+        private int retryInitialBackoff;
     }
 }
