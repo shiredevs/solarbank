@@ -18,7 +18,7 @@ public class ApiClient {
     private final WebClient webClient;
 
     public ApiClient(ApplicationProperties applicationProperties) {
-        ApplicationProperties.clientProperties config = applicationProperties.getClient();
+        ApplicationProperties.ClientProperties config = applicationProperties.getClient();
         webClient = WebClient.builder()
             .filter((request, next) ->
                 next.exchange(request)
@@ -35,7 +35,17 @@ public class ApiClient {
             .block();
     }
 
-    private RetryBackoffSpec createRetrySpec(ApplicationProperties.clientProperties config) {
+    private Function<ClientResponse, Mono<? extends ClientResponse>> toMono() {
+        return response -> {
+            if (response.statusCode().is5xxServerError()) {
+                return response.createException().flatMap(Mono::error);
+            } else {
+                return Mono.just(response);
+            }
+        };
+    }
+
+    private RetryBackoffSpec createRetrySpec(ApplicationProperties.ClientProperties config) {
         return Retry.backoff(config.getRetryMaxAttempts(), Duration.ofMillis(config.getRetryInitialBackoff()))
             .maxBackoff(Duration.ofSeconds(config.getRetryMaxBackoff()))
             .filter(isRetry())
@@ -56,15 +66,5 @@ public class ApiClient {
 
     private boolean isServerError(int code) {
         return code >= 500 && code < 600;
-    }
-
-    private Function<ClientResponse, Mono<? extends ClientResponse>> toMono() {
-        return response -> {
-            if (response.statusCode().is5xxServerError()) {
-                return response.createException().flatMap(Mono::error);
-            } else {
-                return Mono.just(response);
-            }
-        };
     }
 }

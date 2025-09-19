@@ -9,7 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application")
 public class ApplicationProperties {
     private CorsProperties cors;
-    private clientProperties client;
+    private ClientProperties client;
+    private Endpoint endpoint;
 
     @Getter
     @Setter
@@ -19,9 +20,15 @@ public class ApplicationProperties {
 
     @Getter
     @Setter
-    public static class clientProperties {
+    public static class ClientProperties {
         private int retryMaxAttempts;
         private int retryMaxBackoff;
         private int retryInitialBackoff;
+    }
+
+    @Getter
+    @Setter
+    public static class Endpoint {
+        private String nasaPowerBaseUrl;
     }
 }

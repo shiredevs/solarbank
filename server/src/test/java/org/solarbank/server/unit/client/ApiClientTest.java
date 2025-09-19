@@ -30,7 +30,7 @@ public class ApiClientTest {
         mockServer = new WireMockConfiguration().wireMockServer();
         mockServer.start();
         port = mockServer.port();
-        ApplicationProperties.clientProperties clientProperties = new ApplicationProperties.clientProperties();
+        ApplicationProperties.ClientProperties clientProperties = new ApplicationProperties.ClientProperties();
         clientProperties.setRetryInitialBackoff(100);
         clientProperties.setRetryMaxBackoff(1000);
         clientProperties.setRetryMaxAttempts(2);
