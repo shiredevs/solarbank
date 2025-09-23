@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mock;
+import org.solarbank.server.client.NasaPowerClientException;
 import org.solarbank.server.error.ControllerExceptionHandler;
 import org.solarbank.server.error.ErrorMessage;
 import org.solarbank.server.validation.ValidationMessage;
@@ -165,5 +166,22 @@ public class ControllerExceptionHandlerTest {
         assertEquals(404, errorDetails.getCode());
         assertEquals(HttpStatus.NOT_FOUND.getReasonPhrase(), errorDetails.getStatus());
         assertEquals(ErrorMessage.NOT_FOUND.getMessage() + requestPath, errorDetails.getMessage());
+    }
+
+    @Test
+    public void nasaPowerClientException_exceptionThrownToHandler_internalServerErrorResponseReturned() {
+        NasaPowerClientException exception = new NasaPowerClientException(
+            "nasa power client error",
+            new RuntimeException("an error has occurred")
+        );
+
+        ResponseEntity<ErrorResponse> response = handler.handleNasaPowerClientException(exception);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        ErrorResponse.ErrorDetails errorDetails = Objects.requireNonNull(response.getBody()).getError();
+
+        assertEquals(500, errorDetails.getCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), errorDetails.getStatus());
+        assertEquals(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage(), errorDetails.getMessage());
     }
 }

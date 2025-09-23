@@ -7,11 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.solarbank.server.client.ApiClient;
 import org.solarbank.server.client.NasaPowerClient;
+import org.solarbank.server.client.NasaPowerClientException;
 import org.solarbank.server.configuration.ApplicationProperties;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.RadianceResponse;
 import org.solarbank.server.integration.WireMockConfiguration;
 import org.solarbank.server.utils.JsonReader;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.IOException;
 
@@ -21,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class NasaPowerClientTest {
     private static WireMockServer mockServer;
     private static NasaPowerClient client;
+    private final static String ACTUAL_URL_FORMAT = "/temporal/monthly/point?start=2005&end=2024&latitude=%f&longitude=%.7f&" +
+            "community=re&parameters=ALLSKY_SFC_SW_DWN&format=json&units=metric&header=true&" +
+            "time-standard=utc";
 
     @BeforeAll
     public static void setUp() {
@@ -58,9 +63,7 @@ public class NasaPowerClientTest {
         double latitude = 51.493518;
         double longitude = -2.6494647;
         String actualEndpointWithQueryParams = String.format(
-            "/temporal/monthly/point?start=2005&end=2024&latitude=%f&longitude=%.7f&" +
-                "community=re&parameters=ALLSKY_SFC_SW_DWN&format=json&units=metric&header=true&" +
-                "time-standard=utc",
+            ACTUAL_URL_FORMAT,
             latitude,
             longitude
         );
@@ -81,5 +84,49 @@ public class NasaPowerClientTest {
         );
 
         assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void requestForData_serverError_throwsExpectedException() {
+        double latitude = 51.493518;
+        double longitude = -2.6494647;
+        String actualEndpointWithQueryParams = String.format(
+            ACTUAL_URL_FORMAT,
+            latitude,
+            longitude
+        );
+        Location location = new Location();
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+
+        mockServer.stubFor(get(urlEqualTo(actualEndpointWithQueryParams))
+            .willReturn(serverError()));
+
+        NasaPowerClientException ex = assertThrows(
+        NasaPowerClientException.class,
+        () -> client.getMeanDailyRadianceFor(location)
+        );
+        assertTrue(ex.getMessage().contains("request for radiance data failed"));
+        assertTrue(((WebClientResponseException) ex.getCause()).getStatusCode().is5xxServerError());
+    }
+
+    @Test
+    public void requestForData_nullLatitudeLongitude_throwsExpectedException() {
+        String actualEndpointWithQueryParams = String.format(
+            ACTUAL_URL_FORMAT,
+            null,
+            null
+        );
+        Location location = new Location();
+
+        mockServer.stubFor(get(urlEqualTo(actualEndpointWithQueryParams))
+            .willReturn(badRequest()));
+
+        NasaPowerClientException ex = assertThrows(
+            NasaPowerClientException.class,
+            () -> client.getMeanDailyRadianceFor(location)
+        );
+        assertTrue(ex.getMessage().contains("request for radiance data failed"));
+        assertTrue(((WebClientResponseException) ex.getCause()).getStatusCode().is4xxClientError());
     }
 }

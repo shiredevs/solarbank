@@ -24,7 +24,15 @@ public class NasaPowerClient {
     }
 
     public RadianceResponse getMeanDailyRadianceFor(Location location) {
-        return apiClient.get(generateUrl(location), RadianceResponse.class);
+        try {
+            return apiClient.get(generateUrl(location), RadianceResponse.class);
+
+        } catch (RuntimeException exception) {
+            throw new NasaPowerClientException(
+                String.format("request for radiance data failed for %s", location.toString()),
+                exception
+            );
+        }
     }
 
     private String generateUrl(Location location) {
