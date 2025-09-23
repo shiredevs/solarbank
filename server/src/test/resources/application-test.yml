@@ -6,3 +6,6 @@ server:
 application:
   cors:
     allowed-origin: https://localhost:3030
+
+wiremock:
+  port: 9999

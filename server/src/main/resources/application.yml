@@ -11,3 +11,9 @@ server:
 application:
   cors:
     allowed-origin: ${ALLOWED_ORIGIN}
+  client:
+    retry-max-attempts: 3
+    retry-max-backoff: 1000
+    retry-initial-backoff: 100
+  endpoint:
+     nasa-power-base-url: https://power.larc.nasa.gov/api
