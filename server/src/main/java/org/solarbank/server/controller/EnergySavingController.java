@@ -26,10 +26,6 @@ public class EnergySavingController {
     public ResponseEntity<CalculateResult> getSavings(
         @Valid @RequestBody CalculateRequest calculateRequest
     ) {
-        return ResponseEntity.ok(energySavingService.calculateSavings(
-            calculateRequest.getPanelSize(),
-            calculateRequest.getPanelEfficiency(),
-            calculateRequest.getEnergyTariff()
-        ));
+        return ResponseEntity.ok(energySavingService.calculateSavings(calculateRequest));
     }
 }

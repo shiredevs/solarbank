@@ -1,36 +1,38 @@
 package org.solarbank.server.service;
 
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
-import javax.money.MonetaryAmount;
 import org.javamoney.moneta.Money;
-import org.solarbank.server.dto.CalculateResult;
+import org.solarbank.server.client.NasaPowerClient;
+import org.solarbank.server.dto.*;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
-import org.solarbank.server.dto.EnergyTariff;
-import org.solarbank.server.dto.PanelSize;
+import org.solarbank.server.service.DailyRadianceProcessor.TotalMeanDailyRadiance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EnergySavingService {
-    public CalculateResult calculateSavings(
-        PanelSize panelSize,
-        Double panelEfficiency,
-        EnergyTariff energyTariff
-    ) {
+    private final DailyRadianceProcessor processor;
+    private final NasaPowerClient client;
 
-        Map<String, Double> energyGenPerMonth = new HashMap<>();
-        energyGenPerMonth.put("January", 0.1);
-        energyGenPerMonth.put("February", 0.2);
+    @Autowired
+    public EnergySavingService(DailyRadianceProcessor processor, NasaPowerClient client) {
+        this.processor = processor;
+        this.client = client;
+    }
 
-        SavingsPerYear savingsPerYear = new SavingsPerYear();
-        CurrencyUnit currencyUnit = Monetary.getCurrency(energyTariff.getCurrencyCode());
-        MonetaryAmount amount = Money.of(1000, currencyUnit);
-        savingsPerYear.setCurrencyCode(currencyUnit);
-        savingsPerYear.setAmount(amount);
-
-        Double energyGenPerYear = 1.0;
+    public CalculateResult calculateSavings(CalculateRequest calculateRequest) {
+        LinkedHashMap<String, Double> energyGenPerMonth = calculateEnergyGenPerMonth(calculateRequest);
+        double energyGenPerYear = calculateEnergyGenPerYear(energyGenPerMonth);
+        SavingsPerYear savingsPerYear = calculatesSavingsPerYear(calculateRequest.getEnergyTariff(), energyGenPerYear);
 
         CalculateResult result = new CalculateResult();
         result.setEnergyGenPerMonth(energyGenPerMonth);
@@ -38,5 +40,70 @@ public class EnergySavingService {
         result.setSavingsPerYear(savingsPerYear);
 
         return result;
+    }
+
+    private LinkedHashMap<String, Double> calculateEnergyGenPerMonth(CalculateRequest calculateRequest) {
+        MeanDailyRadiance meanDailyRadiance = getMeanDailyRadiance(calculateRequest);
+        Map<Month, TotalMeanDailyRadiance> totalMeanDailyRadianceByMonth = processor
+            .calculateTotalMeanDailyRadianceByMonth(meanDailyRadiance);
+
+        return totalMeanDailyRadianceByMonth
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(
+                month -> month.getKey().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                month -> calculateEnergyGenerationFor(
+                    month,
+                    calculateRequest.getPanelSize(),
+                    calculateRequest.getPanelEfficiency()
+                ),
+                (oldValue, newValue) -> oldValue,
+                LinkedHashMap::new
+            ));
+    }
+
+    private MeanDailyRadiance getMeanDailyRadiance(CalculateRequest calculateRequest) {
+        return client.getMeanDailyRadianceFor(calculateRequest.getLocation())
+            .getProperties()
+            .getParameter()
+            .values()
+            .iterator()
+            .next();
+    }
+
+    private double calculateEnergyGenerationFor(
+        Map.Entry<Month, TotalMeanDailyRadiance> month,
+        PanelSize panelSize,
+        double  panelEfficiency
+    ) {
+        double panelArea = panelSize.getHeight() * panelSize.getWidth();
+        double meanDailyRadianceForMonth = processor.calculateMeanDailyRadianceFor(month.getKey(), month.getValue());
+
+        return roundToTwoDP(meanDailyRadianceForMonth * panelArea * panelEfficiency);
+    }
+
+    private double calculateEnergyGenPerYear(LinkedHashMap<String, Double> energyGenPerMonth) {
+        return roundToTwoDP(energyGenPerMonth
+            .values()
+            .stream()
+            .mapToDouble(Double::doubleValue)
+            .sum()
+        );
+    }
+
+    private SavingsPerYear calculatesSavingsPerYear(EnergyTariff energyTariff, double energyGenPerYear) {
+        SavingsPerYear savingsPerYear = new SavingsPerYear();
+        CurrencyUnit currencyUnit = Monetary.getCurrency(energyTariff.getCurrencyCode());
+        savingsPerYear.setCurrencyCode(currencyUnit);
+        double amount = roundToTwoDP(energyGenPerYear * energyTariff.getAmount());
+        savingsPerYear.setAmount(Money.of(amount, currencyUnit));
+
+        return savingsPerYear;
+    }
+
+    private double roundToTwoDP(double value) {
+        return new BigDecimal(value)
+            .setScale(2, RoundingMode.HALF_UP)
+            .doubleValue();
     }
 }

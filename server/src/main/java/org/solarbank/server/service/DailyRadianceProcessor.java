@@ -24,9 +24,9 @@ public class DailyRadianceProcessor {
         return result;
     }
 
-    public Double calculateMeanDailyRadianceFor(Month month, TotalMeanDailyRadiance totalMeanDailyRadiance) {
-        Integer numberOfMonthsRecorded = totalMeanDailyRadiance.getNumberOfMonthsRecorded();
-        Double dailyRadiance = totalMeanDailyRadiance.getTotalMeanDailyRadiance();
+    public double calculateMeanDailyRadianceFor(Month month, TotalMeanDailyRadiance totalMeanDailyRadiance) {
+        int  numberOfMonthsRecorded = totalMeanDailyRadiance.getNumberOfMonthsRecorded();
+        double dailyRadiance = totalMeanDailyRadiance.getTotalMeanDailyRadiance();
         double result = 0.0;
 
         if (validInputs(month, dailyRadiance, numberOfMonthsRecorded)) {
@@ -36,10 +36,8 @@ public class DailyRadianceProcessor {
         return result;
     }
 
-    private static boolean validInputs(Month month, Double dailyRadiance, Integer numberOfMonthsRecorded) {
-        return dailyRadiance != null &&
-            numberOfMonthsRecorded != null &&
-            month != null &&
+    private static boolean validInputs(Month month, double dailyRadiance, int numberOfMonthsRecorded) {
+        return month != null &&
             numberOfMonthsRecorded > 0 &&
             dailyRadiance >= 0;
     }
@@ -77,7 +75,7 @@ public class DailyRadianceProcessor {
         return radianceValue != null && radianceValue >= 0 && monthValue >= 1 && monthValue <= 12;
     }
 
-    private BiFunction<Month, TotalMeanDailyRadiance, TotalMeanDailyRadiance> updateRadianceWith(Double radianceValue) {
+    private BiFunction<Month, TotalMeanDailyRadiance, TotalMeanDailyRadiance> updateRadianceWith(double radianceValue) {
         return (month, radiance) -> {
             radiance.setTotalMeanDailyRadiance(radiance.getTotalMeanDailyRadiance() + radianceValue);
             radiance.setNumberOfMonthsRecorded(radiance.getNumberOfMonthsRecorded() + 1);
@@ -88,7 +86,7 @@ public class DailyRadianceProcessor {
 
     @Data
     public static class TotalMeanDailyRadiance {
-        private Integer numberOfMonthsRecorded = 0;
-        private Double totalMeanDailyRadiance = 0.0;
+        private int numberOfMonthsRecorded;
+        private double totalMeanDailyRadiance;
     }
 }

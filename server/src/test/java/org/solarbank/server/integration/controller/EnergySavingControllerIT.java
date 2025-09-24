@@ -5,11 +5,10 @@ import org.solarbank.server.error.ErrorMessage;
 import org.solarbank.server.integration.IntegrationTestBase;
 import org.solarbank.server.validation.ValidationMessage;
 import org.solarbank.server.dto.CalculateRequest;
-import org.solarbank.server.service.EnergySavingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import static org.mockito.Mockito.when;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -17,27 +16,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EnergySavingControllerIT extends IntegrationTestBase {
-
-    @SpyBean
-    private EnergySavingService energySavingService;
+    private final static String ACTUAL_URL_FORMAT = "/temporal/monthly/point?start=2005&end=2024&latitude=%f&longitude=%.7f&" +
+            "community=re&parameters=ALLSKY_SFC_SW_DWN&format=json&units=metric&header=true&" +
+            "time-standard=utc";
 
     @Test
     public void energySavingController_validRequest_status200() {
-        CalculateRequest calculateRequest = createCalculateRequest();
+        double latitude = 51.493518;
+        double longitude = -2.6494647;
+        CalculateRequest calculateRequest = createCalculateRequest(latitude, longitude);
+        String actualEndpointWithQueryParams = String.format(
+            ACTUAL_URL_FORMAT,
+            latitude,
+            longitude
+        );
+
+        mockServer.stubFor(get(urlEqualTo(actualEndpointWithQueryParams))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withStatus(200)
+                .withBodyFile("twenty-year-radiance-response.json")));
 
         try {
             String validRequest = mapToString(calculateRequest);
 
             mockMvc.perform(post("/v1.0/api/calculate")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(validRequest))
-                    .andExpect(status().isOk())
-                    .andDo(print())
-                    .andExpect(jsonPath("$.EnergyGenPerYear").value(1.0))
-                    .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(0.1))
-                    .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(0.2))
-                    .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
-                    .andExpect(jsonPath("$.SavingsPerYear.Amount").value(1000.0));
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(validRequest))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.EnergyGenPerYear").value(972.82))
+                .andExpect(jsonPath("$.EnergyGenPerMonth.January").value(22.49))
+                .andExpect(jsonPath("$.EnergyGenPerMonth.February").value(37.14))
+                .andExpect(jsonPath("$.SavingsPerYear.CurrencyCode").value("USD"))
+                .andExpect(jsonPath("$.SavingsPerYear.Amount").value(972.82));
         } catch (Exception e) {
             fail(FAIL_MESSAGE);
         }
@@ -80,17 +92,11 @@ public class EnergySavingControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    public void energySavingController_throwException_status500() {
+    public void energySavingController_callToNasaPowerFails_status500() {
         CalculateRequest calculateRequest = createCalculateRequest();
 
         try {
             String validRequest = mapToString(calculateRequest);
-
-            when(energySavingService.calculateSavings(
-                    calculateRequest.getPanelSize(),
-                    calculateRequest.getPanelEfficiency(),
-                    calculateRequest.getEnergyTariff()
-            )).thenThrow(new RuntimeException());
 
             mockMvc.perform(post("/v1.0/api/calculate")
                             .contentType(MediaType.APPLICATION_JSON)

@@ -192,12 +192,8 @@ public class DailyRadianceProcessorTest {
 
     @Test
     public void calculateMeanDailyRadiance_noMonthsRecorded_returnsCorrectResult() {
-        double radianceValue = 0;
-        int numberOfMonthsRecorded = 0;
         double expectedMeanDailyRadiance = 0.0;
         TotalMeanDailyRadiance totalMeanDailyRadiance = new TotalMeanDailyRadiance();
-        totalMeanDailyRadiance.setNumberOfMonthsRecorded(numberOfMonthsRecorded);
-        totalMeanDailyRadiance.setTotalMeanDailyRadiance(radianceValue);
         Month january = Month.JANUARY;
 
         Double actualMeanDailyRadiance = processor.calculateMeanDailyRadianceFor(january, totalMeanDailyRadiance);
@@ -212,34 +208,6 @@ public class DailyRadianceProcessorTest {
         double expectedMeanDailyRadiance = 0.0;
         TotalMeanDailyRadiance totalMeanDailyRadiance = new TotalMeanDailyRadiance();
         totalMeanDailyRadiance.setNumberOfMonthsRecorded(numberOfMonthsRecorded);
-        totalMeanDailyRadiance.setTotalMeanDailyRadiance(radianceValue);
-        Month january = Month.JANUARY;
-
-        Double actualMeanDailyRadiance = processor.calculateMeanDailyRadianceFor(january, totalMeanDailyRadiance);
-
-        assertEquals(expectedMeanDailyRadiance, actualMeanDailyRadiance);
-    }
-
-    @Test
-    public void calculateMeanDailyRadiance_radianceValueNull_returnsCorrectResult() {
-        int numberOfMonthsRecorded = 10;
-        double expectedMeanDailyRadiance = 0.0;
-        TotalMeanDailyRadiance totalMeanDailyRadiance = new TotalMeanDailyRadiance();
-        totalMeanDailyRadiance.setNumberOfMonthsRecorded(numberOfMonthsRecorded);
-        totalMeanDailyRadiance.setTotalMeanDailyRadiance(null);
-        Month january = Month.JANUARY;
-
-        Double actualMeanDailyRadiance = processor.calculateMeanDailyRadianceFor(january, totalMeanDailyRadiance);
-
-        assertEquals(expectedMeanDailyRadiance, actualMeanDailyRadiance);
-    }
-
-    @Test
-    public void calculateMeanDailyRadiance_numberOfMonthsNull_returnsCorrectResult() {
-        double radianceValue = 0;
-        double expectedMeanDailyRadiance = 0.0;
-        TotalMeanDailyRadiance totalMeanDailyRadiance = new TotalMeanDailyRadiance();
-        totalMeanDailyRadiance.setNumberOfMonthsRecorded(null);
         totalMeanDailyRadiance.setTotalMeanDailyRadiance(radianceValue);
         Month january = Month.JANUARY;
 

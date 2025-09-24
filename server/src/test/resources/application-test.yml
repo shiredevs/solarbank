@@ -6,6 +6,8 @@ server:
 application:
   cors:
     allowed-origin: https://localhost:3030
+  endpoint:
+    nasa-power-base-url: http://localhost:${wiremock.port}
 
 wiremock:
   port: 9999

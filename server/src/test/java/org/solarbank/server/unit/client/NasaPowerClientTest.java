@@ -31,7 +31,6 @@ public class NasaPowerClientTest {
     public static void setUp() {
         mockServer = new WireMockConfiguration()
             .wireMockServer();
-        mockServer.start();
 
         ApplicationProperties.ClientProperties clientProperties = new ApplicationProperties.ClientProperties();
         clientProperties.setRetryInitialBackoff(100);
