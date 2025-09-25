@@ -1,0 +1,40 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -2.649,
+            51.494,
+            82.56
+        ]
+    },
+    "properties": {
+        "parameter": {
+        }
+    },
+    "header": {
+        "title": "NASA/POWER Source Native Resolution Monthly and Annual",
+        "api": {
+            "version": "v2.7.4",
+            "name": "POWER Monthly and Annual API"
+        },
+        "sources": [
+            "SYN1DEG"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "UTC",
+        "start": "20230101",
+        "end": "20241231"
+    },
+    "messages": [],
+    "parameters": {
+        "ALLSKY_SFC_SW_DWN": {
+            "units": "kW-hr/m^2/day",
+            "longname": "All Sky Surface Shortwave Downward Irradiance"
+        }
+    },
+    "times": {
+        "data": 3.74,
+        "process": 0.06
+    }
+}

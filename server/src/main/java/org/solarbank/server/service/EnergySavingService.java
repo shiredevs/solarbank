@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -44,6 +42,7 @@ public class EnergySavingService {
 
     private LinkedHashMap<String, Double> calculateEnergyGenPerMonth(CalculateRequest calculateRequest) {
         MeanDailyRadiance meanDailyRadiance = getMeanDailyRadiance(calculateRequest);
+
         Map<Month, TotalMeanDailyRadiance> totalMeanDailyRadianceByMonth = processor
             .calculateTotalMeanDailyRadianceByMonth(meanDailyRadiance);
 
@@ -63,12 +62,14 @@ public class EnergySavingService {
     }
 
     private MeanDailyRadiance getMeanDailyRadiance(CalculateRequest calculateRequest) {
-        return client.getMeanDailyRadianceFor(calculateRequest.getLocation())
-            .getProperties()
-            .getParameter()
-            .values()
-            .iterator()
-            .next();
+        return Optional.ofNullable(client.getMeanDailyRadianceFor(calculateRequest.getLocation()))
+            .map(RadianceResponse::getProperties)
+            .map(RadianceResponse.Properties::getParameter)
+            .map(Map::values)
+            .orElse(Collections.emptyList())
+            .stream()
+            .findFirst()
+            .orElseGet(() -> new MeanDailyRadiance(Collections.emptyMap()));
     }
 
     private double calculateEnergyGenerationFor(
