@@ -14,7 +14,7 @@ public class WireMockConfiguration {
 
     @Bean
     public WireMockServer wireMockServer() {
-        return new WireMockServer(
+        WireMockServer wireMockServer = new WireMockServer(
             wireMockConfig()
                 // We are just using http for the outbound calls from the web client in test.
                 // This is because we don't need to configure a trust store for the real web client
@@ -23,7 +23,10 @@ public class WireMockConfiguration {
                 // This is enough in this case as the certs are issued by a public authority,
                 //
                 // so they will be in the default trust store.
-                .port(wiremockPort == 0 ? 9999 : wiremockPort)
+                .port(wiremockPort == 0 ? 9998 : wiremockPort)
         );
+        wireMockServer.start();
+
+        return wireMockServer;
     }
 }

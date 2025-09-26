@@ -6,13 +6,13 @@ const validRequest: CalculateRequest = {
     Latitude: 90
   },
   PanelSize: {
-    Height: 20,
-    Width: 20
+    Height: 2.0,
+    Width: 3.0
   },
-  PanelEfficiency: 0.1,
+  PanelEfficiency: 0.9,
   EnergyTariff: {
     CurrencyCode: 'GBP',
-    Amount: 120
+    Amount: 0.28
   }
 };
 

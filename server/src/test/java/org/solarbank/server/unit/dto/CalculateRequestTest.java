@@ -9,9 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.solarbank.server.dto.CalculateRequest;
 import org.solarbank.server.validation.ValidationMessage;
-import static org.solarbank.server.integration.IntegrationTestBase.createCalculateRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.solarbank.server.utils.RequestHelper.createCalculateRequest;
 
 public class CalculateRequestTest {
     private Validator validator;
