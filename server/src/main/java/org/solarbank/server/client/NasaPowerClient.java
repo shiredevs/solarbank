@@ -1,15 +1,14 @@
 package org.solarbank.server.client;
 
+import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
+
+import java.time.Year;
 import lombok.extern.slf4j.Slf4j;
 import org.solarbank.server.configuration.ApplicationProperties;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.RadianceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.Year;
-
-import static org.springframework.web.util.UriComponentsBuilder.*;
 
 @Slf4j
 @Service

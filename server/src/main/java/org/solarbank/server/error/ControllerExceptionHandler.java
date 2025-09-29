@@ -3,7 +3,6 @@ package org.solarbank.server.error;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import lombok.extern.slf4j.Slf4j;
 import org.solarbank.server.client.NasaPowerClientException;
 import org.solarbank.server.dto.ErrorResponse;

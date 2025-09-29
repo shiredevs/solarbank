@@ -1,5 +1,8 @@
 package org.solarbank.server.client;
 
+import java.time.Duration;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import org.solarbank.server.configuration.ApplicationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -8,10 +11,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
-
-import java.time.Duration;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 @Service
 public class ApiClient {

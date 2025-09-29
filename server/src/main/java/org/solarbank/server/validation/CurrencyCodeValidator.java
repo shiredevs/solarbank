@@ -2,7 +2,6 @@ package org.solarbank.server.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import javax.money.Monetary;
 
 public class CurrencyCodeValidator implements ConstraintValidator<ValidCurrencyCode, String> {
