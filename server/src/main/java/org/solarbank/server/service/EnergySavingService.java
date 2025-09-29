@@ -4,16 +4,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
-
 import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
 import org.solarbank.server.client.NasaPowerClient;
-import org.solarbank.server.dto.*;
+import org.solarbank.server.dto.CalculateRequest;
+import org.solarbank.server.dto.CalculateResult;
 import org.solarbank.server.dto.CalculateResult.SavingsPerYear;
+import org.solarbank.server.dto.EnergyTariff;
+import org.solarbank.server.dto.MeanDailyRadiance;
+import org.solarbank.server.dto.PanelSize;
+import org.solarbank.server.dto.RadianceResponse;
 import org.solarbank.server.service.DailyRadianceProcessor.TotalMeanDailyRadiance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,11 +93,11 @@ public class EnergySavingService {
         double panelArea = panelSize.getHeight() * panelSize.getWidth();
         double meanDailyRadianceForMonth = processor.calculateMeanDailyRadianceFor(month.getKey(), month.getValue());
 
-        return roundToTwoDP(meanDailyRadianceForMonth * panelArea * panelEfficiency);
+        return roundToTwoDp(meanDailyRadianceForMonth * panelArea * panelEfficiency);
     }
 
     private double calculateEnergyGenPerYear(LinkedHashMap<String, Double> energyGenPerMonth) {
-        return roundToTwoDP(energyGenPerMonth
+        return roundToTwoDp(energyGenPerMonth
             .values()
             .stream()
             .mapToDouble(Double::doubleValue)
@@ -101,13 +109,13 @@ public class EnergySavingService {
         SavingsPerYear savingsPerYear = new SavingsPerYear();
         CurrencyUnit currencyUnit = Monetary.getCurrency(energyTariff.getCurrencyCode());
         savingsPerYear.setCurrencyCode(currencyUnit);
-        double amount = roundToTwoDP(energyGenPerYear * energyTariff.getAmount());
+        double amount = roundToTwoDp(energyGenPerYear * energyTariff.getAmount());
         savingsPerYear.setAmount(Money.of(amount, currencyUnit));
 
         return savingsPerYear;
     }
 
-    private double roundToTwoDP(double value) {
+    private double roundToTwoDp(double value) {
         return new BigDecimal(value)
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();

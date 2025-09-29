@@ -1,15 +1,14 @@
 package org.solarbank.server.service;
 
-import lombok.Data;
-import org.solarbank.server.dto.MeanDailyRadiance;
-import org.springframework.stereotype.Service;
-
 import java.time.Month;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import lombok.Data;
+import org.solarbank.server.dto.MeanDailyRadiance;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DailyRadianceProcessor {
@@ -37,9 +36,9 @@ public class DailyRadianceProcessor {
     }
 
     private static boolean validInputs(Month month, double dailyRadiance, int numberOfMonthsRecorded) {
-        return month != null &&
-            numberOfMonthsRecorded > 0 &&
-            dailyRadiance >= 0;
+        return month != null
+            && numberOfMonthsRecorded > 0
+            && dailyRadiance >= 0;
     }
 
     private Map<Month, TotalMeanDailyRadiance> prePopulateResult() {
