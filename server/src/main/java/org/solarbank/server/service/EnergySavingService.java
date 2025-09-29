@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+
+import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
 import org.solarbank.server.client.NasaPowerClient;
 import org.solarbank.server.dto.*;
@@ -16,6 +18,7 @@ import org.solarbank.server.service.DailyRadianceProcessor.TotalMeanDailyRadianc
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class EnergySavingService {
     private final DailyRadianceProcessor processor;
@@ -36,6 +39,8 @@ public class EnergySavingService {
         result.setEnergyGenPerMonth(energyGenPerMonth);
         result.setEnergyGenPerYear(energyGenPerYear);
         result.setSavingsPerYear(savingsPerYear);
+
+        log.info("Calculated savings: {} for request: {}", result, calculateRequest);
 
         return result;
     }

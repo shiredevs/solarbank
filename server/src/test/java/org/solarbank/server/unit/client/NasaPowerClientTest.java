@@ -105,7 +105,7 @@ public class NasaPowerClientTest {
         NasaPowerClientException.class,
         () -> client.getMeanDailyRadianceFor(location)
         );
-        assertTrue(ex.getMessage().contains("request for radiance data failed"));
+        assertTrue(ex.getMessage().contains("Request for radiance data failed"));
         assertTrue(((WebClientResponseException) ex.getCause()).getStatusCode().is5xxServerError());
     }
 
@@ -125,7 +125,7 @@ public class NasaPowerClientTest {
             NasaPowerClientException.class,
             () -> client.getMeanDailyRadianceFor(location)
         );
-        assertTrue(ex.getMessage().contains("request for radiance data failed"));
+        assertTrue(ex.getMessage().contains("Request for radiance data failed"));
         assertTrue(((WebClientResponseException) ex.getCause()).getStatusCode().is4xxClientError());
     }
 }

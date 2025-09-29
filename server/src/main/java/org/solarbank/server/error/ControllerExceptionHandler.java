@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.solarbank.server.client.NasaPowerClientException;
 import org.solarbank.server.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+@Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -23,8 +25,7 @@ public class ControllerExceptionHandler {
             ex.getMessage(),
             errorResponse.toString()
         );
-        System.out.println(logMessage);
-        ex.printStackTrace();
+        log.error(logMessage, ex);
     }
 
     @ExceptionHandler

@@ -1,5 +1,6 @@
 package org.solarbank.server.client;
 
+import lombok.extern.slf4j.Slf4j;
 import org.solarbank.server.configuration.ApplicationProperties;
 import org.solarbank.server.dto.Location;
 import org.solarbank.server.dto.RadianceResponse;
@@ -10,6 +11,7 @@ import java.time.Year;
 
 import static org.springframework.web.util.UriComponentsBuilder.*;
 
+@Slf4j
 @Service
 public class NasaPowerClient {
     private final ApiClient apiClient;
@@ -25,11 +27,13 @@ public class NasaPowerClient {
 
     public RadianceResponse getMeanDailyRadianceFor(Location location) {
         try {
+            log.info("Retrieving radiance data for {}", location.toString());
+
             return apiClient.get(generateUrl(location), RadianceResponse.class);
 
         } catch (RuntimeException exception) {
             throw new NasaPowerClientException(
-                String.format("request for radiance data failed for %s", location.toString()),
+                String.format("Request for radiance data failed for %s", location.toString()),
                 exception
             );
         }
